@@ -4,9 +4,11 @@ const mongoose = require('mongoose');
 const categorySchema = new mongoose.Schema({ // def schema fields
   name: {
     type: String,
-    required: true,
+    required: [true, 'Category name is required'],
     unique: true, // check in index
-    trim: true // make data clean (modifier not validator)
+    trim: true, // make data clean (modifier not validator)
+    minLength: [4, 'Category name must be at least 4 characters'], // more enhancements
+    maxLength: [50, 'Category name cannot exceed 50 characters']
   }
 }, {
   timestamps: true // benefit for tracking (admin) and filtering
