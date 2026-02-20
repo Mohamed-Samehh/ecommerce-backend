@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const reviewController = require('../controllers/review-controller');
+const {reviewController} = require('../controllers');
 const validateRequest = require('../middleware/validate-request');
 const {reviewSchema} = require('../utils/validations');
 
