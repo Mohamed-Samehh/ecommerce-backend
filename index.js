@@ -6,6 +6,11 @@ const errorHandler = require('./helpers/errorHandler');
 require('dotenv').config({path: './config/.env'});
 const routes = require('./routes');
 
+const orderRouter = require('./routes/order-routes'); // to be changed
+const reviewRouter = require('./routes/review-routes'); // to be changed
+app.use('/api/orders', orderRouter);
+app.use('/api/reviews', reviewRouter);
+
 const app = express();
 
 app.use(cors({origin: process.env.FRONTEND_URL || 'http://localhost:4200'}));
@@ -23,13 +28,6 @@ app.use((err, req, res, next) => {
 app.use((req, res) => {
   res.sendStatus(404);
 });
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, (error) => {
-  if (error) {
-    return console.log(error);
-  }
-  console.log(`Up and running: http://127.0.0.1:${PORT}`);
-});
 
 async function connectDB() {
   try {
@@ -37,6 +35,12 @@ async function connectDB() {
     console.log('MongoDB Connected...');
   } catch (err) {
     console.error('Connection error:', err.message);
+    process.exit(1);
   }
 }
-connectDB();
+
+connectDB().then(() => {
+  app.listen(process.env.PORT || 3000, () => {
+    console.log(`Server running on port ${process.env.PORT || 3000}`);
+  });
+});
