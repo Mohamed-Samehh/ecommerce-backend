@@ -13,6 +13,11 @@ config:
         username: ""
         password: ""
       bypassProxy: ""
+
+request:
+  headers:
+    - name: base_url
+      value: http://127.0.0.1:3000
 bundled: false
 extensions:
   bruno:
