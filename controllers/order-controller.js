@@ -6,25 +6,22 @@ const OrderItem = require('../models/order-item');
 async function placeOrder(req, res) {
   const session = await mongoose.startSession();
   session.startTransaction();
-
   try {
     const {items, country, city, street, postalCode, paymentMethod} = req.body;
     const userId = req.user.id;
     let totalAmount = 0;
-    const orderItemsToSave = [];
+    const itemsToSave = [];
 
     for (const item of items) {
       const book = await Book.findById(item.bookId).session(session);
-
       if (!book || book.stock < item.quantity) {
         throw new Error(`Book ${book ? book.name : item.bookId} is out of stock.`);
       }
-
       book.stock -= item.quantity;
       await book.save({session});
 
       totalAmount += book.price * item.quantity;
-      orderItemsToSave.push({
+      itemsToSave.push({
         bookId: item.bookId,
         quantity: item.quantity,
         priceAtItem: book.price,
@@ -32,7 +29,7 @@ async function placeOrder(req, res) {
       });
     }
 
-    const newOrder = new Order({
+    const newOrder = await Order.create([{
       userId,
       country,
       city,
@@ -41,15 +38,13 @@ async function placeOrder(req, res) {
       totalAmount,
       paymentMethod,
       paymentStatus: paymentMethod === 'Online' ? 'success' : 'pending'
-    });
+    }], {session});
 
-    const savedOrder = await newOrder.save({session});
-
-    const finalItems = orderItemsToSave.map(item => ({...item, orderId: savedOrder._id}));
-    await OrderItem.insertMany(finalItems, {session});
+    const orderItems = itemsToSave.map((item) => ({...item, orderId: newOrder[0]._id}));
+    await OrderItem.insertMany(orderItems, {session});
 
     await session.commitTransaction();
-    res.status(201).json({status: 'success', data: {order: savedOrder}});
+    res.status(201).json({status: 'success', data: newOrder[0]});
   } catch (error) {
     await session.abortTransaction();
     res.status(400).json({status: 'fail', message: error.message});
@@ -58,4 +53,42 @@ async function placeOrder(req, res) {
   }
 }
 
-module.exports = {placeOrder};
+async function getMyOrders(req, res) {
+  try {
+    const orders = await Order.find({userId: req.user.id}).sort('-createdAt');
+    res.status(200).json({status: 'success', results: orders.length, data: orders});
+  } catch (error) {
+    res.status(400).json({status: 'fail', message: error.message});
+  }
+}
+
+async function getAllOrders(req, res) {
+  try {
+    const orders = await Order.find().populate('userId', 'name email').sort('-createdAt');
+    res.status(200).json({status: 'success', data: orders});
+  } catch (error) {
+    res.status(400).json({status: 'fail', message: error.message});
+  }
+}
+
+async function updateOrderStatus(req, res) {
+  try {
+    const order = await Order.findByIdAndUpdate(req.params.id, {status: req.body.status}, {new: true, runValidators: true});
+    if (!order) return res.status(404).json({message: 'Order not found'});
+    res.status(200).json({status: 'success', data: order});
+  } catch (error) {
+    res.status(400).json({status: 'fail', message: error.message});
+  }
+}
+
+async function updatePaymentStatus(req, res) {
+  try {
+    const order = await Order.findByIdAndUpdate(req.params.id, {paymentStatus: req.body.paymentStatus}, {new: true});
+    if (!order) return res.status(404).json({message: 'Order not found'});
+    res.status(200).json({status: 'success', data: order});
+  } catch (error) {
+    res.status(400).json({status: 'fail', message: error.message});
+  }
+}
+
+module.exports = {placeOrder, getMyOrders, getAllOrders, updateOrderStatus, updatePaymentStatus};

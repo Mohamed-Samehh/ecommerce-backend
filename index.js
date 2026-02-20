@@ -3,9 +3,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config({path: './config/.env'});
 
+const orderRouter = require('./routes/order-routes');
+const reviewRouter = require('./routes/review-routes');
+
 const app = express();
 
-// Middleware
+app.use('/api/orders', orderRouter);
+app.use('/api/reviews', reviewRouter);
+
 app.use(express.json());
 
 async function connectDB() {
