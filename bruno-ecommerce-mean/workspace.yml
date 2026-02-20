@@ -1,0 +1,12 @@
+opencollection: 1.0.0
+info:
+  name: "bruno-ecommerce-mean"
+  type: workspace
+
+collections:
+  - name: "Books"
+    path: "collections/Books"
+
+specs:
+
+docs: ''
