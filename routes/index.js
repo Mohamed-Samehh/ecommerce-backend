@@ -5,6 +5,6 @@ const router = express.Router();
 
 // define other routes
 
-router.use('/books', require('./books.js'));
+router.use('/books', require('./books'));
 
 module.exports = router;

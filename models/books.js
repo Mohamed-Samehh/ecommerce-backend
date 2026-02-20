@@ -3,31 +3,39 @@ const mongoose = require('mongoose');
 const bookSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Name is required'],
+    required: [true],
     unique: true,
-    minLength: [5, 'A name must be at least 5 char'],
-    maxLength: [20, 'A name must be at most 20 char']
+    minLength: [5],
+    maxLength: [200],
+    trim: true
   },
   coverImage: {
     type: String,
-    required: [true, 'an image is required']
+    required: [true]
   },
   price: {
     type: Number,
-    required: [true, 'must enter a price']
-  },
-  authorId: {
-    type: String,
-    required: [true, 'must have an author']
+    required: [true]
   },
   stock: {
     type: Number,
     default: 0,
     min: 0
   },
+  authorId: {
+    type: String,
+    required: [true]
+  },
   categories: {
     type: [String],
     default: 'General'
+  },
+  description: {
+    type: String,
+    required: [true],
+    minLength: [5],
+    maxLength: [2000],
+    trim: true
   }
 
 }, {toJSON: {virtuals: true, transform(doc, ret, options) {
@@ -56,6 +64,6 @@ bookSchema.virtual('review count').get(() => {
 //   const product = await mongoose.models.Products.findOne({name: value});
 //   return !product;
 // }
-const Books = mongoose.model('Booksa', bookSchema);
+const Books = mongoose.model('Books', bookSchema);
 
 module.exports = Books;

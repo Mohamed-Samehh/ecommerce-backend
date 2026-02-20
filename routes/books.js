@@ -3,10 +3,14 @@ const {bookController} = require('../controllers');
 
 const router = express.Router();
 
-router.get('/', (res, req) => {
-  const {limit} = req.query;
-  const {skip} = req.query;
-  const {status} = req.query;
-  const books = bookController.findAllBooks(limit, skip, status);
-  res.status(200).json([books]);
-});
+router.get('/', bookController.findAllBooks);
+
+router.get('/:id', bookController.findBookById);
+
+router.post('/', bookController.createBook);
+
+router.put('/:id', bookController.updateBook);
+
+router.delete('/:id', bookController.deleteBook);
+
+module.exports = router;
