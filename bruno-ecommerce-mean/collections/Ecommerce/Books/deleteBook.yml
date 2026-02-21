@@ -1,0 +1,19 @@
+info:
+  name: deleteBook
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/books/:id"
+  params:
+    - name: id
+      value: 699a0115efd0410e0a0b86f6
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

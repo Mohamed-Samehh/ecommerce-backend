@@ -1,0 +1,25 @@
+info:
+  name: updateBook
+  type: http
+  seq: 6
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/books/:id"
+  params:
+    - name: id
+      value: 699a0c857465d39fd9faca79
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "name": "s"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

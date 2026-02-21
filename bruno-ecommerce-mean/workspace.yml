@@ -6,6 +6,8 @@ info:
 collections:
   - name: "Books"
     path: "collections/Books"
+  - name: "Ecommerce"
+    path: "collections/Ecommerce"
 
 specs:
 
