@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{base_url}}/auth/me"
+  url: "{{baseUrl}}/auth/me"
   auth:
     type: bearer
     token: "{{token}}"

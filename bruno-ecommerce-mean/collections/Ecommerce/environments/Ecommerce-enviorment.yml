@@ -1,6 +1,6 @@
 name: Ecommerce-enviorment
 variables:
-  - name: base_url
+  - name: baseUrl
     value: http://localhost:3000
   - name: token
     value: ""
