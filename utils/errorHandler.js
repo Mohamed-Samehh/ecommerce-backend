@@ -20,11 +20,11 @@
  */
 module.exports = [
   {
-    match: (err) => err.name === 'ValidationError',
+    match: (err) => err.name === 'ValidationError' && err.errors, // mongoose errors
     handler: (err) => ({
       statusCode: 400,
       status: 'Fail',
-      errors: Object.values(err.erros).map((e) => e.message)
+      errors: Object.values(err.errors).map((e) => e.message)
     })
   },
   {
@@ -33,6 +33,14 @@ module.exports = [
       statusCode: 400,
       status: 'Fail',
       errors: `${Object.keys(err.keyValue)[0]} already exists`
+    })
+  },
+  {
+    match: (err) => err.name === 'ValidationError' && err.isJoi, // joi errors
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: Object.values(err.details).map((e) => e.message)
     })
   }
 ];

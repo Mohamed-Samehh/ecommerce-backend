@@ -1,4 +1,4 @@
-const {Books} = require('../models/index');
+const {Book} = require('../models/index');
 
 const findAllBooks = (req, res, next) => {
   // TODO: implement finding all the books with pagenation , dont forget to implement the filters
@@ -11,9 +11,13 @@ const findBookById = (req, res, next) => {
 };
 
 const createBook = async (req, res, next) => {
-  // TODO: create book while checking for the auth and the admin privlages
-
-  res.status(201).json('book created');
+  const {body} = req;
+  try {
+    await Book.create(body);
+    res.status(201).json('book created');
+  } catch (error) {
+    next(error);
+  }
 };
 
 const updateBook = async (req, res, next) => {

@@ -34,9 +34,40 @@ const paymentSchema = Joi.object({
   paymentStatus: Joi.string().valid('pending', 'success').required()
 });
 
+const bookSchema = Joi.object({
+  name: Joi.string()
+    .alphanum()
+    .min(5)
+    .max(200)
+    .required()
+    .trim(true),
+  coverImage: Joi.string()
+    .pattern(/^https?:\/\/(www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z]{2,6}\b([-\w@:%+.~#?&/=]*)$/)
+    .message('invalid url')
+    .required(),
+  price: Joi.number()
+    .required(),
+  stock: Joi.number()
+    .min(0)
+    .default(0),
+
+  authorId: Joi.string()
+    .required(),
+
+  categories: Joi.array()
+    .items(Joi.string())
+    .required(),
+
+  description: Joi.string()
+    .min(5)
+    .max(2000)
+    .trim()
+    .required()
+});
 module.exports = {
   orderSchema,
   reviewSchema,
   statusSchema,
-  paymentSchema
+  paymentSchema,
+  bookSchema
 };

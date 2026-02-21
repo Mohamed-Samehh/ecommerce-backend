@@ -1,14 +1,15 @@
 info:
-  name: getAllBooks
+  name: getBookById
   type: http
-  seq: 3
+  seq: 2
 
 http:
   method: GET
-  url: "{{baseUrl}}/books"
-  body:
-    type: json
-    data: "\n"
+  url: "{{baseUrl}}/books/:id"
+  params:
+    - name: id
+      value: "1"
+      type: path
   auth: inherit
 
 settings:
