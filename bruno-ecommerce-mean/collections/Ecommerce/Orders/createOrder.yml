@@ -1,0 +1,31 @@
+info:
+  name: createOrder
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:3000/order
+  body:
+    type: json
+    data: |-
+      {
+        "items": [
+          {
+            "bookId": "699a0c857465d39fd9faca79",
+            "quantity": 1
+          }
+        ],
+        "country": "Egypt",
+        "city": "Cairo",
+        "street": "90th Street",
+        "postalCode": "11835",
+        "paymentMethod": "COD"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
