@@ -1,5 +1,5 @@
-const {Books} = require('../models');
-const {Category} = require('../models/');
+const {Books, Category} = require('../models');
+
 // TODO: auth
 // TODO: JOi
 
