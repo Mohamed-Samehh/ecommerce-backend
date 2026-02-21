@@ -1,17 +1,18 @@
 info:
   name: Login
   type: http
-  seq: 3
+  seq: 2
 
 http:
   method: POST
-  url: "{{base_url}}/login"
+  url: "{{base_url}}/auth/login"
   body:
-    type: multipart-form
-    data:
-      - name: username
-        type: text
-        value: Mohamed
+    type: json
+    data: |-
+      {
+        "email": "mohamed@example.com",
+        "password": "123456"
+      }
   auth: inherit
 
 settings:
