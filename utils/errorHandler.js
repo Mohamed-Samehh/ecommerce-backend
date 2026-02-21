@@ -42,5 +42,13 @@ module.exports = [
       status: 'Fail',
       errors: Object.values(err.details).map((e) => e.message)
     })
+  },
+  {
+    match: (err) => err.name === 'BookNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      errors: err.message
+    })
   }
 ];
