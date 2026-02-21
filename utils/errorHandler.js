@@ -24,7 +24,7 @@ module.exports = [
     handler: (err) => ({
       statusCode: 400,
       status: 'Fail',
-      errors: Object.values(err.erros).map((e) => e.message)
+      errors: Object.values(err.errors).map((e) => e.message)
     })
   },
   {

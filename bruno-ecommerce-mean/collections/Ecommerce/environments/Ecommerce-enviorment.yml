@@ -1,4 +1,4 @@
 name: Ecommerce-enviorment
 variables:
-  - name: baseUrl
+  - name: base_url
     value: http://localhost:3000
