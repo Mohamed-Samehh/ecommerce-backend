@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const {orderController} = require('../controllers');
-const {protect, restrictTo} = require('../middleware/auth-middleware');
+const {protect, restrictTo} = require('../middleware/auth');
 const validateRequest = require('../middleware/validate-request');
 const {orderSchema, statusSchema, paymentSchema} = require('../utils/validations');
 
