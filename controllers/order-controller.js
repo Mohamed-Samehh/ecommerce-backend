@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Book = require('../models/book');
+const Book = require('../models/books');
 const Order = require('../models/order');
 const OrderItem = require('../models/order-item');
 
@@ -73,7 +73,7 @@ async function getAllOrders(req, res) {
 
 async function updateOrderStatus(req, res) {
   try {
-    const order = await Order.findByIdAndUpdate(req.params.id, {status: req.body.status}, {new: true, runValidators: true});
+    const order = await Order.findByIdAndUpdate(req.params.id, {status: req.body.status}, {returnDocument: 'after', runValidators: true});
     if (!order) return res.status(404).json({message: 'Order not found'});
     res.status(200).json({status: 'success', data: order});
   } catch (error) {
@@ -83,7 +83,7 @@ async function updateOrderStatus(req, res) {
 
 async function updatePaymentStatus(req, res) {
   try {
-    const order = await Order.findByIdAndUpdate(req.params.id, {paymentStatus: req.body.paymentStatus}, {new: true});
+    const order = await Order.findByIdAndUpdate(req.params.id, {paymentStatus: req.body.paymentStatus}, {returnDocument: 'after'});
     if (!order) return res.status(404).json({message: 'Order not found'});
     res.status(200).json({status: 'success', data: order});
   } catch (error) {
