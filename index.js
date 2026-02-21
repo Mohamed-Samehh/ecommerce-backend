@@ -3,6 +3,7 @@ const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const errorHandler = require('./utils/errorHandler');
+const logger = require('./utils/logger');
 require('dotenv').config({path: './config/.env'});
 const routes = require('./routes');
 
@@ -20,6 +21,11 @@ app.use((err, req, res, next) => {
     const {statusCode, ...body} = handler.handler(err);
     return res.status(statusCode).json(body);
   }
+  console.log(handler);
+  console.log(err.name);
+  console.log(`Incoming: ${req.method} ${req.url}`);
+  console.log('Headers:', req.headers);
+
   res.status(500).json({status: 'error', message: 'Something went wrong'});
 });
 app.use((req, res) => {
@@ -29,15 +35,15 @@ app.use((req, res) => {
 async function connectDB() {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB Connected...');
+    logger.info('MongoDB Connected...');
   } catch (err) {
-    console.error('Connection error:', err.message);
+    logger.error({err}, 'Connection error');
     process.exit(1);
   }
 }
 
 connectDB().then(() => {
   app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server running on port ${process.env.PORT || 3000}`);
+    logger.info(`Server running on port ${process.env.PORT || 3000}`);
   });
 });

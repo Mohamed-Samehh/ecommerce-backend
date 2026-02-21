@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // define other routes
+router.use('/auth', require('./auth'));
 router.use('/books', require('./books'));
 router.use('/authors', require('./authors'));
 router.use('/cart', require('./carts')); // use for group of routes

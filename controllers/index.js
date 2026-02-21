@@ -1,4 +1,4 @@
-const authorController = require('./authors');
+const authorController = require('./author');
 const bookController = require('./book');
 const cartController = require('./cart');
 const categoryController = require('./category');
