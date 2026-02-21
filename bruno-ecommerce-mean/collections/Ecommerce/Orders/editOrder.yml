@@ -1,0 +1,21 @@
+info:
+  name: editOrder
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: http://localhost:3000/order/699a1931379e27c3ebc76425/status
+  body:
+    type: json
+    data: |-
+      {
+        "status": "delivered"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
