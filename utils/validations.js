@@ -34,6 +34,41 @@ const paymentSchema = Joi.object({
   paymentStatus: Joi.string().valid('pending', 'success').required()
 });
 
+const bookSchema = Joi.object({
+  name: Joi.string()
+    .pattern(/^[a-z0-9 .,'-]+$/i)
+    .message('invalid name')
+    .min(5)
+    .max(200)
+    .required()
+    .trim(true),
+  coverImage: Joi.string()
+    .pattern(/^https?:\/\/(www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z]{2,6}\b([-\w@:%+.~#?&/=]*)$/)
+    .message('invalid url')
+    .required(),
+  price: Joi.number()
+    .required(),
+  stock: Joi.number()
+    .min(0)
+    .default(0),
+
+  authorId: Joi.string()
+    .required(),
+
+  categories: Joi.array()
+    .items(Joi.string())
+    .required(),
+
+  description: Joi.string()
+    .min(5)
+    .max(2000)
+    .trim()
+    .required()
+});
+const patchBookSchema = bookSchema.fork(
+  ['name', 'coverImage', 'price', 'stock', 'authorId', 'categories', 'description'],
+  (field) => field.optional()
+);
 const userRegisterSchema = Joi.object({
   email: Joi.string().email().required(),
   firstName: Joi.string().min(2).max(50).required(),
@@ -59,6 +94,8 @@ module.exports = {
   reviewSchema,
   statusSchema,
   paymentSchema,
+  bookSchema,
+  patchBookSchema,
   userRegisterSchema,
   userLoginSchema,
   userUpdateSchema
