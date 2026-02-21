@@ -36,7 +36,8 @@ const paymentSchema = Joi.object({
 
 const bookSchema = Joi.object({
   name: Joi.string()
-    .alphanum()
+    .pattern(/^[a-z0-9 .,'-]+$/i)
+    .message('invalid name')
     .min(5)
     .max(200)
     .required()
@@ -64,10 +65,15 @@ const bookSchema = Joi.object({
     .trim()
     .required()
 });
+const patchBookSchema = bookSchema.fork(
+  ['name', 'coverImage', 'price', 'stock', 'authorId', 'categories', 'description'],
+  (field) => field.optional()
+);
 module.exports = {
   orderSchema,
   reviewSchema,
   statusSchema,
   paymentSchema,
-  bookSchema
+  bookSchema,
+  patchBookSchema
 };

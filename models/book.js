@@ -1,4 +1,3 @@
-const {func} = require('joi');
 const mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema({
@@ -17,6 +16,7 @@ const bookSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
+    min: 1,
     required: true
   },
   stock: {
@@ -30,7 +30,7 @@ const bookSchema = new mongoose.Schema({
     required: true
   },
   categories: {
-    type: [String],
+    type: [mongoose.ObjectId],
     ref: 'Category',
     required: true
   },
@@ -77,10 +77,6 @@ function urlValidator(value) {
   return value.match(/^https?:\/\/(www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z]{2,6}\b([-\w@:%+.~#?&/=]*)$/);
 }
 
-// async function uniqueValidator(value) {
-//   const product = await mongoose.models.Products.findOne({name: value});
-//   return !product;
-// }
 const Book = mongoose.model('Book', bookSchema);
 
 module.exports = Book;

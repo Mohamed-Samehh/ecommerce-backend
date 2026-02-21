@@ -1,15 +1,21 @@
 info:
-  name: getBookById
+  name: updateBook
   type: http
-  seq: 2
+  seq: 6
 
 http:
-  method: GET
+  method: PATCH
   url: "{{baseUrl}}/books/:id"
   params:
     - name: id
-      value: 6999e3ab9623779f514d8f70
+      value: 699a0c857465d39fd9faca79
       type: path
+  body:
+    type: json
+    data: |-
+      {
+        "name": "s"
+      }
   auth: inherit
 
 settings:
