@@ -5,7 +5,7 @@ info:
 
 http:
   method: POST
-  url: "{{baseUrl}}/books"
+  url: "{{base_url}}/books"
   auth: inherit
 
 settings:

@@ -6,15 +6,11 @@ const errorHandler = require('./utils/errorHandler');
 require('dotenv').config({path: './config/.env'});
 const routes = require('./routes');
 
-const authRoutes = require('./routes/auth');
-
 const app = express();
 
 app.use(cors({origin: process.env.FRONTEND_URL || 'http://localhost:4200'}));
 app.use(express.json());
 app.use(routes);
-
-app.use('/auth', authRoutes);
 
 app.use((err, req, res) => {
   const handler = errorHandler.find((e) => e.match(err));
