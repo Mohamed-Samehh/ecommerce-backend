@@ -1,0 +1,23 @@
+info:
+  name: createReview
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:3000/review
+  body:
+    type: json
+    data: |-
+      {
+        "bookId": "699a0c857465d39fd9faca79",
+        "rating": 5,
+        "comment": "This book is amazing! Highly recommended for everyone."
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
