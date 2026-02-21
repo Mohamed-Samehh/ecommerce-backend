@@ -12,8 +12,10 @@ app.use(cors({origin: process.env.FRONTEND_URL || 'http://localhost:4200'}));
 app.use(express.json());
 app.use(routes);
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   const handler = errorHandler.find((e) => e.match(err));
+  // console.log('handler', handler);
+
   if (handler) {
     const {statusCode, ...body} = handler.handler(err);
     return res.status(statusCode).json(body);
