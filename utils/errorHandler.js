@@ -20,7 +20,7 @@
  */
 module.exports = [
   {
-    match: (err) => err.name === 'ValidationError',
+    match: (err) => err.name === 'ValidationError' && err.errors, // mongoose errors
     handler: (err) => ({
       statusCode: 400,
       status: 'Fail',
@@ -33,6 +33,31 @@ module.exports = [
       statusCode: 400,
       status: 'Fail',
       errors: `${Object.keys(err.keyValue)[0]} already exists`
+    })
+  },
+  {
+    match: (err) => err.name === 'CastError', // error for wrong objID
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: `"Invalid ${err.path}: ${err.value}"`
+    })
+    
+   },
+  {    
+    match: (err) => err.name === 'ValidationError' && err.isJoi, // joi errors
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: Object.values(err.details).map((e) => e.message)
+    })
+  },
+  {
+    match: (err) => err.name === 'BookNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      errors: err.message
     })
   }
 ];
