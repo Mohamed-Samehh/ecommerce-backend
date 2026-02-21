@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const {reviewController} = require('../controllers');
-const {protect} = require('../middleware/auth-middleware');
+const {protect} = require('../middleware/auth');
 const validateRequest = require('../middleware/validate-request');
 const {reviewSchema} = require('../utils/validations');
 
