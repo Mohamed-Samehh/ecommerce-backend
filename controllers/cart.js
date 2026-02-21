@@ -1,4 +1,4 @@
-const {Cart, Books} = require('../models');
+const {Cart, Book} = require('../models');
 
 // TODO: Joi
 // TODO: auth
@@ -6,7 +6,7 @@ async function add(req, res, next) { // Post /cart (logged in user)
   const {_id} = req.user; // get user from token
   const {bookId, quantity} = req.body;
   try {
-    const myBook = await Books.findById(bookId); // check book exists in DB
+    const myBook = await Book.findById(bookId); // check book exists in DB
     if (!myBook)
       return res.status(404).send({status: 'fail', message: 'Book not found'});
 
