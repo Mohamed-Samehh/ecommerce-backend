@@ -69,11 +69,34 @@ const patchBookSchema = bookSchema.fork(
   ['name', 'coverImage', 'price', 'stock', 'authorId', 'categories', 'description'],
   (field) => field.optional()
 );
+const userRegisterSchema = Joi.object({
+  email: Joi.string().email().required(),
+  firstName: Joi.string().min(2).max(50).required(),
+  lastName: Joi.string().min(2).max(50).required(),
+  dob: Joi.date().iso().required(),
+  password: Joi.string().min(6).required()
+});
+
+const userLoginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required()
+});
+
+const userUpdateSchema = Joi.object({
+  firstName: Joi.string().min(2).max(50),
+  lastName: Joi.string().min(2).max(50),
+  dob: Joi.date().iso(),
+  password: Joi.string().min(6)
+});
+
 module.exports = {
   orderSchema,
   reviewSchema,
   statusSchema,
   paymentSchema,
   bookSchema,
-  patchBookSchema
+  patchBookSchema,
+  userRegisterSchema,
+  userLoginSchema,
+  userUpdateSchema
 };
