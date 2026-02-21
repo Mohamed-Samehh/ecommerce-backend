@@ -1,11 +1,11 @@
-const Authors = require('./authors');
-const Books = require('./books');
+const Author = require('./author');
+const Book = require('./book');
 const Cart = require('./Cart');
 const Category = require('./Category');
 
 module.exports = {
-  Books,
-  Authors,
+  Book,
+  Author,
   Category,
   Cart
 };
