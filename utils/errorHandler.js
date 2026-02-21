@@ -42,9 +42,9 @@ module.exports = [
       status: 'Fail',
       errors: `"Invalid ${err.path}: ${err.value}"`
     })
-    
-   },
-  {    
+
+  },
+  {
     match: (err) => err.name === 'ValidationError' && err.isJoi, // joi errors
     handler: (err) => ({
       statusCode: 400,
