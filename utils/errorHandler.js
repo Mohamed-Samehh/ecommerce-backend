@@ -36,6 +36,15 @@ module.exports = [
     })
   },
   {
+    match: (err) => err.name === 'CastError', // error for wrong objID
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: `"Invalid ${err.path}: ${err.value}"`
+    })
+    
+   },
+  {    
     match: (err) => err.name === 'ValidationError' && err.isJoi, // joi errors
     handler: (err) => ({
       statusCode: 400,

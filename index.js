@@ -15,6 +15,8 @@ app.use(routes);
 
 app.use((err, req, res, next) => {
   const handler = errorHandler.find((e) => e.match(err));
+  // console.log('handler', handler);
+
   if (handler) {
     const {statusCode, ...body} = handler.handler(err);
     return res.status(statusCode).json(body);
