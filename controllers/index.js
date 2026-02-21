@@ -1,9 +1,9 @@
-const authorController = require('./authors');
+const authorController = require('./author');
 const bookController = require('./book');
-const cartController = require('./Cart');
-const categoryController = require('./Category');
-const orderController = require('./order');
-const reviewController = require('./review');
+const cartController = require('./cart');
+const categoryController = require('./category');
+const orderController = require('./order-controller');
+const reviewController = require('./review-controller');
 
 module.exports = {
   bookController,

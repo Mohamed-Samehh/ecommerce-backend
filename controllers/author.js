@@ -1,4 +1,4 @@
-const {Authors} = require('../models/index');
+const {Author} = require('../models/index');
 
 const findAllAuthors = (req, res, next) => {
   // TODO: implement finding all the authors with pagenation , dont forget to implement the filters

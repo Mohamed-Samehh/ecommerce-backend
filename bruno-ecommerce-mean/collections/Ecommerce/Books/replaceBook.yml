@@ -1,0 +1,31 @@
+info:
+  name: replaceBook
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/books/:id"
+  params:
+    - name: id
+      value: 699a0c857465d39fd9faca79
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "name": "words of radiance",
+        "coverImage": "https://res.cloudinary.com/demo/image/upload/pragmatic-programmer.jpg",
+        "price": 10,
+        "stock":10,
+        "authorId": "65f1b2c3d4e5f6a7b8c9d0e1",
+        "categories": ["69998f2d7d0c770af76da95c", "69998f3a7d0c770af76da95e"],
+        "description": "A classic book for developers who want to write better code and become more effective programmers."
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
