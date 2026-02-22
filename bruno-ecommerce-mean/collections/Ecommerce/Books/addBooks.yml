@@ -7,18 +7,36 @@ http:
   method: POST
   url: "{{baseUrl}}/books"
   body:
-    type: json
-    data: |-
-      
-      {
-        "name": "frist law",
-        "coverImage": "https://res.cloudinary.com/demo/image/upload/pragmatic-programmer.jpg",
-        "price": 39.99,
-        "stock": 15,
-        "authorId": "65f1b2c3d4e5f6a7b8c9d0e1",
-        "categories": ["69998f2d7d0c770af76da95c", "69998f3a7d0c770af76da95e"],
-        "description": "A classic book for developers who want to write better code and become more effective programmers."
-      }
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: the small gatsby
+      - name: price
+        type: text
+        value: "25"
+      - name: stock
+        type: text
+        value: "10"
+      - name: authorId
+        type: text
+        value: 676a1234abc567def8901234
+      - name: categories
+        type: text
+        value: 676a1234abc567def8901235
+      - name: categories
+        type: text
+        value: 676a1234abc567def8901235
+      - name: categories
+        type: text
+        value: 676a1234abc567def8901235
+      - name: description
+        type: text
+        value: A story about the American dream and the decadent lifestyle of the wealthy in the 1920s
+      - name: image
+        type: file
+        value:
+          - /Users/andrewemad/Downloads/dragon.png
   auth: inherit
 
 settings:

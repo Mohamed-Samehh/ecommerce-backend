@@ -42,10 +42,6 @@ const bookSchema = Joi.object({
     .max(200)
     .required()
     .trim(true),
-  coverImage: Joi.string()
-    .pattern(/^https?:\/\/(www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z]{2,6}\b([-\w@:%+.~#?&/=]*)$/)
-    .message('invalid url')
-    .required(),
   price: Joi.number()
     .required(),
   stock: Joi.number()
@@ -66,7 +62,7 @@ const bookSchema = Joi.object({
     .required()
 });
 const patchBookSchema = bookSchema.fork(
-  ['name', 'coverImage', 'price', 'stock', 'authorId', 'categories', 'description'],
+  ['name', 'price', 'stock', 'authorId', 'categories', 'description'],
   (field) => field.optional()
 );
 const userRegisterSchema = Joi.object({

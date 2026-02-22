@@ -1,5 +1,11 @@
 const asyncHandler = require('../middleware/async-handler');
 const {Book} = require('../models/index');
+
+// const uploadImage = async () => {
+//   const result = await cloudinary.uploader.upload('path-to-your-image');
+//   const url = cloudinary.url(result.public_id);
+// };
+
 /**
  * find all books with pagenation
  * @param {Request} req - user request
@@ -69,7 +75,6 @@ const createBook = asyncHandler(async (req, res) => {
 const replaceBook = asyncHandler(async (req, res, next) => {
   const {body} = req;
   const {id} = req.params;
-
   const book = await Book.findOneAndReplace({_id: id}, body, {runValidators: true});
   if (!book) {
     const err = new Error('No books found');

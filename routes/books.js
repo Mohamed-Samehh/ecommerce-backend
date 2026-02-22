@@ -1,5 +1,7 @@
 const express = require('express');
+const upload = require('../config/upload');
 const {bookController} = require('../controllers');
+const cloudinaryHandler = require('../middleware/cloudinary');
 const validateRequest = require('../middleware/validate-request');
 const {bookSchema, patchBookSchema} = require('../utils/validations');
 
@@ -9,7 +11,7 @@ router.get('/', bookController.findAllBooks);
 
 router.get('/:id', bookController.findBookById);
 
-router.post('/', validateRequest(bookSchema), bookController.createBook);
+router.post('/', upload.single('image'), validateRequest(bookSchema), cloudinaryHandler, bookController.createBook);
 
 router.put('/:id', validateRequest(bookSchema), bookController.replaceBook);
 
