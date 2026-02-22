@@ -70,11 +70,6 @@ async function remove(req, res, next) { // Delete /cart/:bookId (logged in user)
   }
 }
 
-// 5. Find book in cart → 404 if not found
-// 6. Check stock >= new quantity
-// 7. Replace quantity
-// 8. Save + return 200
-
 async function update(req, res, next) {
   try {
     const {id} = req.user;
