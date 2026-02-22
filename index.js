@@ -19,8 +19,10 @@ app.use((err, req, res, next) => {
 
   if (handler) {
     const {statusCode, ...body} = handler.handler(err);
+    logger.error({err});
     return res.status(statusCode).json(body);
   }
+  logger.error({err});
   res.status(500).json({status: 'error', message: 'Something went wrong'});
 });
 app.use((req, res) => {

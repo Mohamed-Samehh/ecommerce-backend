@@ -1,0 +1,22 @@
+info:
+  name: addAuthor
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/authors/"
+  body:
+    type: json
+    data: |2-
+        {
+          "name": "Ernest Hemingway",
+          "bio": "American novelist known for his economical writing style and his themes of war, adventure, and masculinity."
+        }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

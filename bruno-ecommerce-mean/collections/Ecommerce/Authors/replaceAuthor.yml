@@ -1,0 +1,26 @@
+info:
+  name: replaceAuthor
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/authors/:id"
+  params:
+    - name: id
+      value: 699a47c0ceb920e8fd802c5e
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+          "name": "Mark Twain",
+          "bio": "American writer and humorist, best known for his novels about life along the Mississippi River."
+        }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -88,7 +88,19 @@ const userUpdateSchema = Joi.object({
   dob: Joi.date().iso(),
   password: Joi.string().min(6)
 });
-
+const authorSchema = Joi.object({
+  name: Joi.string()
+    .pattern(/^[a-z ]+$/i)
+    .min(5)
+    .max(200)
+    .required()
+    .trim(true),
+  bio: Joi.string()
+    .pattern(/^[a-z0-9 .,'-]+$/i)
+    .min(5)
+    .max(2000)
+    .trim(true)
+});
 module.exports = {
   orderSchema,
   reviewSchema,
@@ -98,5 +110,6 @@ module.exports = {
   patchBookSchema,
   userRegisterSchema,
   userLoginSchema,
-  userUpdateSchema
+  userUpdateSchema,
+  authorSchema
 };

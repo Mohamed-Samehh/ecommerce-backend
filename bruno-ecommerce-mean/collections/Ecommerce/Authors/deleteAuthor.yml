@@ -1,0 +1,19 @@
+info:
+  name: deleteAuthor
+  type: http
+  seq: 6
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/authors/:id"
+  params:
+    - name: id
+      value: 699a47c0ceb920e8fd802c5e
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

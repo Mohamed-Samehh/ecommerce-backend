@@ -59,5 +59,13 @@ module.exports = [
       status: 'Fail',
       errors: err.message
     })
+  },
+  {
+    match: (err) => err.name === 'AuthorNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      errors: err.message
+    })
   }
 ];
