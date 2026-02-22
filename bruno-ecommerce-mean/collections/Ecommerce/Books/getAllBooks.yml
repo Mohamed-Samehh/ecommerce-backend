@@ -5,10 +5,10 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/books?limit=2&page=1"
+  url: "{{baseUrl}}/books?limit=50&page=1"
   params:
     - name: limit
-      value: "2"
+      value: "50"
       type: query
     - name: page
       value: "1"

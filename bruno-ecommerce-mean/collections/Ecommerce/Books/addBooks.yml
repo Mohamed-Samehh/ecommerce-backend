@@ -11,7 +11,7 @@ http:
     data:
       - name: name
         type: text
-        value: Big mo
+        value: the highest  andrew
       - name: price
         type: text
         value: "25"
@@ -26,18 +26,20 @@ http:
         value: 676a1234abc567def8901235
       - name: categories
         type: text
-        value: 676a1234abc567def8901235
+        value: 676a1234abc567def8901236
       - name: categories
         type: text
-        value: 676a1234abc567def8901235
+        value: 676a1234abc567def8901237
       - name: description
         type: text
         value: A story about the American dream and the decadent lifestyle of the wealthy in the 1920s
       - name: image
         type: file
         value:
-          - /Users/andrewemad/Downloads/dragon.png
-  auth: inherit
+          - /Users/andrewemad/Downloads/wallpapers/wallhaven-lyz3d2.png
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3ODczNDIsImV4cCI6MTc3MzA4MzM0Mn0.61lBFQq8Yudtjs7Y8JFJxTrJeiqoXU0g9sIsA36zTuY
 
 settings:
   encodeUrl: true

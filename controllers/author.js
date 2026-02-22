@@ -46,7 +46,7 @@ const replaceAuthor = asyncHandler(async (req, res, next) => {
   const {body} = req;
   const {id} = req.params;
 
-  const author = await Author.findOneAndReplace({_id: id}, body, {runValidators: true});
+  const author = await Author.findOneAndReplace({_id: id}, body, {returnDocument: 'after', runValidators: true});
   if (!author) {
     const err = new Error('No author found');
     err.name = 'AuthorNotFoundError';
@@ -59,7 +59,7 @@ const updateAuthor = asyncHandler(async (req, res, next) => {
   const {body} = req;
   const {id} = req.params;
 
-  const author = await Author.findOneAndUpdate({_id: id}, body, {runValidators: true});
+  const author = await Author.findOneAndUpdate({_id: id}, body, {returnDocument: 'after', runValidators: true});
   if (!author) {
     const err = new Error('No author found');
     err.name = 'AuthorNotFoundError';

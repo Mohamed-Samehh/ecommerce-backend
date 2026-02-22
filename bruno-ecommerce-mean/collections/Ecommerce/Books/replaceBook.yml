@@ -41,7 +41,9 @@ http:
         type: file
         value:
           - /Users/andrewemad/Downloads/dragon.png
-  auth: inherit
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3ODczNDIsImV4cCI6MTc3MzA4MzM0Mn0.61lBFQq8Yudtjs7Y8JFJxTrJeiqoXU0g9sIsA36zTuY
 
 settings:
   encodeUrl: true
