@@ -10,5 +10,6 @@ router.use('/cart', require('./carts')); // use for group of routes
 router.use('/categories', require('./categories'));
 router.use('/order', require('./order-routes'));
 router.use('/review', require('./review-routes'));
+router.use('/admin', require('./admin'));
 
 module.exports = router;

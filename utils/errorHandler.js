@@ -68,17 +68,17 @@ module.exports = [
     })
   },
   {
-    match: (err) => err.name === 'UserNotFoundError',
+    match: (err) => err.name === 'ForbiddenError',
     handler: (err) => ({
-      statusCode: 404,
+      statusCode: 403,
       status: 'Fail',
       message: err.message
     })
   },
   {
-    match: (err) => err.name === 'NoUpdateFieldsError',
+    match: (err) => err.name === 'UserNotFoundError',
     handler: (err) => ({
-      statusCode: 400,
+      statusCode: 404,
       status: 'Fail',
       message: err.message
     })

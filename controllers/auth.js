@@ -84,35 +84,26 @@ exports.getMe = async (req, res, next) => {
 
 exports.updateMe = async (req, res, next) => {
   try {
-    const updates = {};
-    const allowedFields = ['firstName', 'lastName', 'dob', 'password'];
-    allowedFields.forEach((field) => {
-      if (req.body[field] !== undefined) updates[field] = req.body[field];
-    });
-    if (Object.keys(updates).length === 0) {
-      const err = new Error('No valid fields to update');
-      err.name = 'NoUpdateFieldsError';
-      return next(err);
-    }
-    const user = await User.findByIdAndUpdate(
-      req.user.id,
-      updates,
-      {returnDocument: 'after', runValidators: true}
-    ).select('-password');
-    if (!user) {
+    const existing = await User.findById(req.user.id);
+    if (!existing) {
       const err = new Error('User not found');
       err.name = 'UserNotFoundError';
       return next(err);
     }
-    res.json({
-      id: user._id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      dob: user.dob,
-      roles: user.roles,
-      createdAt: user.createdAt
-    });
+
+    const {firstName, lastName, dob, password} = req.body;
+    const updates = {};
+    if (firstName !== undefined) updates.firstName = firstName;
+    if (lastName !== undefined) updates.lastName = lastName;
+    if (dob !== undefined) updates.dob = dob;
+    if (password !== undefined) updates.password = password;
+
+    const user = await User.findByIdAndUpdate(req.user.id, updates, {
+      new: true,
+      runValidators: true
+    }).select('-password');
+
+    res.json({message: 'User updated successfully', data: user});
   } catch (err) {
     next(err);
   }

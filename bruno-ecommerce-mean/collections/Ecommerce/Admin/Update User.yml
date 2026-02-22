@@ -1,0 +1,26 @@
+info:
+  name: Update User
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/admin/699b4c952bfa286f84a1abc9"
+  body:
+    type: json
+    data: |-
+      {
+        "firstName": "Alice",
+        "lastName": "Smith",
+        "dob": "1500-05-10",
+        "isAdmin": true
+      }
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
