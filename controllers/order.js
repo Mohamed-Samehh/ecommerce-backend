@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const asyncHandler = require('../middleware/async-handler');
-const {Books, Order, OrderItem} = require('../models');
+const {Book, Order, OrderItem} = require('../models');
 
 const placeOrder = asyncHandler(async (req, res, next) => {
   const session = await mongoose.startSession();
@@ -13,7 +13,7 @@ const placeOrder = asyncHandler(async (req, res, next) => {
     const itemsToSave = [];
 
     for (const item of items) {
-      const book = await Books.findById(item.bookId).session(session);
+      const book = await Book.findById(item.bookId).session(session);
 
       if (!book || book.stock < item.quantity) {
         const error = new Error(`Book ${book ? book.name : item.bookId} is out of stock.`);
@@ -71,7 +71,7 @@ const updateOrderStatus = asyncHandler(async (req, res, next) => {
   const order = await Order.findByIdAndUpdate(
     req.params.id,
     {status: req.body.status},
-    {new: true, runValidators: true}
+    {returnDocument: 'after', runValidators: true}
   );
 
   if (!order) {
@@ -87,7 +87,7 @@ const updatePaymentStatus = asyncHandler(async (req, res, next) => {
   const order = await Order.findByIdAndUpdate(
     req.params.id,
     {paymentStatus: req.body.paymentStatus},
-    {new: true}
+    {returnDocument: 'after'}
   );
 
   if (!order) {
