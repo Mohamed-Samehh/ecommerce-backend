@@ -1,22 +1,21 @@
 info:
-  name: "updateBook "
+  name: updateBook
   type: http
   seq: 6
 
 http:
   method: PATCH
-<<<<<<< HEAD
   url: "{{baseUrl}}/books/:id"
   params:
     - name: id
-      value: 699b00d3bf64c3e5eb1c7360
+      value: 699b5d39e0ab034312668b21
       type: path
   body:
     type: multipart-form
     data:
       - name: name
         type: text
-        value: mo mo mo
+        value: sameh
       - name: price
         type: text
         value: ""
@@ -52,19 +51,6 @@ http:
   auth:
     type: bearer
     token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3ODczNDIsImV4cCI6MTc3MzA4MzM0Mn0.61lBFQq8Yudtjs7Y8JFJxTrJeiqoXU0g9sIsA36zTuY
-=======
-  url: "{{baseUrl}}/books/699a5d23f4dd02a483efa178"
-  body:
-    type: json
-    data: |-
-      {
-        "price": 400,
-        "categories": [
-              "69998e2368642695c0a2c4ed", "69998e2368642695c0a2c4ed", "69998e2368642695c0a2c4ed"
-            ]
-      }
-  auth: inherit
->>>>>>> e2a2a7f43e5feed12112493d144a1f5daef06794
 
 settings:
   encodeUrl: true

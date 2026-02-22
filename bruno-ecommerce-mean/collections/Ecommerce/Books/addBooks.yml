@@ -7,33 +7,32 @@ http:
   method: POST
   url: "{{baseUrl}}/books"
   body:
-<<<<<<< HEAD
     type: multipart-form
     data:
       - name: name
         type: text
-        value: the highest  andrew
+        value: sameh
       - name: price
         type: text
-        value: "25"
+        value: "10"
       - name: stock
         type: text
         value: "10"
       - name: authorId
         type: text
-        value: 676a1234abc567def8901234
+        value: 699a47a1ceb920e8fd802c5a
       - name: categories
         type: text
-        value: 676a1234abc567def8901235
+        value: 69998f217d0c770af76da95a
       - name: categories
         type: text
-        value: 676a1234abc567def8901236
+        value: 69998f2d7d0c770af76da95c
       - name: categories
         type: text
-        value: 676a1234abc567def8901237
+        value: 69998f3a7d0c770af76da95e
       - name: description
         type: text
-        value: A story about the American dream and the decadent lifestyle of the wealthy in the 1920s
+        value: sameh is the admin , sameh is the best
       - name: image
         type: file
         value:
@@ -41,20 +40,6 @@ http:
   auth:
     type: bearer
     token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3ODczNDIsImV4cCI6MTc3MzA4MzM0Mn0.61lBFQq8Yudtjs7Y8JFJxTrJeiqoXU0g9sIsA36zTuY
-=======
-    type: json
-    data: |-
-      {
-        "name": "Test whole routes",
-        "price": 20,
-        "stock": 10,
-        "categories": ["699aef720635449e4b2f29b7", "699aef720635449e4b2f29b7"],
-        "description": "Test book for deletion",
-        "coverImage": "https://example.com/test.jpg",
-        "authorId": "64f8a2b3c9e77b001f3d8a12"
-      }
-  auth: inherit
->>>>>>> e2a2a7f43e5feed12112493d144a1f5daef06794
 
 settings:
   encodeUrl: true

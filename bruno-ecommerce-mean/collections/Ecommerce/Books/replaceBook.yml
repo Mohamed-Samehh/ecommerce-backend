@@ -8,7 +8,7 @@ http:
   url: "{{baseUrl}}/books/:id"
   params:
     - name: id
-      value: 699b00d3bf64c3e5eb1c7360
+      value: 699b5d39e0ab034312668b21
       type: path
   body:
     type: multipart-form
