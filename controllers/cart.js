@@ -1,7 +1,6 @@
 const {Cart, Book} = require('../models');
 
 // TODO: Joi
-// TODO: auth
 async function add(req, res, next) { // Post /cart (logged in user)
   const {_id} = req.user; // get user from token
   const {bookId, quantity} = req.body;
