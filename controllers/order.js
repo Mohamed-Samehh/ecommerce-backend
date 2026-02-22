@@ -1,54 +1,87 @@
 const mongoose = require('mongoose');
 const asyncHandler = require('../middleware/async-handler');
-const {Book, Order, OrderItem} = require('../models');
+const { Book, Order } = require('../models');
 
 const placeOrder = asyncHandler(async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const {items, country, city, street, postalCode, paymentMethod} = req.body;
+    const { items, shippingAddress, paymentMethod = 'COD' } = req.body;
+    const { country, city, street, postalCode } = shippingAddress;
     const userId = req.user.id;
+
+    if (!items || items.length === 0) {
+      const error = new Error('Order must contain at least one item');
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const bookIds = items.map((item) => item.bookId);
+    const uniqueBookIds = new Set(bookIds);
+    if (uniqueBookIds.size !== bookIds.length) {
+      const error = new Error('Duplicate book items are not allowed. Adjust the quantity instead.');
+      error.statusCode = 400;
+      throw error;
+    }
+
     let totalAmount = 0;
-    const itemsToSave = [];
+    const orderItems = [];
 
     for (const item of items) {
       const book = await Book.findById(item.bookId).session(session);
 
-      if (!book || book.stock < item.quantity) {
-        const error = new Error(`Book ${book ? book.name : item.bookId} is out of stock.`);
+      if (!book) {
+        const error = new Error(`Book with ID ${item.bookId} not found`);
+        error.statusCode = 404;
+        throw error;
+      }
+
+      if (book.stock < item.quantity) {
+        const error = new Error(
+          `Insufficient stock for "${book.name}". Available: ${book.stock}, Requested: ${item.quantity}`
+        );
         error.statusCode = 400;
         throw error;
       }
 
       book.stock -= item.quantity;
-      await book.save({session});
+      await book.save({ session });
 
-      totalAmount += book.price * item.quantity;
-      itemsToSave.push({
-        bookId: item.bookId,
+      const subtotal = book.price * item.quantity;
+      totalAmount += subtotal;
+
+      orderItems.push({
+        bookId: book._id,
+        bookName: book.name,
         quantity: item.quantity,
-        priceAtItem: book.price,
-        bookName: book.name
+        priceAtPurchase: book.price,
+        subtotal
       });
     }
 
-    const newOrder = await Order.create([{
+    const newOrder = new Order({
       userId,
-      country,
-      city,
-      street,
-      postalCode,
+      items: orderItems,
+      shippingAddress: {
+        country,
+        city,
+        street,
+        postalCode
+      },
       totalAmount,
       paymentMethod,
       paymentStatus: paymentMethod === 'Online' ? 'success' : 'pending'
-    }], {session});
+    });
 
-    const orderItems = itemsToSave.map((item) => ({...item, orderId: newOrder[0]._id}));
-    await OrderItem.insertMany(orderItems, {session});
+    await newOrder.save({ session });// ✅ This triggers the pre-save hook
 
     await session.commitTransaction();
-    res.status(201).json({status: 'success', data: newOrder[0]});
+
+    res.status(201).json({
+      status: 'success',
+      data: newOrder
+    });
   } catch (error) {
     await session.abortTransaction();
     next(error);
@@ -58,21 +91,43 @@ const placeOrder = asyncHandler(async (req, res, next) => {
 });
 
 const getMyOrders = asyncHandler(async (req, res, next) => {
-  const orders = await Order.find({userId: req.user.id}).sort('-createdAt');
-  res.status(200).json({status: 'success', results: orders.length, data: orders});
+  const orders = await Order.find({ userId: req.user.id })
+    .populate('items.bookId', 'name coverImage')
+    .sort('-createdAt');
+
+  res.status(200).json({
+    status: 'success',
+    results: orders.length,
+    data: orders
+  });
 });
 
 const getAllOrders = asyncHandler(async (req, res, next) => {
-  const orders = await Order.find().populate('userId', 'name email').sort('-createdAt');
-  res.status(200).json({status: 'success', data: orders});
+  const orders = await Order.find()
+    .populate('userId', 'firstName lastName email')
+    .populate('items.bookId', 'name coverImage')
+    .sort('-createdAt');
+
+  res.status(200).json({
+    status: 'success',
+    results: orders.length,
+    data: orders
+  });
 });
 
+const validTransitions = {
+  'processing': ['out for delivery', 'cancelled'],
+  'out for delivery': ['delivered'],
+  'delivered': [],
+  'cancelled': []
+};
+
 const updateOrderStatus = asyncHandler(async (req, res, next) => {
-  const order = await Order.findByIdAndUpdate(
-    req.params.id,
-    {status: req.body.status},
-    {returnDocument: 'after', runValidators: true}
-  );
+  const { status } = req.body;
+
+  const order = await Order.findById(req.params.id)
+    .populate('userId', 'firstName lastName email')
+    .populate('items.bookId', 'name coverImage');
 
   if (!order) {
     const error = new Error('Order not found');
@@ -80,15 +135,57 @@ const updateOrderStatus = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({status: 'success', data: order});
+  const allowed = validTransitions[order.status];
+  if (!allowed || !allowed.includes(status)) {
+    const error = new Error(
+      `Cannot change status from "${order.status}" to "${status}"`
+    );
+    error.statusCode = 400;
+    return next(error);
+  }
+
+  if (status === 'cancelled') {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+      for (const item of order.items) {
+        await Book.findByIdAndUpdate(
+          item.bookId,
+          { $inc: { stock: item.quantity } },
+          { session }
+        );
+      }
+      order.status = status;
+      await order.save({ session });
+      await session.commitTransaction();
+    } catch (error) {
+      await session.abortTransaction();
+      return next(error);
+    } finally {
+      session.endSession();
+    }
+  } else {
+    order.status = status;
+    await order.save();
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: order
+  });
 });
 
 const updatePaymentStatus = asyncHandler(async (req, res, next) => {
+  const { paymentStatus } = req.body;
+
   const order = await Order.findByIdAndUpdate(
     req.params.id,
-    {paymentStatus: req.body.paymentStatus},
-    {returnDocument: 'after'}
-  );
+    { paymentStatus },
+    {
+      new: true,
+      runValidators: true
+    }
+  ).populate('userId', 'firstName lastName email').populate('items.bookId', 'name coverImage');
 
   if (!order) {
     const error = new Error('Order not found');
@@ -96,7 +193,10 @@ const updatePaymentStatus = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({status: 'success', data: order});
+  res.status(200).json({
+    status: 'success',
+    data: order
+  });
 });
 
 module.exports = {
