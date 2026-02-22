@@ -42,9 +42,8 @@ module.exports = [
       status: 'Fail',
       errors: `"Invalid ${err.path}: ${err.value}"`
     })
-    
-   },
-  {    
+  },
+  {
     match: (err) => err.name === 'ValidationError' && err.isJoi, // joi errors
     handler: (err) => ({
       statusCode: 400,
@@ -58,6 +57,30 @@ module.exports = [
       statusCode: 404,
       status: 'Fail',
       errors: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'UnauthorizedError',
+    handler: (err) => ({
+      statusCode: 401,
+      status: 'Fail',
+      message: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'UserNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      message: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'NoUpdateFieldsError',
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      message: err.message
     })
   }
 ];

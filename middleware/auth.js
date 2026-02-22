@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 module.exports = function (req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({message: 'No token provided'});
+    const err = new Error('No token provided');
+    err.name = 'UnauthorizedError';
+    return next(err);
   }
   const token = authHeader.split(' ')[1];
   try {
@@ -12,6 +14,8 @@ module.exports = function (req, res, next) {
     req.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({message: 'Invalid token'});
+    const authErr = new Error('Invalid token');
+    authErr.name = 'UnauthorizedError';
+    return next(authErr);
   }
 };

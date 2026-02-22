@@ -15,16 +15,12 @@ app.use(routes);
 
 app.use((err, req, res, next) => {
   const handler = errorHandler.find((e) => e.match(err));
-  // console.log('handler', handler);
 
   if (handler) {
     const {statusCode, ...body} = handler.handler(err);
+    logger.error(err);
     return res.status(statusCode).json(body);
   }
-  console.log(handler);
-  console.log(err.name);
-  console.log(`Incoming: ${req.method} ${req.url}`);
-  console.log('Headers:', req.headers);
 
   res.status(500).json({status: 'error', message: 'Something went wrong'});
 });
