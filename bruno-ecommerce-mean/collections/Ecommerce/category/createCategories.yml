@@ -6,7 +6,15 @@ info:
 http:
   method: POST
   url: "{{baseUrl}}/categories"
-  auth: inherit
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Biography"
+      }
+  auth:
+    type: bearer
+    token: "{{motoken}}"
 
 settings:
   encodeUrl: true

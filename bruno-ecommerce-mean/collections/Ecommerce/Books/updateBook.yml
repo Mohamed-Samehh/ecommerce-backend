@@ -5,16 +5,15 @@ info:
 
 http:
   method: PATCH
-  url: "{{baseUrl}}/books/:id"
-  params:
-    - name: id
-      value: 699a0c857465d39fd9faca79
-      type: path
+  url: "{{baseUrl}}/books/699a5d23f4dd02a483efa178"
   body:
     type: json
     data: |-
       {
-        "name": "s"
+        "price": 400,
+        "categories": [
+              "69998e2368642695c0a2c4ed", "69998e2368642695c0a2c4ed", "69998e2368642695c0a2c4ed"
+            ]
       }
   auth: inherit
 
