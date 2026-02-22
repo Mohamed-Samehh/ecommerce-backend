@@ -1,14 +1,14 @@
 info:
-  name: deleteCategory
+  name: Get User
   type: http
-  seq: 4
+  seq: 2
 
 http:
-  method: DELETE
-  url: "{{baseUrl}}/categories/699aef720635449e4b2f29b7"
+  method: GET
+  url: "{{baseUrl}}/admin/699a0270485610e21cee4478"
   auth:
     type: bearer
-    token: "{{motoken}}"
+    token: "{{token}}"
 
 settings:
   encodeUrl: true

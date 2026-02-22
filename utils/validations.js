@@ -97,6 +97,38 @@ const authorSchema = Joi.object({
     .max(2000)
     .trim(true)
 });
+
+const adminCreateUserSchema = Joi.object({
+  email: Joi.string().email().required(),
+  firstName: Joi.string().min(2).max(50).required(),
+  lastName: Joi.string().min(2).max(50).required(),
+  dob: Joi.date().iso().required(),
+  password: Joi.string().min(6).required(),
+  isAdmin: Joi.boolean().default(false)
+});
+
+const adminUpdateUserSchema = Joi.object({
+  email: Joi.string().email(),
+  firstName: Joi.string().min(2).max(50),
+  lastName: Joi.string().min(2).max(50),
+  dob: Joi.date().iso(),
+  password: Joi.string().min(6),
+  isAdmin: Joi.boolean()
+});
+
+const categorySchema = Joi.object({
+  name: Joi.string().required().min(4).max(50)
+});
+
+const cartSchema = Joi.object({
+  bookId: mongoId.required(),
+  quantity: Joi.number().min(1).max(100).required()
+});
+
+const updateCartSchema = Joi.object({
+  quantity: Joi.number().min(1).max(100).required()
+});
+
 module.exports = {
   orderSchema,
   reviewSchema,
@@ -107,5 +139,10 @@ module.exports = {
   userRegisterSchema,
   userLoginSchema,
   userUpdateSchema,
-  authorSchema
+  authorSchema,
+  adminCreateUserSchema,
+  adminUpdateUserSchema,
+  categorySchema,
+  cartSchema,
+  updateCartSchema
 };

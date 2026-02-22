@@ -15,7 +15,7 @@ const logger = pino({
       },
       {
         target: 'pino/file',
-        level: 'info',
+        level: 'error',
         options: {
           destination: 'logs/app.log',
           mkdir: true

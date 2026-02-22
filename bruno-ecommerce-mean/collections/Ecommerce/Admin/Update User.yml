@@ -1,17 +1,19 @@
 info:
-  name: Update Profile
+  name: Update User
   type: http
   seq: 4
 
 http:
   method: PUT
-  url: "{{baseUrl}}/auth/me"
+  url: "{{baseUrl}}/admin/699b4c952bfa286f84a1abc9"
   body:
     type: json
     data: |-
       {
-        "dob": "2002-02-02",
-        "password": "123456"
+        "firstName": "Alice",
+        "lastName": "Smith",
+        "dob": "1500-05-10",
+        "isAdmin": true
       }
   auth:
     type: bearer

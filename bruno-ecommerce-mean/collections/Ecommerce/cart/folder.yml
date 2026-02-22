@@ -1,7 +1,11 @@
 info:
   name: cart
   type: folder
+<<<<<<< HEAD
   seq: 5
+=======
+  seq: 6
+>>>>>>> e2a2a7f43e5feed12112493d144a1f5daef06794
 
 request:
   auth: inherit
