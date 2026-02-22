@@ -5,13 +5,16 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/admin?page=2&limit=2"
+  url: "{{baseUrl}}/admin?page=2&limit=2&search=moh"
   params:
     - name: page
       value: "2"
       type: query
     - name: limit
       value: "2"
+      type: query
+    - name: search
+      value: moh
       type: query
   auth:
     type: bearer

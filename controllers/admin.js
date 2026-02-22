@@ -11,8 +11,8 @@ exports.getUsers = async (req, res, next) => {
       filter.roles = req.query.role;
     }
     if (req.query.search) {
-      const regex = new RegExp(req.query.search, 'i');
-      filter.$or = [{firstName: regex}, {lastName: regex}, {email: regex}];
+      const search = {$regex: req.query.search, $options: 'i'};
+      filter.$or = [{firstName: search}, {lastName: search}, {email: search}];
     }
 
     const [users, total] = await Promise.all([
