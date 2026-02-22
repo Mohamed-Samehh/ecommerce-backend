@@ -5,16 +5,12 @@ info:
 
 http:
   method: PATCH
-  url: "{{baseUrl}}/categories/64f8a2b3c9e77b001f3d8a12"
-  body:
-    type: json
-    data: |-
-      {
-        "name": "Horror"
-      }
-  auth:
-    type: bearer
-    token: "{{motoken}}"
+  url: "{{baseUrl}}/categories/:id"
+  params:
+    - name: id
+      value: ""
+      type: path
+  auth: inherit
 
 settings:
   encodeUrl: true

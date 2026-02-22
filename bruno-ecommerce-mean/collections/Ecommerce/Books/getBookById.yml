@@ -5,7 +5,11 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/books/699aee510635449e4b2f29a5"
+  url: "{{baseUrl}}/books/:id"
+  params:
+    - name: id
+      value: 6999e3ab9623779f514d8f70
+      type: path
   auth: inherit
 
 settings:

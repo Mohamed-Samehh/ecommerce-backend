@@ -89,19 +89,6 @@ const userUpdateSchema = Joi.object({
   password: Joi.string().min(6)
 });
 
-const categorySchema = Joi.object({
-  name: Joi.string().required().min(4).max(50)
-});
-
-const cartSchema = Joi.object({
-  bookId: mongoId.required(),
-  quantity: Joi.number().min(1).max(100).required()
-});
-
-const updateCartSchema = Joi.object({
-  quantity: Joi.number().min(1).max(100).required()
-});
-
 module.exports = {
   orderSchema,
   reviewSchema,
@@ -111,8 +98,5 @@ module.exports = {
   patchBookSchema,
   userRegisterSchema,
   userLoginSchema,
-  userUpdateSchema,
-  categorySchema,
-  cartSchema,
-  updateCartSchema
+  userUpdateSchema
 };
