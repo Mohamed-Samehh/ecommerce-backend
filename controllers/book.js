@@ -1,5 +1,6 @@
 const asyncHandler = require('../middleware/async-handler');
 const {Book} = require('../models/index');
+const cloudinaryUploader = require('../utils/cloudianry-uploader');
 
 // const uploadImage = async () => {
 //   const result = await cloudinary.uploader.upload('path-to-your-image');
@@ -63,6 +64,8 @@ const findBookById = asyncHandler(async (req, res, next) => {
  */
 const createBook = asyncHandler(async (req, res) => {
   const {body} = req;
+
+  body.coverImage = await cloudinaryUploader(req.file);
   const book = await Book.create(body);
   res.status(201).json({status: 'Success', data: book});
 });
@@ -75,7 +78,9 @@ const createBook = asyncHandler(async (req, res) => {
 const replaceBook = asyncHandler(async (req, res, next) => {
   const {body} = req;
   const {id} = req.params;
-  const book = await Book.findOneAndReplace({_id: id}, body, {runValidators: true});
+  body.coverImage = await cloudinaryUploader(req.file);
+  console.log(body.coverImage);
+  const book = await Book.findOneAndReplace({_id: id}, body, {returnDocument: 'after', runValidators: true});
   if (!book) {
     const err = new Error('No books found');
     err.name = 'BookNotFoundError';
@@ -92,8 +97,10 @@ const replaceBook = asyncHandler(async (req, res, next) => {
 const updateBook = asyncHandler(async (req, res, next) => {
   const {body} = req;
   const {id} = req.params;
-
-  const book = await Book.findOneAndUpdate({_id: id}, body, {runValidators: true});
+  if (req.file) {
+    body.coverImage = await cloudinaryUploader(req.file);
+  }
+  const book = await Book.findOneAndUpdate({_id: id}, body, {returnDocument: 'after', runValidators: true});
   if (!book) {
     const err = new Error('No books found');
     err.name = 'BookNotFoundError';
