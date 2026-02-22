@@ -1,13 +1,12 @@
 info:
-  name: Get Profile
+  name: getReviews
   type: http
-  seq: 3
+  seq: 2
 
 http:
   method: GET
-  url: "{{baseUrl}}/auth/me"
-  auth:
-    type: bearer
+  url: http://localhost:3000/review/book/699a0c857465d39fd9faca79
+  auth: inherit
 
 settings:
   encodeUrl: true

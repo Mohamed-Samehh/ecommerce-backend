@@ -6,9 +6,8 @@
 const validateRequest = (schema) => (req, res, next) => {
   const {error} = schema.validate(req.body);
   if (error) {
-    next(error);
+    return next(error);
   }
-  return next();
+  next();
 };
-
 module.exports = validateRequest;

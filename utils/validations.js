@@ -107,6 +107,19 @@ const adminUpdateUserSchema = Joi.object({
   isAdmin: Joi.boolean()
 });
 
+const categorySchema = Joi.object({
+  name: Joi.string().required().min(4).max(50)
+});
+
+const cartSchema = Joi.object({
+  bookId: mongoId.required(),
+  quantity: Joi.number().min(1).max(100).required()
+});
+
+const updateCartSchema = Joi.object({
+  quantity: Joi.number().min(1).max(100).required()
+});
+
 module.exports = {
   orderSchema,
   reviewSchema,
@@ -118,5 +131,8 @@ module.exports = {
   userLoginSchema,
   userUpdateSchema,
   adminCreateUserSchema,
-  adminUpdateUserSchema
+  adminUpdateUserSchema,
+  categorySchema,
+  cartSchema,
+  updateCartSchema
 };

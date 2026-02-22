@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true
   },
   country: {
@@ -24,7 +24,7 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['processing', 'out for delivery', 'delivered'],
+    enum: ['processing', 'out for delivery', 'delivered', 'cancelled'],
     default: 'processing'
   },
   paymentStatus: {

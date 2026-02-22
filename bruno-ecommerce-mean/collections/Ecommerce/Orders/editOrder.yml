@@ -1,20 +1,18 @@
 info:
-  name: createCategories
+  name: editOrder
   type: http
   seq: 2
 
 http:
-  method: POST
-  url: "{{baseUrl}}/categories"
+  method: PATCH
+  url: http://localhost:3000/order/699a1931379e27c3ebc76425/status
   body:
     type: json
     data: |-
       {
-        "name": "Biography"
+        "status": "delivered"
       }
-  auth:
-    type: bearer
-    token: "{{motoken}}"
+  auth: inherit
 
 settings:
   encodeUrl: true

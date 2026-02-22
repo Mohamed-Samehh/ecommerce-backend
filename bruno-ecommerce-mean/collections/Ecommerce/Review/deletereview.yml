@@ -1,14 +1,12 @@
 info:
-  name: deleteCategory
+  name: deletereview
   type: http
   seq: 4
 
 http:
   method: DELETE
-  url: "{{baseUrl}}/categories/699aef720635449e4b2f29b7"
-  auth:
-    type: bearer
-    token: "{{motoken}}"
+  url: http://localhost:3000/review/699a15d27dc0ca604d36f432
+  auth: inherit
 
 settings:
   encodeUrl: true
