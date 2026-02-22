@@ -98,6 +98,10 @@ const cartSchema = Joi.object({
   quantity: Joi.number().min(1).max(100).required()
 });
 
+const updateCartSchema = Joi.object({
+  quantity: Joi.number().min(1).max(100).required()
+});
+
 module.exports = {
   orderSchema,
   reviewSchema,
@@ -109,5 +113,6 @@ module.exports = {
   userLoginSchema,
   userUpdateSchema,
   categorySchema,
-  cartSchema
+  cartSchema,
+  updateCartSchema
 };
