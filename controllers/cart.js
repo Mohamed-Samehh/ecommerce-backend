@@ -1,9 +1,8 @@
 const {Cart, Book} = require('../models');
 
-// TODO: Joi
 async function add(req, res, next) { // Post /cart (logged in user)
   const {_id} = req.user; // get user from token
-  const {bookId, quantity} = req.body;
+  const {bookId, quantity} = req.body; // validated by Joi
   try {
     const myBook = await Book.findById(bookId); // check book exists in DB
     if (!myBook)

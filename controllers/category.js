@@ -1,10 +1,7 @@
 const {Book, Category} = require('../models');
 
-// TODO: auth
-// TODO: JOi
-
 async function create(req, res, next) { // Post /categories (admin)
-  const {name} = req.body;
+  const {name} = req.body; // validated by Joi
   try {
     const category = await Category.create({name}); // save in memory (make instance) + save in DB
     res.status(201).send({status: 'success', data: category}); // status + status code to help in frontend && category to show full document
@@ -43,7 +40,7 @@ async function remove(req, res, next) { // Delete /categories/:id (admin)
 
 async function update(req, res, next) { // Pathc /categories/:id (admin)
   const {id} = req.params;
-  const {name} = req.body;
+  const {name} = req.body; // validated by Joi
   try {
     const category = await Category.findByIdAndUpdate( // if id not found (but valid objectid) return null (not error)==> need handlation,,, if not valid objectid => db throw error
       id,
