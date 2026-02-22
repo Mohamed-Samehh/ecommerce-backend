@@ -5,16 +5,14 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/books"
+  url: "{{baseUrl}}/books?limit=2&page=1"
   params:
     - name: limit
       value: "2"
       type: query
-      disabled: true
     - name: page
       value: "1"
       type: query
-      disabled: true
   auth: inherit
 
 settings:

@@ -9,14 +9,15 @@ http:
   body:
     type: json
     data: |-
+      
       {
-        "name": "Test whole routes",
-        "price": 20,
-        "stock": 10,
-        "categories": ["699aef720635449e4b2f29b7", "699aef720635449e4b2f29b7"],
-        "description": "Test book for deletion",
-        "coverImage": "https://example.com/test.jpg",
-        "authorId": "64f8a2b3c9e77b001f3d8a12"
+        "name": "frist law",
+        "coverImage": "https://res.cloudinary.com/demo/image/upload/pragmatic-programmer.jpg",
+        "price": 39.99,
+        "stock": 15,
+        "authorId": "65f1b2c3d4e5f6a7b8c9d0e1",
+        "categories": ["69998f2d7d0c770af76da95c", "69998f3a7d0c770af76da95e"],
+        "description": "A classic book for developers who want to write better code and become more effective programmers."
       }
   auth: inherit
 
