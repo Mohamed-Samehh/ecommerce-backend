@@ -1,11 +1,19 @@
+const asyncHandler = require('../middleware/async-handler');
 const {Book} = require('../models/index');
+const cloudinaryUploader = require('../utils/cloudianry-uploader');
+
+// const uploadImage = async () => {
+//   const result = await cloudinary.uploader.upload('path-to-your-image');
+//   const url = cloudinary.url(result.public_id);
+// };
+
 /**
  * find all books with pagenation
  * @param {Request} req - user request
  * @param {Response} res - response object
  * @param {NextFunction} next -next middle ware pointer
  */
-const findAllBooks = async (req, res, next) => {
+const findAllBooks = asyncHandler(async (req, res, next) => {
   //  these lines prevent two things :
   //  1.the user entering strings not numbers thus the || 10 since the or get the first truthy value
   //  2.it limits the maximum of what a user can ask in the limit to not dump the whole db
@@ -19,118 +27,105 @@ const findAllBooks = async (req, res, next) => {
   const maxPrice = req.query.maxPrice;
   const name = req.query.name;
   const sort = req.query.sort;
-  try {
-    const books = await Book.find({})
-      .skip((page - 1) * limit)
-      .limit(limit);
 
-    if (!books.length) {
-      const err = new Error('No books found');
-      err.name = 'BookNotFoundError';
-      return next(err);
-    }
-    res.status(200).json({status: 'Success', data: books});
-  } catch (err) {
-    next(err);
+  const books = await Book.find({})
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  if (!books.length) {
+    const err = new Error('No books found');
+    err.name = 'BookNotFoundError';
+    return next(err);
   }
-};
+  res.status(200).json({status: 'Success', data: books});
+});
 /**
  * find  book by id
  * @param {Request} req - user request
  * @param {Response} res - response object
  * @param {NextFunction} next -next middle ware pointer
  */
-const findBookById = async (req, res, next) => {
+const findBookById = asyncHandler(async (req, res, next) => {
   const {id} = req.params;
-  try {
-    const book = await Book.findById(id);
-    if (!book) {
-      const err = new Error('No books found');
-      err.name = 'BookNotFoundError';
-      return next(err);
-    }
-    res.status(200).json({status: 'Success', data: book});
-  } catch (err) {
-    next(err);
+
+  const book = await Book.findById(id);
+  if (!book) {
+    const err = new Error('No books found');
+    err.name = 'BookNotFoundError';
+    return next(err);
   }
-};
+  res.status(200).json({status: 'Success', data: book});
+});
 /**
  * creates a book
  * @param {Request} req - user request
  * @param {Response} res - response object
  * @param {NextFunction} next -next middle ware pointer
  */
-const createBook = async (req, res, next) => {
+const createBook = asyncHandler(async (req, res) => {
   const {body} = req;
-  try {
-    const book = await Book.create(body);
-    res.status(201).json({status: 'Success', data: book});
-  } catch (error) {
-    next(error);
-  }
-};
+
+  body.coverImage = await cloudinaryUploader(req.file);
+  const book = await Book.create(body);
+  res.status(201).json({status: 'Success', data: book});
+});
 /**
  * replace a book
  * @param {Request} req - user request
  * @param {Response} res - response object
  * @param {NextFunction} next -next middle ware pointer
  */
-const replaceBook = async (req, res, next) => {
+const replaceBook = asyncHandler(async (req, res, next) => {
   const {body} = req;
   const {id} = req.params;
-  try {
-    const book = await Book.findOneAndReplace({_id: id}, body, {runValidators: true});
-    if (!book) {
-      const err = new Error('No books found');
-      err.name = 'BookNotFoundError';
-      return next(err);
-    }
-    res.status(201).json({status: 'Success', data: book});
-  } catch (err) {
-    next(err);
+  body.coverImage = await cloudinaryUploader(req.file);
+  console.log(body.coverImage);
+  const book = await Book.findOneAndReplace({_id: id}, body, {returnDocument: 'after', runValidators: true});
+  if (!book) {
+    const err = new Error('No books found');
+    err.name = 'BookNotFoundError';
+    return next(err);
   }
-};
+  res.status(201).json({status: 'Success', data: book});
+});
 /**
  * update a book
  * @param {Request} req - user request
  * @param {Response} res - response object
  * @param {NextFunction} next -next middle ware pointer
  */
-const updateBook = async (req, res, next) => {
+const updateBook = asyncHandler(async (req, res, next) => {
   const {body} = req;
   const {id} = req.params;
-  try {
-    const book = await Book.findOneAndUpdate({_id: id}, body, {runValidators: true});
-    if (!book) {
-      const err = new Error('No books found');
-      err.name = 'BookNotFoundError';
-      return next(err);
-    }
-    res.status(201).json({status: 'Success', data: book});
-  } catch (err) {
-    next(err);
+  if (req.file) {
+    body.coverImage = await cloudinaryUploader(req.file);
   }
-};
+  const book = await Book.findOneAndUpdate({_id: id}, body, {returnDocument: 'after', runValidators: true});
+  if (!book) {
+    const err = new Error('No books found');
+    err.name = 'BookNotFoundError';
+    return next(err);
+  }
+  res.status(201).json({status: 'Success', data: book});
+});
 /**
  * delete a book
  * @param {Request} req - user request
  * @param {Response} res - response object
  * @param {NextFunction} next -next middle ware pointer
  */
-const deleteBook = async (req, res, next) => {
+const deleteBook = asyncHandler(async (req, res, next) => {
   const {id} = req.params;
-  try {
-    const book = await Book.findOneAndDelete({_id: id});
-    if (!book) {
-      const err = new Error('No books found');
-      err.name = 'BookNotFoundError';
-      return next(err);
-    }
-    res.status(201).json({status: 'Success', data: book});
-  } catch (err) {
-    next(err);
+
+  const book = await Book.findOneAndDelete({_id: id});
+  if (!book) {
+    const err = new Error('No books found');
+    err.name = 'BookNotFoundError';
+    return next(err);
   }
-};
+  res.status(201).json({status: 'Success', data: book});
+});
+
 module.exports = {
   findAllBooks,
   findBookById,

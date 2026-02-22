@@ -1,6 +1,10 @@
 info:
   name: collections
   type: folder
+<<<<<<< HEAD
+  seq: 7
+=======
   seq: 3
+>>>>>>> e2a2a7f43e5feed12112493d144a1f5daef06794
 
 request: {}

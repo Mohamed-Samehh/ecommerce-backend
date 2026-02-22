@@ -42,10 +42,6 @@ const bookSchema = Joi.object({
     .max(200)
     .required()
     .trim(true),
-  coverImage: Joi.string()
-    .pattern(/^https?:\/\/(www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z]{2,6}\b([-\w@:%+.~#?&/=]*)$/)
-    .message('invalid url')
-    .required(),
   price: Joi.number()
     .required(),
   stock: Joi.number()
@@ -66,7 +62,7 @@ const bookSchema = Joi.object({
     .required()
 });
 const patchBookSchema = bookSchema.fork(
-  ['name', 'coverImage', 'price', 'stock', 'authorId', 'categories', 'description'],
+  ['name', 'price', 'stock', 'authorId', 'categories', 'description'],
   (field) => field.optional()
 );
 const userRegisterSchema = Joi.object({
@@ -87,6 +83,19 @@ const userUpdateSchema = Joi.object({
   lastName: Joi.string().min(2).max(50),
   dob: Joi.date().iso(),
   password: Joi.string().min(6)
+});
+const authorSchema = Joi.object({
+  name: Joi.string()
+    .pattern(/^[a-z ]+$/i)
+    .min(5)
+    .max(200)
+    .required()
+    .trim(true),
+  bio: Joi.string()
+    .pattern(/^[a-z0-9 .,'-]+$/i)
+    .min(5)
+    .max(2000)
+    .trim(true)
 });
 
 const adminCreateUserSchema = Joi.object({
@@ -130,6 +139,7 @@ module.exports = {
   userRegisterSchema,
   userLoginSchema,
   userUpdateSchema,
+  authorSchema,
   adminCreateUserSchema,
   adminUpdateUserSchema,
   categorySchema,

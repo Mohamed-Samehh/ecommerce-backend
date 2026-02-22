@@ -1,31 +1,90 @@
+const asyncHandler = require('../middleware/async-handler');
 const {Author} = require('../models/index');
 
-const findAllAuthors = (req, res, next) => {
-  // TODO: implement finding all the authors with pagenation , dont forget to implement the filters
-  res.status(200).json('authors found');
-};
+const findAllAuthors = asyncHandler(async (req, res, next) => {
+  //  these lines prevent two things :
+  //  1.the user entering strings not numbers thus the || 10 since the or get the first truthy value
+  //  2.it limits the maximum of what a user can ask in the limit to not dump the whole db
+  //  3.it also prevnts the limit from being under 1 and for page to be negative
+  const limit = Math.min(Math.max(Number(req.query.limit) || 10, 1), 100);
+  const page = Math.max(Number(req.query.page) || 1, 1);
 
-const findAuthorById = (req, res, next) => {
-  // TODO: implement finding author with certain id
-  res.status(200).json('author found');
-};
+  // TODO: handle qureies
 
-const createAuthor = async (req, res, next) => {
-  // TODO: create author while checking for the auth and the admin privlages
+  const name = req.query.name;
 
-  res.status(201).json('author created');
-};
+  const authors = await Author.find({})
+    .skip((page - 1) * limit)
+    .limit(limit);
 
-const updateAuthor = async (req, res, next) => {
-  // TODO: update author while checking for the auth and the admin privlages
+  if (!authors.length) {
+    const err = new Error('No authors found');
+    err.name = 'AuthorNotFoundError';
+    return next(err);
+  }
+  res.status(200).json({status: 'Success', data: authors});
+});
 
-  res.status(200).json('author updated');
-};
+const findAuthorById = asyncHandler(async (req, res, next) => {
+  const {id} = req.params;
 
+  const author = await Author.findById(id);
+  if (!author) {
+    const err = new Error('No authors found');
+    err.name = 'AuthorNotFoundError';
+    return next(err);
+  }
+  res.status(200).json({status: 'Success', data: author});
+});
+
+const createAuthor = asyncHandler(async (req, res) => {
+  const {body} = req;
+  const author = await Author.create(body);
+  res.status(201).json({status: 'Success', data: author});
+});
+const replaceAuthor = asyncHandler(async (req, res, next) => {
+  const {body} = req;
+  const {id} = req.params;
+
+  const author = await Author.findOneAndReplace({_id: id}, body, {returnDocument: 'after', runValidators: true});
+  if (!author) {
+    const err = new Error('No author found');
+    err.name = 'AuthorNotFoundError';
+    return next(err);
+  }
+  res.status(201).json({status: 'Success', data: author});
+});
+
+const updateAuthor = asyncHandler(async (req, res, next) => {
+  const {body} = req;
+  const {id} = req.params;
+
+  const author = await Author.findOneAndUpdate({_id: id}, body, {returnDocument: 'after', runValidators: true});
+  if (!author) {
+    const err = new Error('No author found');
+    err.name = 'AuthorNotFoundError';
+    return next(err);
+  }
+  res.status(201).json({status: 'Success', data: author});
+});
+
+const deleteAuthor = asyncHandler(async (req, res, next) => {
+  const {id} = req.params;
+
+  const author = await Author.findOneAndDelete({_id: id});
+  if (!author) {
+    const err = new Error('No authors found');
+    err.name = 'AuthorNotFoundError';
+    return next(err);
+  }
+  res.status(201).json({status: 'Success', data: author});
+});
 module.exports = {
   findAllAuthors,
   findAuthorById,
   createAuthor,
-  updateAuthor
+  updateAuthor,
+  replaceAuthor,
+  deleteAuthor
 
 };

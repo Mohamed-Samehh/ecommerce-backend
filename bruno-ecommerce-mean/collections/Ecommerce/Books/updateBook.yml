@@ -1,10 +1,58 @@
 info:
-  name: updateBook
+  name: "updateBook "
   type: http
   seq: 6
 
 http:
   method: PATCH
+<<<<<<< HEAD
+  url: "{{baseUrl}}/books/:id"
+  params:
+    - name: id
+      value: 699b00d3bf64c3e5eb1c7360
+      type: path
+  body:
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: mo mo mo
+      - name: price
+        type: text
+        value: ""
+        disabled: true
+      - name: stock
+        type: text
+        value: ""
+        disabled: true
+      - name: authorId
+        type: text
+        value: ""
+        disabled: true
+      - name: categories
+        type: text
+        value: ""
+        disabled: true
+      - name: categories
+        type: text
+        value: ""
+        disabled: true
+      - name: categories
+        type: text
+        value: ""
+        disabled: true
+      - name: description
+        type: text
+        value: ""
+        disabled: true
+      - name: image
+        type: text
+        value: ""
+        disabled: true
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3ODczNDIsImV4cCI6MTc3MzA4MzM0Mn0.61lBFQq8Yudtjs7Y8JFJxTrJeiqoXU0g9sIsA36zTuY
+=======
   url: "{{baseUrl}}/books/699a5d23f4dd02a483efa178"
   body:
     type: json
@@ -16,6 +64,7 @@ http:
             ]
       }
   auth: inherit
+>>>>>>> e2a2a7f43e5feed12112493d144a1f5daef06794
 
 settings:
   encodeUrl: true

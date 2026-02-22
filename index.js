@@ -2,7 +2,7 @@ const process = require('node:process');
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
-const errorHandler = require('./utils/errorHandler');
+const errorHandler = require('./utils/error-handler');
 const logger = require('./utils/logger');
 require('dotenv').config({path: './config/.env'});
 const routes = require('./routes');

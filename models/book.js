@@ -32,6 +32,7 @@ const bookSchema = new mongoose.Schema({
   categories: {
     type: [mongoose.ObjectId],
     ref: 'Category',
+    validate: {validator: uniqueCategory, message: 'categories must be unique'},
     required: true
   },
   description: {
@@ -76,7 +77,16 @@ bookSchema.virtual('review count').get(function () {
 function urlValidator(value) {
   return value.match(/^https?:\/\/(www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z]{2,6}\b([-\w@:%+.~#?&/=]*)$/);
 }
-
+/**
+ * checks if the categories are unique
+ * // we are conveting to string since mongoose id is an object , so same name object will have differnce refrences thus escaping the set check
+ * @param {Array} value -the categories array
+ * @returns {boolean} -returns true if the array has unique elements
+ */
+function uniqueCategory(value) {
+  const stringIds = value.map((id) => id.toString());
+  return new Set(stringIds).size === value.length;
+};
 const Book = mongoose.model('Book', bookSchema);
 
 module.exports = Book;
