@@ -32,7 +32,16 @@ exports.register = async (req, res) => {
       accessToken: token
     });
   } catch (err) {
-    res.status(500).json({message: 'Server error'});
+  // //   res.status(500).json({message: 'Server error'});
+  // // }
+  // }
+  // catch (err) {
+    console.error('DEBUG ERROR:', err);
+    res.status(500).json({
+      message: 'Server error',
+      error: err.message,
+      stack: err.stack
+    });
   }
 };
 

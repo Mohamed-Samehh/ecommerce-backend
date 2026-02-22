@@ -11,10 +11,7 @@ http:
     data: |-
       {
         "items": [
-          {
-            "bookId": "699a0c857465d39fd9faca79",
-            "quantity": 1
-          }
+          { "bookId": "699a120cdd5f56ce69fb0068", "quantity": 1 }
         ],
         "country": "Egypt",
         "city": "Cairo",
@@ -22,7 +19,9 @@ http:
         "postalCode": "11835",
         "paymentMethod": "COD"
       }
-  auth: inherit
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiXSwiaWF0IjoxNzcxNzg4ODYxLCJleHAiOjE3NzMwODQ4NjF9._IW9BIpwu0FszXwd7z4uC1XWnmqa0nhPJPxoA64EE-U
 
 settings:
   encodeUrl: true
