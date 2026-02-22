@@ -80,5 +80,21 @@ module.exports = [
       status: 'Fail',
       errors: err.message
     })
+  },
+  {
+    match: (err) => err.name === 'InvalidFileType',
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: err.message
+    })
+  },
+  {
+    match: (err) => err.code === 'LIMIT_FILE_SIZE',
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: err.message
+    })
   }
 ];
