@@ -1,0 +1,26 @@
+info:
+  name: Add User
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/admin"
+  body:
+    type: json
+    data: |-
+      {
+        "firstName": "Alice",
+        "lastName": "Smith",
+        "dob": "1995-05-10",
+        "email": "alice.smith4@example.com",
+        "password": "securePass123",
+        "isAdmin": true
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
