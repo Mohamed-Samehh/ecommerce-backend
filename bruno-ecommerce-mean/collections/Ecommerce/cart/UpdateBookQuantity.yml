@@ -1,11 +1,17 @@
 info:
-  name: deleteCategory
+  name: UpdateBookQuantity
   type: http
   seq: 4
 
 http:
-  method: DELETE
-  url: "{{baseUrl}}/categories/699aef720635449e4b2f29b7"
+  method: PATCH
+  url: "{{baseUrl}}/cart/64f8a2b3c9e77b001f3d8a12"
+  body:
+    type: json
+    data: |-
+      {
+        "quantity": 29
+      }
   auth:
     type: bearer
     token: "{{motoken}}"
