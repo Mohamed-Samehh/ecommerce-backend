@@ -1,14 +1,14 @@
 info:
-  name: deleteBook
+  name: deleteAuthor
   type: http
-  seq: 4
+  seq: 6
 
 http:
   method: DELETE
-  url: "{{baseUrl}}/books/:id"
+  url: "{{baseUrl}}/authors/:id"
   params:
     - name: id
-      value: 699b68449e6f0d0d1c52796b
+      value: 699a47d7ceb920e8fd802c62
       type: path
   auth:
     type: bearer

@@ -1,0 +1,117 @@
+const User = require('../models/user');
+
+exports.getUsers = async (req, res, next) => {
+  try {
+    const page = Math.max(1, Number.parseInt(req.query.page) || 1);
+    const limit = Math.min(100, Math.max(1, Number.parseInt(req.query.limit) || 20));
+    const skip = (page - 1) * limit;
+
+    const filter = {};
+    if (req.query.role) {
+      filter.roles = req.query.role;
+    }
+    if (req.query.search) {
+      const search = {$regex: req.query.search, $options: 'i'};
+      filter.$or = [{firstName: search}, {lastName: search}, {email: search}];
+    }
+
+    const [users, total] = await Promise.all([
+      User.find(filter).select('-password').skip(skip).limit(limit).sort({createdAt: -1}),
+      User.countDocuments(filter)
+    ]);
+
+    res.json({
+      data: users,
+      pagination: {
+        total,
+        page,
+        limit,
+        pages: Math.ceil(total / limit)
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getUserById = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password');
+    if (!user) {
+      const err = new Error('User not found');
+      err.name = 'UserNotFoundError';
+      return next(err);
+    }
+    res.json({data: user});
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.createUser = async (req, res, next) => {
+  try {
+    const {firstName, lastName, dob, email, password, isAdmin} = req.body;
+
+    const roles = isAdmin ? ['user', 'admin'] : ['user'];
+    const user = new User({firstName, lastName, dob, email, password, roles});
+    await user.save();
+
+    res.status(201).json({
+      message: 'User created successfully',
+      data: {
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        dob: user.dob,
+        roles: user.roles,
+        createdAt: user.createdAt
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateUser = async (req, res, next) => {
+  try {
+    const existing = await User.findById(req.params.id);
+    if (!existing) {
+      const err = new Error('User not found');
+      err.name = 'UserNotFoundError';
+      return next(err);
+    }
+
+    const {firstName, lastName, dob, email, password, isAdmin} = req.body;
+    const updates = {};
+    if (firstName !== undefined) updates.firstName = firstName;
+    if (lastName !== undefined) updates.lastName = lastName;
+    if (dob !== undefined) updates.dob = dob;
+    if (email !== undefined) updates.email = email;
+    if (password !== undefined) updates.password = password;
+    if (isAdmin !== undefined) updates.roles = isAdmin ? ['user', 'admin'] : ['user'];
+
+    const user = await User.findByIdAndUpdate(req.params.id, updates, {
+      new: true,
+      runValidators: true
+    }).select('-password');
+
+    res.json({message: 'User updated successfully', data: user});
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      const err = new Error('User not found');
+      err.name = 'UserNotFoundError';
+      return next(err);
+    }
+    res.json({message: 'User deleted successfully'});
+  } catch (err) {
+    next(err);
+  }
+};

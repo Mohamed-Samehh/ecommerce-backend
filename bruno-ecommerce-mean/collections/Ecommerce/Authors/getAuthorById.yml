@@ -1,11 +1,15 @@
 info:
-  name: getBookById
+  name: getAuthorById
   type: http
   seq: 2
 
 http:
   method: GET
-  url: "{{baseUrl}}/books/699aee510635449e4b2f29a5"
+  url: "{{baseUrl}}/authors/:id"
+  params:
+    - name: id
+      value: 699a47c0ceb920e8fd802c5e
+      type: path
   auth: inherit
 
 settings:

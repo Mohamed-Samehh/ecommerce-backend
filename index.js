@@ -2,7 +2,7 @@ const process = require('node:process');
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
-const errorHandler = require('./utils/errorHandler');
+const errorHandler = require('./utils/error-handler');
 const logger = require('./utils/logger');
 require('dotenv').config({path: './config/.env'});
 const routes = require('./routes');
@@ -18,8 +18,10 @@ app.use((err, req, res, next) => {
 
   if (handler) {
     const {statusCode, ...body} = handler.handler(err);
+    logger.error(err);
     return res.status(statusCode).json(body);
   }
+
   res.status(500).json({status: 'error', message: 'Something went wrong'});
 });
 app.use((req, res) => {

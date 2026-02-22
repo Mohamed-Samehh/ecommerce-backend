@@ -8,6 +8,7 @@ router.use('/books', require('./books'));
 router.use('/authors', require('./authors'));
 router.use('/cart', require('./carts')); // use for group of routes
 router.use('/categories', require('./categories'));
+router.use('/admin', require('./admin'));
 router.use('/order', require('./orders'));
 router.use('/review', require('./reviews'));
 

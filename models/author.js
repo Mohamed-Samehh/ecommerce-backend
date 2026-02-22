@@ -3,17 +3,17 @@ const mongoose = require('mongoose');
 const authorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true],
+    required: true,
     unique: true,
-    minLength: [5],
-    maxLength: [200],
+    minLength: 5,
+    maxLength: 200,
     trim: true
   },
   bio: {
     type: String,
-    required: [true],
-    minLength: [5],
-    maxLength: [500],
+    required: true,
+    minLength: 5,
+    maxLength: 2000,
     trim: true
   }
 

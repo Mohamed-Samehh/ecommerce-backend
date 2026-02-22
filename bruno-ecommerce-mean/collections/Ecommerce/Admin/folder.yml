@@ -1,7 +1,7 @@
 info:
-  name: Review
+  name: Admin
   type: folder
-  seq: 6
+  seq: 4
 
 request:
   auth: inherit

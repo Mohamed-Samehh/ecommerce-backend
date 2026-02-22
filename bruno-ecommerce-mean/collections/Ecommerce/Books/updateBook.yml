@@ -8,15 +8,49 @@ http:
   url: "{{baseUrl}}/books/:id"
   params:
     - name: id
-      value: 699a0c857465d39fd9faca79
+      value: 699b5d39e0ab034312668b21
       type: path
   body:
-    type: json
-    data: |-
-      {
-        "name": "s"
-      }
-  auth: inherit
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: sameh
+      - name: price
+        type: text
+        value: ""
+        disabled: true
+      - name: stock
+        type: text
+        value: ""
+        disabled: true
+      - name: authorId
+        type: text
+        value: ""
+        disabled: true
+      - name: categories
+        type: text
+        value: ""
+        disabled: true
+      - name: categories
+        type: text
+        value: ""
+        disabled: true
+      - name: categories
+        type: text
+        value: ""
+        disabled: true
+      - name: description
+        type: text
+        value: ""
+        disabled: true
+      - name: image
+        type: text
+        value: ""
+        disabled: true
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3ODczNDIsImV4cCI6MTc3MzA4MzM0Mn0.61lBFQq8Yudtjs7Y8JFJxTrJeiqoXU0g9sIsA36zTuY
 
 settings:
   encodeUrl: true

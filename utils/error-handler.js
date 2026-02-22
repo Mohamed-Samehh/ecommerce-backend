@@ -20,11 +20,16 @@
  */
 module.exports = [
   {
-    match: (err) => err.name === 'ValidationError' && err.errors, // mongoose errors
+    match: (err) => err.name === 'ValidationError' && err.errors,
     handler: (err) => ({
       statusCode: 400,
       status: 'Fail',
-      errors: Object.values(err.errors).map((e) => e.message)
+      errors: Object.values(err.errors).map((e) => {
+        if (e.name === 'CastError') {
+          return `Invalid ${e.path}: expected ${e.kind}, got ${typeof e.value}`;
+        }
+        return e.message;
+      })
     })
   },
   {
@@ -42,7 +47,6 @@ module.exports = [
       status: 'Fail',
       errors: `"Invalid ${err.path}: ${err.value}"`
     })
-
   },
   {
     match: (err) => err.name === 'ValidationError' && err.isJoi, // joi errors
@@ -58,6 +62,62 @@ module.exports = [
       statusCode: 404,
       status: 'Fail',
       errors: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'AuthorNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      errors: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'NoImageUploaded',
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'InvalidFileType',
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: err.message
+    })
+  },
+  {
+    match: (err) => err.code === 'LIMIT_FILE_SIZE',
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'UnauthorizedError',
+    handler: (err) => ({
+      statusCode: 401,
+      status: 'Fail',
+      message: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'ForbiddenError',
+    handler: (err) => ({
+      statusCode: 403,
+      status: 'Fail',
+      message: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'UserNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      message: err.message
     })
   }
 ];
