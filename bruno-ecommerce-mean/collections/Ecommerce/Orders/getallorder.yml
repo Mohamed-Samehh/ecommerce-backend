@@ -8,7 +8,7 @@ http:
   url: http://localhost:3000/order
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiXSwiaWF0IjoxNzcxNzg4ODYxLCJleHAiOjE3NzMwODQ4NjF9._IW9BIpwu0FszXwd7z4uC1XWnmqa0nhPJPxoA64EE-U
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3OTY1MTgsImV4cCI6MTc3MzA5MjUxOH0.LOlhH1RtfhGoVJkzFr8FcCbL-4NBAfrpGxNenAf2nwc
 
 settings:
   encodeUrl: true

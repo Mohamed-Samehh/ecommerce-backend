@@ -5,7 +5,11 @@ info:
 
 http:
   method: PATCH
-  url: http://localhost:3000/order/699a120cdd5f56ce69fb0068/status
+  url: "{{baseUrl}}/order/:id/status"
+  params:
+    - name: id
+      value: 699b5a3d34b7a4096b1718a0
+      type: path
   body:
     type: json
     data: |-
@@ -14,7 +18,7 @@ http:
       }
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbImFkbWluIl0sImlhdCI6MTc3MTc5MjA4OCwiZXhwIjoxNzczMDg4MDg4fQ.mRKCvLwlVcQE2DEOPCtj0QAo5wwFt7n710A-7obKNdY
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3OTY1MTgsImV4cCI6MTc3MzA5MjUxOH0.LOlhH1RtfhGoVJkzFr8FcCbL-4NBAfrpGxNenAf2nwc
 
 settings:
   encodeUrl: true

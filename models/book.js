@@ -87,6 +87,7 @@ function uniqueCategory(value) {
   const stringIds = value.map((id) => id.toString());
   return new Set(stringIds).size === value.length;
 };
+
 const Book = mongoose.model('Book', bookSchema);
 
 module.exports = Book;

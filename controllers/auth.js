@@ -26,10 +26,8 @@ exports.register = async (req, res, next) => {
       },
       accessToken: token
     });
-  }catch (err) {
- 
+  } catch (err) {
     next(err);
-
   }
 };
 

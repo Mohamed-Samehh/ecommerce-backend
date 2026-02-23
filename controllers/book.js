@@ -29,6 +29,8 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
   const sort = req.query.sort;
 
   const books = await Book.find({})
+    .populate('authorId', 'name bio -_id')
+    .populate('categories', 'name  -_id')
     .skip((page - 1) * limit)
     .limit(limit);
 
@@ -48,7 +50,9 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
 const findBookById = asyncHandler(async (req, res, next) => {
   const {id} = req.params;
 
-  const book = await Book.findById(id);
+  const book = await Book.findById(id)
+    .populate('authorId', 'name bio -_id')
+    .populate('categories', 'name  -_id');
   if (!book) {
     const err = new Error('No books found');
     err.name = 'BookNotFoundError';
@@ -67,6 +71,7 @@ const createBook = asyncHandler(async (req, res) => {
 
   body.coverImage = await cloudinaryUploader(req.file);
   const book = await Book.create(body);
+
   res.status(201).json({status: 'Success', data: book});
 });
 /**
@@ -80,7 +85,9 @@ const replaceBook = asyncHandler(async (req, res, next) => {
   const {id} = req.params;
   body.coverImage = await cloudinaryUploader(req.file);
   console.log(body.coverImage);
-  const book = await Book.findOneAndReplace({_id: id}, body, {returnDocument: 'after', runValidators: true});
+  const book = await Book.findOneAndReplace({_id: id}, body, {returnDocument: 'after', runValidators: true})
+    .populate('authorId', 'name bio -_id')
+    .populate('categories', 'name  -_id');
   if (!book) {
     const err = new Error('No books found');
     err.name = 'BookNotFoundError';
@@ -100,7 +107,9 @@ const updateBook = asyncHandler(async (req, res, next) => {
   if (req.file) {
     body.coverImage = await cloudinaryUploader(req.file);
   }
-  const book = await Book.findOneAndUpdate({_id: id}, body, {returnDocument: 'after', runValidators: true});
+  const book = await Book.findOneAndUpdate({_id: id}, body, {returnDocument: 'after', runValidators: true})
+    .populate('authorId', 'name bio -_id')
+    .populate('categories', 'name  -_id');
   if (!book) {
     const err = new Error('No books found');
     err.name = 'BookNotFoundError';
@@ -117,7 +126,9 @@ const updateBook = asyncHandler(async (req, res, next) => {
 const deleteBook = asyncHandler(async (req, res, next) => {
   const {id} = req.params;
 
-  const book = await Book.findOneAndDelete({_id: id});
+  const book = await Book.findOneAndDelete({_id: id})
+    .populate('authorId', 'name bio -_id')
+    .populate('categories', 'name  -_id');
   if (!book) {
     const err = new Error('No books found');
     err.name = 'BookNotFoundError';

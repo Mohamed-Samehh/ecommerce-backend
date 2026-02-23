@@ -11,7 +11,7 @@ http:
     data:
       - name: name
         type: text
-        value: sameh
+        value: andrew emad
       - name: price
         type: text
         value: "10"
@@ -23,7 +23,7 @@ http:
         value: 699a47a1ceb920e8fd802c5a
       - name: categories
         type: text
-        value: 69998f217d0c770af76da95a
+        value: 69998f217d0c770af76da95b
       - name: categories
         type: text
         value: 69998f2d7d0c770af76da95c
