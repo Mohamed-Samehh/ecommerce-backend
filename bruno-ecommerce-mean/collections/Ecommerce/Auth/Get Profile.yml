@@ -1,7 +1,7 @@
 info:
   name: Get Profile
   type: http
-  seq: 3
+  seq: 5
 
 http:
   method: GET

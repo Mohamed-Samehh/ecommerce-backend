@@ -1,20 +1,11 @@
-const crypto = require('node:crypto');
-const process = require('node:process');
-const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const {sendOtpEmail} = require('../utils/mailer');
-
-const otpStore = new Map(); // email -> { otp, userData, expiresAt }
-const OTP_TTL = 2 * 60 * 1000; // 2 minutes
+const {signToken} = require('../utils/jwt');
+const {registerOtpStore, loginOtpStore, sendOtp, consumeOtp} = require('../utils/otp');
 
 exports.register = async (req, res, next) => {
   const {email, firstName, lastName, dob, password} = req.body;
   try {
-    const otp = crypto.randomBytes(3).toString('hex').toUpperCase();
-    otpStore.set(email, {otp, userData: {email, firstName, lastName, dob, password}, expiresAt: Date.now() + OTP_TTL});
-
-    await sendOtpEmail(email, otp);
-
+    await sendOtp(registerOtpStore, email, {userData: {email, firstName, lastName, dob, password}});
     res.status(200).json({message: 'OTP sent to your email. It expires in 2 minutes.'});
   } catch (err) {
     next(err);
@@ -24,32 +15,11 @@ exports.register = async (req, res, next) => {
 exports.verifyOtp = async (req, res, next) => {
   const {email, otp} = req.body;
   try {
-    const record = otpStore.get(email);
-
-    if (!record || Date.now() > record.expiresAt) {
-      otpStore.delete(email);
-      const err = new Error('OTP expired or not found');
-      err.name = 'UnauthorizedError';
-      return next(err);
-    }
-
-    if (record.otp !== otp) {
-      const err = new Error('Invalid OTP');
-      err.name = 'UnauthorizedError';
-      return next(err);
-    }
-
-    otpStore.delete(email);
+    const record = consumeOtp(registerOtpStore, email, otp);
 
     const {firstName, lastName, dob, password} = record.userData;
     const user = new User({email, firstName, lastName, dob, password});
     await user.save();
-
-    const token = jwt.sign(
-      {id: user._id, email: user.email, roles: user.roles},
-      process.env.JWT_SECRET,
-      {expiresIn: '15d'}
-    );
 
     res.status(201).json({
       message: 'User registered successfully',
@@ -61,7 +31,7 @@ exports.verifyOtp = async (req, res, next) => {
         dob: user.dob,
         roles: user.roles
       },
-      accessToken: token
+      accessToken: signToken(user)
     });
   } catch (err) {
     next(err);
@@ -85,13 +55,26 @@ exports.login = async (req, res, next) => {
       return next(err);
     }
 
-    const token = jwt.sign(
-      {id: user._id, email: user.email, roles: user.roles},
-      process.env.JWT_SECRET,
-      {expiresIn: '15d'}
-    );
+    await sendOtp(loginOtpStore, email);
+    res.status(200).json({message: 'OTP sent to your email. It expires in 2 minutes.'});
+  } catch (err) {
+    next(err);
+  }
+};
 
-    res.json({accessToken: token});
+exports.verifyLoginOtp = async (req, res, next) => {
+  const {email, otp} = req.body;
+  try {
+    consumeOtp(loginOtpStore, email, otp);
+
+    const user = await User.findOne({email});
+    if (!user) {
+      const err = new Error('User not found');
+      err.name = 'UserNotFoundError';
+      return next(err);
+    }
+
+    res.json({accessToken: signToken(user)});
   } catch (err) {
     next(err);
   }
