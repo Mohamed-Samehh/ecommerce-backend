@@ -131,6 +131,11 @@ const updateCartSchema = Joi.object({
   quantity: Joi.number().min(1).max(100).required()
 });
 
+const verifyOtpSchema = Joi.object({
+  email: Joi.string().email().required(),
+  otp: Joi.string().length(6).required()
+});
+
 module.exports = {
   orderSchema,
   reviewSchema,
@@ -146,5 +151,6 @@ module.exports = {
   adminUpdateUserSchema,
   categorySchema,
   cartSchema,
-  updateCartSchema
+  updateCartSchema,
+  verifyOtpSchema
 };
