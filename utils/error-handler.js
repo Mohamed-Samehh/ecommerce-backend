@@ -119,5 +119,45 @@ module.exports = [
       status: 'Fail',
       message: err.message
     })
+  },
+  {
+    match: (err) => err.name === 'CategoryNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      errors: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'CategoryDeleteError',
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'CartNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      errors: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'BookNotInCartError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      errors: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'InsufficientStockError',
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: err.message
+    })
   }
 ];
