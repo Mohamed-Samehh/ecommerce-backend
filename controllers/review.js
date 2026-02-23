@@ -1,13 +1,13 @@
 const asyncHandler = require('../middleware/async-handler');
-const { Order, Review } = require('../models');
+const {Order, Review} = require('../models');
 
 const addReview = asyncHandler(async (req, res, next) => {
-  const { bookId, rating, comment } = req.body;
+  const {bookId, rating, comment} = req.body;
   const userId = req.user.id;
 
   const deliveredOrder = await Order.findOne({
     userId,
-    status: 'delivered',
+    'status': 'delivered',
     'items.bookId': bookId
   });
 
@@ -17,13 +17,13 @@ const addReview = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 
-  const review = await Review.create({ userId, bookId, rating, comment });
-  res.status(201).json({ status: 'success', data: review });
+  const review = await Review.create({userId, bookId, rating, comment});
+  res.status(201).json({status: 'success', data: review});
 });
 
 const getBookReviews = asyncHandler(async (req, res, next) => {
-  const reviews = await Review.find({ bookId: req.params.bookId }).populate('userId', 'firstName lastName');
-  res.status(200).json({ status: 'success', data: reviews });
+  const reviews = await Review.find({bookId: req.params.bookId}).populate('userId', 'firstName lastName');
+  res.status(200).json({status: 'success', data: reviews});
 });
 
 const deleteReview = asyncHandler(async (req, res, next) => {
@@ -44,4 +44,4 @@ const deleteReview = asyncHandler(async (req, res, next) => {
   res.status(204).send();
 });
 
-module.exports = { addReview, getBookReviews, deleteReview };
+module.exports = {addReview, getBookReviews, deleteReview};

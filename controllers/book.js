@@ -1,5 +1,5 @@
 const asyncHandler = require('../middleware/async-handler');
-const {Book,Cart} = require('../models/index');
+const {Book, Cart} = require('../models/index');
 const cloudinaryHandler = require('../utils/coudinary-handler');
 
 // const uploadImage = async () => {
