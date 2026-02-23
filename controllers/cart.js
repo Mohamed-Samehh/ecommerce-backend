@@ -7,7 +7,7 @@ const add = asyncWrapper(async (req, res, next) => { // Post /cart (logged in us
   const quantity = Number(req.body.quantity);
 
   const myBook = await Book.findById(bookId); // check book exists in DB
-  if (!myBook) {
+  if (!myBook || myBook.isDeleted) {
     const error = new Error('Book not found');
     error.name = 'BookNotFoundError';
     return next(error); // err. handler
@@ -39,6 +39,8 @@ const display = asyncWrapper(async (req, res) => { // Get /cart (logged in user)
   const {id} = req.user;
   const userBooks = await Cart.findOne({user: id}).populate('items.book'); // search by user ref. & use populate to show book details for frontend
   if (!userBooks) return res.status(200).send({status: 'success', data: {items: []}});
+
+  userBooks.items = userBooks.items.filter((item) => item.book && !item.book.isDeleted);
   res.status(200).send({status: 'success', data: userBooks}); // items array contain each book details and quantity
 });
 
@@ -85,6 +87,11 @@ const update = asyncWrapper(async (req, res, next) => { // Patch /cart/:bookId (
   }
 
   const myBook = await Book.findById(bookId); // check book exists in DB
+  if (!myBook || myBook.isDeleted) { // ← add isDeleted check
+    const error = new Error('Book not found');
+    error.name = 'BookNotFoundError';
+    return next(error); // err. handler
+  }
   if (myBook.stock < quantity) { // new quantity must not exceed stock
     const error = new Error('Stock not enough');
     error.name = 'InsufficientStockError';
