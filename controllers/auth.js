@@ -1,10 +1,47 @@
+const crypto = require('node:crypto');
 const process = require('node:process');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const {sendOtpEmail} = require('../utils/mailer');
+
+const otpStore = new Map(); // email -> { otp, userData, expiresAt }
+const OTP_TTL = 2 * 60 * 1000; // 2 minutes
 
 exports.register = async (req, res, next) => {
   const {email, firstName, lastName, dob, password} = req.body;
   try {
+    const otp = crypto.randomBytes(3).toString('hex').toUpperCase();
+    otpStore.set(email, {otp, userData: {email, firstName, lastName, dob, password}, expiresAt: Date.now() + OTP_TTL});
+
+    await sendOtpEmail(email, otp);
+
+    res.status(200).json({message: 'OTP sent to your email. It expires in 2 minutes.'});
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.verifyOtp = async (req, res, next) => {
+  const {email, otp} = req.body;
+  try {
+    const record = otpStore.get(email);
+
+    if (!record || Date.now() > record.expiresAt) {
+      otpStore.delete(email);
+      const err = new Error('OTP expired or not found');
+      err.name = 'UnauthorizedError';
+      return next(err);
+    }
+
+    if (record.otp !== otp) {
+      const err = new Error('Invalid OTP');
+      err.name = 'UnauthorizedError';
+      return next(err);
+    }
+
+    otpStore.delete(email);
+
+    const {firstName, lastName, dob, password} = record.userData;
     const user = new User({email, firstName, lastName, dob, password});
     await user.save();
 

@@ -1,20 +1,17 @@
 info:
-  name: Register
+  name: Verify OTP
   type: http
-  seq: 1
+  seq: 5
 
 http:
   method: POST
-  url: "{{baseUrl}}/auth/register"
+  url: "{{baseUrl}}/auth/register/verify-otp"
   body:
     type: json
     data: |-
       {
         "email": "mohamed.kholy2011@gmail.com",
-        "firstName": "Mohamed",
-        "lastName": "Sameh",
-        "dob": "2002-01-01",
-        "password": "123456"
+        "otp": "45C7C9"
       }
   auth: inherit
 

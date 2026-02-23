@@ -7,21 +7,31 @@ async function add(req, res, next) { // Post /cart (logged in user)
   try {
     const myBook = await Book.findById(bookId); // check book exists in DB
 
-    if (!myBook)
-      return res.status(404).send({status: 'fail', message: 'Book not found'});
+    if (!myBook) {
+      const error = new Error('Book not found');
+      error.name = 'BookNotFoundError';
+      return next(error); // err. handler
+    }
+    // return res.status(404).send({status: 'fail', message: 'Book not found'});
 
     const myCart = await Cart.findOneAndUpdate({user: id}, {}, {upsert: true, new: true}); // find user's cart or create new one
 
     const bookInCart = myCart.items.find((item) => bookId === item.book.toString()); // check if book already in cart
 
     if (!bookInCart) {
-      if (myBook.stock < quantity) // if new book => check stock
-        return res.status(400).send({status: 'fail', message: 'Not enough stock'});
+      if (myBook.stock < quantity) { // if new book => check stock
+        const error = new Error('Stock not enough');
+        error.name = 'InsufficientStockError';
+        return next(error); // err. handler
+      }
 
       myCart.items.push({book: bookId, quantity});
     } else {
-      if (myBook.stock < bookInCart.quantity + quantity) // if not new => check quant. of book in cart and desired quant.
-        return res.status(400).send({status: 'fail', message: 'Not enough stock'});
+      if (myBook.stock < bookInCart.quantity + quantity) { // if not new => check quant. of book in cart and desired quant.
+        const error = new Error('Stock not enough');
+        error.name = 'InsufficientStockError';
+        return next(error); // err. handler
+      }
       bookInCart.quantity += quantity;
     }
     await myCart.save();
@@ -45,20 +55,23 @@ async function display(req, res, next) { // Get /cart (logged in user)
 }
 
 async function remove(req, res, next) { // Delete /cart/:bookId (logged in user)
-  console.log('in remove');
   const {id} = req.user;
   const {bookId} = req.params;
 
   try {
     const myCart = await Cart.findOne({user: id});
     if (!myCart) {
-      return res.status(404).send({status: 'fail', message: 'Cart not found'});
+      const error = new Error('Cart not found');
+      error.name = 'CartNotFoundError';
+      return next(error); // err. handler
     }
 
     const bookIndex = myCart.items.findIndex((item) => item.book.toString() === bookId); // We find the position of the book in the items array
 
     if (bookIndex === -1) {
-      return res.status(404).send({status: 'fail', message: 'Book not found in cart'});
+      const error = new Error('Book not found in cart');
+      error.name = 'BookNotInCartError';
+      return next(error); // err. handler
     }
 
     myCart.items.splice(bookIndex, 1); // pull book from items array
@@ -77,17 +90,27 @@ async function update(req, res, next) {
     const quantity = Number(req.body.quantity);
 
     const myCart = await Cart.findOne({user: id}); // find user's cart
-    if (!myCart) return res.status(404).send({status: 'fail', message: 'Cart not found'});
+    if (!myCart) {
+      const error = new Error('Cart not found');
+      error.name = 'CartNotFoundError';
+      return next(error); // err. handler
+    }
 
     const bookInCart = myCart.items.find((item) => bookId === item.book.toString()); // check if book already in cart
 
     if (!bookInCart) {
-      return res.status(404).send({status: 'fail', message: 'Book not found in cart'});
+      const error = new Error('Book not found in cart');
+      error.name = 'BookNotInCartError';
+      return next(error); // err. handler
     } else {
       const myBook = await Book.findById(bookId); // check book exists in DB
 
-      if (myBook.stock < quantity) // new quantity must not exceed stock
-        return res.status(400).send({status: 'fail', message: 'Not enough stock'});
+      if (myBook.stock < quantity) { // new quantity must not exceed stock
+        const error = new Error('Stock not enough');
+        error.name = 'InsufficientStockError';
+        return next(error); // err. handler
+      }
+
       bookInCart.quantity = quantity; // replace old quantity with new value
     }
     await myCart.save();

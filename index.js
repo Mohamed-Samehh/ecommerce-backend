@@ -21,6 +21,7 @@ app.use((err, req, res, next) => {
     logger.error(err);
     return res.status(statusCode).json(body);
   }
+
   logger.error(err);
   res.status(500).json({status: 'error', message: 'Something went wrong'});
 });
