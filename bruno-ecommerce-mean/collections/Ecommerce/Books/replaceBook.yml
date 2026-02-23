@@ -24,13 +24,13 @@ http:
         value: "10"
       - name: authorId
         type: text
-        value: 699a47a1ceb920e8fd802c5a
+        value: 699c2fa869ff88ac0840fb31
       - name: categories
         type: text
         value: 69998f217d0c770af76da95a
       - name: categories
         type: text
-        value: 69998f2d7d0c770af76da95c
+        value: 69998f217d0c770af76da95a
       - name: categories
         type: text
         value: 676a1234abc567def8901238

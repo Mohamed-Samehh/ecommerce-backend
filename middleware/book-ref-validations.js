@@ -15,6 +15,14 @@ const validateAuthorExsists = async (req, res, next) => {
 const validateCategoryExsists = async (req, res, next) => {
   const {body} = req;
   if (body.categories === undefined) return next();
+
+  const stringIds = body.categories.map((id) => id.toString());
+  const isUnique = new Set(stringIds).size === body.categories.length;
+  if (!isUnique) {
+    const err = new Error('Categories must be unique');
+    err.name = 'CategoryNotUnique';
+    return next(err);
+  }
   const categories = await Category.find({_id: {$in: body.categories}});
   if (categories.length !== body.categories.length) {
     const err = new Error('Category not found');
