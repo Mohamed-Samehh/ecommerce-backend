@@ -8,15 +8,15 @@ http:
   url: http://localhost:3000/review
   body:
     type: json
-    data: |-
+    data: |
       {
-        "bookId": "699a120cdd5f56ce69fb0068",
-        "rating": 5,
-        "comment": "This book is amazing! Highly recommended for everyone."
+        "bookId": "699a1235dd5f56ce69fb006c",
+        "rating": 3,
+        "comment": "not like it !"
       }
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiXSwiaWF0IjoxNzcxNzg4ODYxLCJleHAiOjE3NzMwODQ4NjF9._IW9BIpwu0FszXwd7z4uC1XWnmqa0nhPJPxoA64EE-U
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3OTk3MDYsImV4cCI6MTc3MzA5NTcwNn0.JpiM4Spx4X99HKPcbKUq1MZft_jbEx4kk2uBvvxnk2g
 
 settings:
   encodeUrl: true

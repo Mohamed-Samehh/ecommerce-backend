@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: http://localhost:3000/review/book/699a120cdd5f56ce69fb0068
+  url: http://localhost:3000/review/book/699a1235dd5f56ce69fb006c
   auth:
     type: bearer
     token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiXSwiaWF0IjoxNzcxNzg4ODYxLCJleHAiOjE3NzMwODQ4NjF9._IW9BIpwu0FszXwd7z4uC1XWnmqa0nhPJPxoA64EE-U
