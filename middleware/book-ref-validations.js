@@ -17,7 +17,9 @@ const validateCategoryExsists = async (req, res, next) => {
   if (body.categories === undefined) return next();
   const categories = await Category.find({_id: {$in: body.categories}});
   if (categories.length !== body.categories.length) {
-    return res.status(404).send({status: 'fail', message: 'Category not found'});
+    const err = new Error('Category not found');
+    err.name = 'CategoryNotFoundError';
+    return next(err);
   }
   next();
 };

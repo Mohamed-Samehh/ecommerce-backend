@@ -1,5 +1,5 @@
 const asyncHandler = require('../middleware/async-handler');
-const {Book} = require('../models/index');
+const {Book,Cart} = require('../models/index');
 const cloudinaryHandler = require('../utils/coudinary-handler');
 
 // const uploadImage = async () => {
@@ -155,7 +155,6 @@ const updateBook = asyncHandler(async (req, res, next) => {
  */
 const deleteBook = asyncHandler(async (req, res, next) => {
   const {id} = req.params;
-
   const book = await Book.findOneAndUpdate({_id: id, isDeleted: false}, {isDeleted: true}, {returnDocument: 'after', runValidators: true})
     .populate('authorId', 'name bio -_id')
     .populate('categories', 'name  -_id');
@@ -164,7 +163,7 @@ const deleteBook = asyncHandler(async (req, res, next) => {
     err.name = 'BookNotFoundError';
     return next(err);
   }
-
+  Cart.updateMany({});
   res.status(200).json({status: 'Success', data: book});
 });
 
