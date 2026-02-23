@@ -22,7 +22,7 @@ const remove = asyncWrapper(async (req, res, next) => { // Delete /categories/:i
     return next(error); // err. handler
   }
 
-  const books = await Book.find({$and: [{categories: id}, {categories: {$size: 1}}]}); // check if there are books that contain 1 category (the one in need to delete)
+  const books = await Book.find({$and: [{categories: id}, {categories: {$size: 1}}]}); // check if there are books that contain 1 category (the one in need to delete),"neglect soft deleted books"
   if (books.length > 0) {
     const error = new Error(`Cannot delete: ${books.length} books only have ${category.name} category, reassign them first`);
     error.name = 'CategoryDeleteError';
