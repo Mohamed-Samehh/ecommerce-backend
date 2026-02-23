@@ -10,10 +10,12 @@ const orderSchema = Joi.object({
     })
   ).min(1).required(),
 
-  country: Joi.string().required(),
-  city: Joi.string().required(),
-  street: Joi.string().required(),
-  postalCode: Joi.string().required(),
+  shippingAddress: Joi.object({
+    country: Joi.string().required(),
+    city: Joi.string().required(),
+    street: Joi.string().required(),
+    postalCode: Joi.string().required()
+  }).required(),
 
   paymentMethod: Joi.string().valid('COD', 'Online').required()
 });
@@ -26,7 +28,7 @@ const reviewSchema = Joi.object({
 
 const statusSchema = Joi.object({
   status: Joi.string()
-    .valid('processing', 'out for delivery', 'delivered')
+    .valid('processing', 'out for delivery', 'delivered', 'cancelled')
     .required()
 });
 

@@ -1,26 +1,60 @@
 const mongoose = require('mongoose');
 
+const orderItemSchema = new mongoose.Schema({
+  bookId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Book',
+    required: true
+  },
+  bookName: {
+    type: String,
+    required: true
+  },
+  quantity: {
+    type: Number,
+    required: true,
+    min: 1
+  },
+  priceAtPurchase: {
+    type: Number,
+    required: true
+  },
+  subtotal: {
+    type: Number,
+    required: true
+  }
+}, {_id: false});
+
 const orderSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
+    index: true
   },
-  country: {
+  orderNumber: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
-  city: {
-    type: String,
-    required: true
-  },
-  street: {
-    type: String,
-    required: true
-  },
-  postalCode: {
-    type: String,
-    required: true
+  items: [orderItemSchema],
+  shippingAddress: {
+    country: {
+      type: String,
+      required: true
+    },
+    city: {
+      type: String,
+      required: true
+    },
+    street: {
+      type: String,
+      required: true
+    },
+    postalCode: {
+      type: String,
+      required: true
+    }
   },
   status: {
     type: String,
@@ -40,8 +74,16 @@ const orderSchema = new mongoose.Schema({
   },
   totalAmount: {
     type: Number,
-    required: true
+    required: true,
+    min: 0
   }
 }, {timestamps: true});
+
+orderSchema.pre('validate', async function () {
+  if (this.isNew) {
+    const count = await mongoose.model('Order').countDocuments();
+    this.orderNumber = `ORD-${Date.now()}-${count + 1}`;
+  }
+});
 
 module.exports = mongoose.model('Order', orderSchema);
