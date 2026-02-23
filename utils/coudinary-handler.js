@@ -10,6 +10,16 @@ const cloudinaryUploader = async (file) => {
   const result = await cloudinary.uploader.upload(fileStr, {
     folder: 'ecommerce/books'
   });
-  return result.secure_url;
+
+  return result;
 };
-module.exports = cloudinaryUploader;
+const deleteFromCloudinary = async (publicId) => {
+  const result = await cloudinary.uploader.destroy(publicId);
+  if (result.result !== 'ok') {
+    const error = new Error(`Failed to delete image: ${result.result}`);
+    error.name = 'CloudinaryFailedToDelete';
+    throw error;
+  }
+  return result;
+};
+module.exports = {cloudinaryUploader, deleteFromCloudinary};

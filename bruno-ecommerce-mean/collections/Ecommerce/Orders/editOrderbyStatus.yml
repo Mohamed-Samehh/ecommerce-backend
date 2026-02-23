@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "status": "delivered"
+        "paymentStatus": "success"
       }
   auth:
     type: bearer

@@ -13,6 +13,46 @@ http:
     - name: page
       value: "1"
       type: query
+    - name: authorId
+      value: 699a47a1ceb920e8fd802c5a
+      type: query
+      disabled: true
+    - name: name
+      value: ""
+      type: query
+      disabled: true
+    - name: sort
+      value: -price,name
+      type: query
+      disabled: true
+    - name: categories
+      value: 69998f217d0c770af76da95a
+      type: query
+      disabled: true
+    - name: stock
+      value: ""
+      type: query
+      disabled: true
+    - name: status
+      value: out of stock
+      type: query
+      disabled: true
+    - name: rating
+      value: ""
+      type: query
+      disabled: true
+    - name: maxPrice
+      value: "20"
+      type: query
+      disabled: true
+    - name: minPrice
+      value: ""
+      type: query
+      disabled: true
+    - name: price
+      value: ""
+      type: query
+      disabled: true
   auth: inherit
 
 settings:

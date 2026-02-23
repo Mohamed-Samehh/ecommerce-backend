@@ -67,6 +67,43 @@ const patchBookSchema = bookSchema.fork(
   ['name', 'price', 'stock', 'authorId', 'categories', 'description'],
   (field) => field.optional()
 );
+
+const bookQuerySchema = Joi.object({
+  name: Joi.string()
+    .optional(),
+  price: Joi.number()
+    .optional(),
+  stock: Joi.number()
+    .optional(),
+  authorId: Joi.string()
+    .hex()
+    .length(24)
+    .optional(),
+  categories: Joi.array()
+    .items(Joi.string())
+    .optional(),
+  limit: Joi.number()
+    .min(1)
+    .optional(),
+  page: Joi.number()
+    .min(1)
+    .optional(),
+  sort: Joi.string()
+    .valid('price', '-price', 'rating', '-rating', 'name', '-name')
+    .optional(),
+  status: Joi.string()
+    .valid('avaliable', 'out of stock', 'low stock')
+    .optional(),
+  rating: Joi.number()
+    .min(0)
+    .max(5)
+    .optional(),
+  maxPrice: Joi.number()
+    .min(Joi.ref('minPrice'))
+    .optional(),
+  minPrice: Joi.number()
+    .optional()
+});
 const userRegisterSchema = Joi.object({
   email: Joi.string().email().required(),
   firstName: Joi.string().min(2).max(50).required(),
@@ -152,5 +189,6 @@ module.exports = {
   categorySchema,
   cartSchema,
   updateCartSchema,
+  bookQuerySchema,
   verifyOtpSchema
 };

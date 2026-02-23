@@ -8,14 +8,14 @@ http:
   url: "{{baseUrl}}/books/:id"
   params:
     - name: id
-      value: 699b5d39e0ab034312668b21
+      value: 699c1593071ed1f67efd6cb8
       type: path
   body:
     type: multipart-form
     data:
       - name: name
         type: text
-        value: the andrew
+        value: i want
       - name: price
         type: text
         value: "25"
@@ -24,16 +24,17 @@ http:
         value: "10"
       - name: authorId
         type: text
-        value: 676a1234abc567def8901234
+        value: 699a47a1ceb920e8fd802c5a
       - name: categories
         type: text
-        value: 676a1234abc567def8901237
+        value: 69998f217d0c770af76da95a
       - name: categories
         type: text
-        value: 676a1234abc567def8901236
+        value: 69998f2d7d0c770af76da95c
       - name: categories
         type: text
         value: 676a1234abc567def8901238
+        disabled: true
       - name: description
         type: text
         value: A story about the American dream and the decadent lifestyle of the wealthy in the 1920s
