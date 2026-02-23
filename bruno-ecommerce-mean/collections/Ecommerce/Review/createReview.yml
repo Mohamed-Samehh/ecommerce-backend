@@ -11,8 +11,8 @@ http:
     data: |
       {
         "bookId": "699a1235dd5f56ce69fb006c",
-        "rating": 5,
-        "comment": "Great book!"
+        "rating": 3,
+        "comment": "not like it !"
       }
   auth:
     type: bearer

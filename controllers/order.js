@@ -116,8 +116,8 @@ const getAllOrders = asyncHandler(async (req, res, next) => {
 });
 
 const validTransitions = {
-  'processing': ['out for delivery', 'cancelled'],
-  'out for delivery': ['delivered'],
+  'processing': ['out for delivery', 'delivered', 'cancelled'],
+  'out for delivery': ['delivered', 'cancelled'],
   'delivered': [],
   'cancelled': []
 };

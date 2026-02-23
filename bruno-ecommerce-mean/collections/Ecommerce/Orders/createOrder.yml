@@ -13,10 +13,10 @@ http:
         "items": [
           {
             "bookId": "699a1235dd5f56ce69fb006c",
-            "quantity": 2
+            "quantity": 10
           },
           {
-            "bookId": "699a1243dd5f56ce69fb006e",
+            "bookId": "699a1249dd5f56ce69fb0070",
             "quantity": 1
           }
         ],
