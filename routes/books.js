@@ -4,12 +4,14 @@ const {bookController} = require('../controllers');
 const isAdmin = require('../middleware/admin'); // then, check the req.user.roles
 const auth = require('../middleware/auth'); // first set the req.user
 const {validateAuthorExsists, validateCategoryExsists} = require('../middleware/book-ref-validations');
+const validateQuery = require('../middleware/validate-query');
+
 const validateRequest = require('../middleware/validate-request');
-const {bookSchema, patchBookSchema} = require('../utils/validations');
+const {bookSchema, patchBookSchema, bookQuerySchema} = require('../utils/validations');
 
 const router = express.Router();
 
-router.get('/', bookController.findAllBooks);
+router.get('/', validateQuery(bookQuerySchema), bookController.findAllBooks);
 
 router.get('/:id', bookController.findBookById);
 

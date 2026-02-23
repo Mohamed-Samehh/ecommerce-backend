@@ -8,14 +8,14 @@ http:
   url: "{{baseUrl}}/books/:id"
   params:
     - name: id
-      value: 699b5d39e0ab034312668b21
+      value: 699c1593071ed1f67efd6cb8
       type: path
   body:
     type: multipart-form
     data:
       - name: name
         type: text
-        value: sameh
+        value: samoha
       - name: price
         type: text
         value: ""

@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "bookId": "699a120cdd5f56ce69fb0068",
+        "bookId": "699baeff9458c62ad99c9fc1",
         "rating": 5,
         "comment": "This book is amazing! Highly recommended for everyone."
       }

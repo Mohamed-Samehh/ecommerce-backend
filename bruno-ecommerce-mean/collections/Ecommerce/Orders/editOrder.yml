@@ -5,16 +5,16 @@ info:
 
 http:
   method: PATCH
-  url: "{{baseUrl}}/order/:id/status"
+  url: "{{baseUrl}}/order/:id/payment"
   params:
     - name: id
-      value: 699b5a3d34b7a4096b1718a0
+      value: 699bb261d3e2e53e3a4422bb
       type: path
   body:
     type: json
     data: |-
       {
-        "status": "delivered"
+        "paymentStatus": "success"
       }
   auth:
     type: bearer

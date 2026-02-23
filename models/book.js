@@ -4,7 +4,6 @@ const bookSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
     minLength: 5,
     maxLength: 200,
     trim: true
@@ -13,6 +12,10 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {validator: urlValidator, message: 'invalid image url'}
+  },
+  coverImagePublicId: {
+    type: String,
+    required: true
   },
   price: {
     type: Number,
@@ -41,12 +44,25 @@ const bookSchema = new mongoose.Schema({
     minLength: 5,
     maxLength: 2000,
     trim: true
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
   }
-
 }, {toJSON: {virtuals: true, transform(doc, ret, options) {
+  ret.id = ret._id;
+  delete ret._id;
   delete ret.__v;
   return ret;
 }}, timestamps: true});
+
+bookSchema.index(
+  {name: 1},
+  {
+    unique: true,
+    partialFilterExpression: {isDeleted: false}
+  }
+);
 
 bookSchema.virtual('status').get(function () {
   if (this.stock > 2) {
