@@ -74,16 +74,11 @@ bookSchema.virtual('status').get(function () {
   }
 });
 
-bookSchema.virtual('averageRating').get(function () {
-  const x = this;
-  // TODO: implement rating by getting the reviews and calculating the average
-  return 0;
-});
-bookSchema.virtual('review count').get(function () {
-  const x = this;
-
-  // TODO: implement by counting reviews
-  return 0;
+bookSchema.virtual('reviewCount', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'bookId',
+  count: true
 });
 /**
  *
@@ -107,3 +102,4 @@ function uniqueCategory(value) {
 const Book = mongoose.model('Book', bookSchema);
 
 module.exports = Book;
+

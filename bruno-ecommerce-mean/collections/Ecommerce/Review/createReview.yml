@@ -10,13 +10,13 @@ http:
     type: json
     data: |
       {
-        "bookId": "699a1235dd5f56ce69fb006c",
+        "bookId": "699cd37794ea975c35278633",
         "rating": 3,
         "comment": "not like it !"
       }
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3OTk3MDYsImV4cCI6MTc3MzA5NTcwNn0.JpiM4Spx4X99HKPcbKUq1MZft_jbEx4kk2uBvvxnk2g
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE4Nzk0MTEsImV4cCI6MTc3MzE3NTQxMX0.GRJExivCbO5expsIO1OTQmXutjJKELkJrN1rx-06OYk
 
 settings:
   encodeUrl: true

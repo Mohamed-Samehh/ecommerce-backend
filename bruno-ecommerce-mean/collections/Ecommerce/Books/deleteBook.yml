@@ -8,7 +8,7 @@ http:
   url: "{{baseUrl}}/books/:id"
   params:
     - name: id
-      value: 699c1593071ed1f67efd6cb8
+      value: 699cd3eb09ac38e16848a11f
       type: path
   auth:
     type: bearer

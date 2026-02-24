@@ -18,7 +18,7 @@ http:
       type: query
       disabled: true
     - name: name
-      value: ""
+      value: sleep
       type: query
       disabled: true
     - name: sort

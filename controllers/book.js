@@ -1,5 +1,5 @@
 const asyncHandler = require('../middleware/async-handler');
-const {Book, Cart} = require('../models/index');
+const {Book} = require('../models/index');
 const cloudinaryHandler = require('../utils/coudinary-handler');
 
 // const uploadImage = async () => {
@@ -21,10 +21,6 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
     sortBy = sort.split(',').join(' ');
   }
   const filters = [];
-  //  these lines prevent two things :
-  //  1.the user entering strings not numbers thus the || 10 since the or get the first truthy value
-  //  2.it limits the maximum of what a user can ask in the limit to not dump the whole db
-  //  3.it also prevnts the limit from being under 1 and for page to be negative
 
   const limitQuery = Math.min(Math.max(Number(limit) || 10, 1), 100);
   const pageQuery = Math.max(Number(page) || 1, 1);
@@ -44,14 +40,50 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
   if (statusQuery)filters.push(statusQuery);
   if (name) filters.push({name: {$regex: name, $options: 'i'}});
   if (query)filters.push(query);
+  filters.push({isDeleted: false});
   const finalQuery = filters.length > 0 ? {$and: filters} : {};
   console.log(finalQuery);
   const books = await Book.find(finalQuery)
     .populate('authorId', 'name bio -_id')
     .populate('categories', 'name  -_id')
+    .populate('reviewCount')
+    .select('-isDeleted')
     .sort(sortBy || {createdAt: -1})
     .skip((pageQuery - 1) * limitQuery)
     .limit(limitQuery);
+  //  const aggregateBooks = await Book.aggregate([
+  //     {
+  //       $match: finalQuery
+  //     },
+  //     {
+  //       $lookup: {
+  //         from: 'reviews',
+  //         localField: '_id',
+  //         foreignField: 'bookId',
+  //         as: 'review'
+  //       }
+  //     },
+  //     {
+
+  //       $addFields: {
+  //         averageRating: {$ifNull: [{$avg: '$review.rating'}, 0]}
+  //         reviewCount:{$count:review}
+
+  //       }
+
+  //     },
+  //     {
+  //       $project: {
+  //         review: 0,
+  //         isDeleted: 0,
+
+  //       }
+  //     },
+  //     { $sort: sortBy ? parseSortBy(sortBy) : { createdAt: -1 } },
+  //     { $skip: (pageQuery - 1) * limitQuery },
+  //   { $limit: limitQuery }
+
+  //   ]);
 
   if (!books.length) {
     const err = new Error('No books found');
@@ -163,7 +195,7 @@ const deleteBook = asyncHandler(async (req, res, next) => {
     err.name = 'BookNotFoundError';
     return next(err);
   }
-  Cart.updateMany({});
+
   res.status(200).json({status: 'Success', data: book});
 });
 
