@@ -18,7 +18,7 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
 
   let sortBy;
   if (sort) {
-    sortBy = sort.split(',').join(' ');
+    sortBy = JSON.parse(sort);
   }
   const filters = [];
 
@@ -43,47 +43,47 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
   filters.push({isDeleted: false});
   const finalQuery = filters.length > 0 ? {$and: filters} : {};
   console.log(finalQuery);
-  const books = await Book.find(finalQuery)
-    .populate('authorId', 'name bio -_id')
-    .populate('categories', 'name  -_id')
-    .populate('reviewCount')
-    .select('-isDeleted')
-    .sort(sortBy || {createdAt: -1})
-    .skip((pageQuery - 1) * limitQuery)
-    .limit(limitQuery);
-  //  const aggregateBooks = await Book.aggregate([
-  //     {
-  //       $match: finalQuery
-  //     },
-  //     {
-  //       $lookup: {
-  //         from: 'reviews',
-  //         localField: '_id',
-  //         foreignField: 'bookId',
-  //         as: 'review'
-  //       }
-  //     },
-  //     {
+  // const books = await Book.find(finalQuery)
+  //   .populate('authorId', 'name bio -_id')
+  //   .populate('categories', 'name  -_id')
+  //   .populate('reviewCount')
+  //   .select('-isDeleted')
+  //   .sort(sortBy || {createdAt: -1})
+  //   .skip((pageQuery - 1) * limitQuery)
+  //   .limit(limitQuery);
+  console.log(sortBy);
+  const books = await Book.aggregate([
+    {
+      $match: finalQuery
+    },
+    {
+      $lookup: {
+        from: 'reviews',
+        localField: '_id',
+        foreignField: 'bookId',
+        as: 'review'
+      }
+    },
+    {
 
-  //       $addFields: {
-  //         averageRating: {$ifNull: [{$avg: '$review.rating'}, 0]}
-  //         reviewCount:{$count:review}
+      $addFields: {
+        averageRating: {$ifNull: [{$avg: '$review.rating'}, 0]},
+        reviewCount: {$size: '$review'}
+      }
 
-  //       }
+    },
+    {
+      $project: {
+        review: 0,
+        isDeleted: 0
 
-  //     },
-  //     {
-  //       $project: {
-  //         review: 0,
-  //         isDeleted: 0,
+      }
+    },
+    {$sort: sortBy || {createdAt: -1}},
+    {$skip: (pageQuery - 1) * limitQuery},
+    {$limit: limitQuery}
 
-  //       }
-  //     },
-  //     { $sort: sortBy ? parseSortBy(sortBy) : { createdAt: -1 } },
-  //     { $skip: (pageQuery - 1) * limitQuery },
-  //   { $limit: limitQuery }
-
-  //   ]);
+  ]);
 
   if (!books.length) {
     const err = new Error('No books found');
