@@ -1,6 +1,5 @@
 const asyncHandler = require('../middleware/async-handler');
 const {Book} = require('../models/index');
-const cloudinaryHandler = require('../utils/coudinary-handler');
 
 // const uploadImage = async () => {
 //   const result = await cloudinary.uploader.upload('path-to-your-image');
@@ -42,16 +41,6 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
   if (query)filters.push(query);
   filters.push({isDeleted: false});
   const finalQuery = filters.length > 0 ? {$and: filters} : {};
-  console.log(finalQuery);
-  // const books = await Book.find(finalQuery)
-  //   .populate('authorId', 'name bio -_id')
-  //   .populate('categories', 'name  -_id')
-  //   .populate('reviewCount')
-  //   .select('-isDeleted')
-  //   .sort(sortBy || {createdAt: -1})
-  //   .skip((pageQuery - 1) * limitQuery)
-  //   .limit(limitQuery);
-  console.log(sortBy);
   const books = await Book.aggregate([
     {
       $match: finalQuery
@@ -120,9 +109,8 @@ const findBookById = asyncHandler(async (req, res, next) => {
 const createBook = asyncHandler(async (req, res) => {
   const {body} = req;
 
-  const result = await cloudinaryHandler.cloudinaryUploader(req.file);
-  body.coverImage = result.secure_url;
-  body.coverImagePublicId = result.public_id;
+  body.coverImage = req.secure_url;
+  body.coverImagePublicId = req.public_id;
   console.log(body.coverImage);
   console.log(body.coverImagePublicId);
   const book = await Book.create(body);
@@ -139,10 +127,8 @@ const replaceBook = asyncHandler(async (req, res, next) => {
   const {body} = req;
   const {id} = req.params;
 
-  const result = await cloudinaryHandler.cloudinaryUploader(req.file);
-  console.log(result);
-  body.coverImage = result.secure_url;
-  body.coverImagePublicId = result.public_id;
+  body.coverImage = req.secure_url;
+  body.coverImagePublicId = req.public_id;
   console.log(body.coverImage);
   const book = await Book.findOneAndReplace({_id: id}, body, {returnDocument: 'after', runValidators: true})
     .populate('authorId', 'name bio -_id')
@@ -165,9 +151,8 @@ const updateBook = asyncHandler(async (req, res, next) => {
   const {id} = req.params;
 
   if (req.file) {
-    const result = await cloudinaryHandler.cloudinaryUploader(req.file);
-    body.coverImage = result.secure_url;
-    body.coverImagePublicId = result.public_id;
+    body.coverImage = req.secure_url;
+    body.coverImagePublicId = req.public_id;
   }
   const book = await Book.findOneAndUpdate({_id: id}, body, {returnDocument: 'after', runValidators: true})
     .populate('authorId', 'name bio -_id')
