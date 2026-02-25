@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const asyncHandler = require('../middleware/async-handler');
-const { Book, Order } = require('../models');
+const {Book, Order} = require('../models');
 
 const placeOrder = asyncHandler(async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const { items, shippingAddress, paymentMethod = 'COD' } = req.body;
-    const { country, city, street, postalCode } = shippingAddress;
+    const {items, shippingAddress, paymentMethod = 'COD'} = req.body;
+    const {country, city, street, postalCode} = shippingAddress;
     const userId = req.user.id;
 
     if (!items || items.length === 0) {
@@ -46,7 +46,7 @@ const placeOrder = asyncHandler(async (req, res, next) => {
       }
 
       book.stock -= item.quantity;
-      await book.save({ session });
+      await book.save({session});
 
       const subtotal = book.price * item.quantity;
       totalAmount += subtotal;
@@ -74,7 +74,7 @@ const placeOrder = asyncHandler(async (req, res, next) => {
       paymentStatus: paymentMethod === 'Online' ? 'success' : 'pending'
     });
 
-    await newOrder.save({ session });// ✅ This triggers the pre-save hook
+    await newOrder.save({session});
 
     await session.commitTransaction();
 
@@ -91,7 +91,7 @@ const placeOrder = asyncHandler(async (req, res, next) => {
 });
 
 const getMyOrders = asyncHandler(async (req, res, next) => {
-  const orders = await Order.find({ userId: req.user.id })
+  const orders = await Order.find({userId: req.user.id})
     .populate('items.bookId', 'name coverImage')
     .sort('-createdAt');
 
@@ -123,7 +123,7 @@ const validTransitions = {
 };
 
 const updateOrderStatus = asyncHandler(async (req, res, next) => {
-  const { status } = req.body;
+  const {status} = req.body;
 
   const order = await Order.findById(req.params.id)
     .populate('userId', 'firstName lastName email')
@@ -151,12 +151,12 @@ const updateOrderStatus = asyncHandler(async (req, res, next) => {
       for (const item of order.items) {
         await Book.findByIdAndUpdate(
           item.bookId,
-          { $inc: { stock: item.quantity } },
-          { session }
+          {$inc: {stock: item.quantity}},
+          {session}
         );
       }
       order.status = status;
-      await order.save({ session });
+      await order.save({session});
       await session.commitTransaction();
     } catch (error) {
       await session.abortTransaction();
@@ -176,11 +176,11 @@ const updateOrderStatus = asyncHandler(async (req, res, next) => {
 });
 
 const updatePaymentStatus = asyncHandler(async (req, res, next) => {
-  const { paymentStatus } = req.body;
+  const {paymentStatus} = req.body;
 
   const order = await Order.findByIdAndUpdate(
     req.params.id,
-    { paymentStatus },
+    {paymentStatus},
     {
       new: true,
       runValidators: true

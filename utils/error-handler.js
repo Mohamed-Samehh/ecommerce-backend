@@ -119,5 +119,21 @@ module.exports = [
       status: 'Fail',
       message: err.message
     })
+  },
+  {
+    match: (err) => err.name === 'OrderNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      message: err.message
+    })
+  },
+  {
+    match: (err) => err.name === 'ReviewNotFoundError',
+    handler: (err) => ({
+      statusCode: 404,
+      status: 'Fail',
+      message: err.message
+    })
   }
 ];
