@@ -89,7 +89,7 @@ const bookQuerySchema = Joi.object({
     .min(1)
     .optional(),
   sort: Joi.string()
-    .valid('price', '-price', 'rating', '-rating', 'name', '-name')
+  // .valid('price', '-price', 'rating', '-rating', 'name', '-name')
     .optional(),
   status: Joi.string()
     .valid('avaliable', 'out of stock', 'low stock')

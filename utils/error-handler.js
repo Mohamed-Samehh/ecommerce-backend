@@ -159,5 +159,13 @@ module.exports = [
       status: 'Fail',
       errors: err.message
     })
+  },
+  {
+    match: (err) => err.name === 'CategoryNotUnique',
+    handler: (err) => ({
+      statusCode: 400,
+      status: 'Fail',
+      errors: err.message
+    })
   }
 ];

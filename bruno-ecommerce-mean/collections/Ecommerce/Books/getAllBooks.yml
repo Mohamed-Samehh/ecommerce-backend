@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/books?limit=50&page=1"
+  url: '{{baseUrl}}/books?limit=50&page=1&sort={"averageRating":-1}'
   params:
     - name: limit
       value: "50"
@@ -18,13 +18,12 @@ http:
       type: query
       disabled: true
     - name: name
-      value: ""
+      value: sleep
       type: query
       disabled: true
     - name: sort
-      value: -price,name
+      value: '{"averageRating":-1}'
       type: query
-      disabled: true
     - name: categories
       value: 69998f217d0c770af76da95a
       type: query

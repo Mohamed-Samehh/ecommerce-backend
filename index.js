@@ -6,6 +6,7 @@ const errorHandler = require('./utils/error-handler');
 const logger = require('./utils/logger');
 require('dotenv').config({path: './config/.env'});
 const routes = require('./routes');
+const {deleteFromCloudinary} = require('./utils/cloudinary-handler');
 
 const app = express();
 
@@ -15,10 +16,13 @@ app.use(routes);
 
 app.use((err, req, res, next) => {
   const handler = errorHandler.find((e) => e.match(err));
-
+  if (req.public_id) {
+    deleteFromCloudinary(req.public_id);
+  }
   if (handler) {
     const {statusCode, ...body} = handler.handler(err);
     logger.error(err);
+
     return res.status(statusCode).json(body);
   }
 

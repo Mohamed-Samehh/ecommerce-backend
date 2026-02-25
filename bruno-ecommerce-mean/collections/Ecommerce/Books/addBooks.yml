@@ -20,7 +20,7 @@ http:
         value: "10"
       - name: authorId
         type: text
-        value: 699a47a1ceb920e8fd802c5a
+        value: 699cd37694ea975c35278619
       - name: categories
         type: text
         value: 69998f217d0c770af76da95a
