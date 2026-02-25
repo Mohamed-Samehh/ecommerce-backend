@@ -1,5 +1,5 @@
 const asyncHandler = require('../middleware/async-handler');
-const {Author} = require('../models/index');
+const {Author, Book} = require('../models/index');
 
 const findAllAuthors = asyncHandler(async (req, res, next) => {
   //  these lines prevent two things :
@@ -71,12 +71,13 @@ const updateAuthor = asyncHandler(async (req, res, next) => {
 const deleteAuthor = asyncHandler(async (req, res, next) => {
   const {id} = req.params;
 
-  const author = await Author.findOneAndDelete({_id: id});
+  const author = await Author.findByIdAndDelete({_id: id});
   if (!author) {
     const err = new Error('No authors found');
     err.name = 'AuthorNotFoundError';
     return next(err);
   }
+  await Book.updateMany({authorId: id}, {isDeleted: true});
   res.status(201).json({status: 'Success', data: author});
 });
 module.exports = {

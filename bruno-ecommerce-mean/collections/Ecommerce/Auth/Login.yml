@@ -1,18 +1,18 @@
 info:
   name: Login
   type: http
-  seq: 2
+  seq: 3
 
 http:
   method: POST
-  url: http://localhost:3000/auth/login
+  url: "{{baseUrl}}/auth/login"
   body:
     type: json
     data: |-
       {
 
-        "email": "alaa378@example.com",
-        "password": "123456789"
+        "email": "mohamed.kholy2011@gmail.com",
+        "password": "123456"
 
       }
   auth: inherit

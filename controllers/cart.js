@@ -1,106 +1,127 @@
+const asyncWrapper = require('../middleware/async-handler');
 const {Cart, Book} = require('../models');
 
-async function add(req, res, next) { // Post /cart (logged in user)
+const add = asyncWrapper(async (req, res, next) => { // Post /cart (logged in user)
   const {id} = req.user; // get user from token
   const {bookId} = req.body; // validated by Joi
   const quantity = Number(req.body.quantity);
-  try {
-    const myBook = await Book.findById(bookId); // check book exists in DB
 
-    if (!myBook)
-      return res.status(404).send({status: 'fail', message: 'Book not found'});
+  const myBook = await Book.findById(bookId); // check book exists in DB
+  if (!myBook || myBook.isDeleted) {
+    const error = new Error('Book not found');
+    error.name = 'BookNotFoundError';
+    return next(error); // err. handler
+  }
 
-    const myCart = await Cart.findOneAndUpdate({user: id}, {}, {upsert: true, new: true}); // find user's cart or create new one
+  const myCart = await Cart.findOneAndUpdate({user: id}, {}, {upsert: true, new: true}); // find user's cart or create new one
+  const bookInCart = myCart.items.find((item) => bookId === item.book.toString()); // check if book already in cart
 
-    const bookInCart = myCart.items.find((item) => bookId === item.book.toString()); // check if book already in cart
-
-    if (!bookInCart) {
-      if (myBook.stock < quantity) // if new book => check stock
-        return res.status(400).send({status: 'fail', message: 'Not enough stock'});
-
-      myCart.items.push({book: bookId, quantity});
-    } else {
-      if (myBook.stock < bookInCart.quantity + quantity) // if not new => check quant. of book in cart and desired quant.
-        return res.status(400).send({status: 'fail', message: 'Not enough stock'});
-      bookInCart.quantity += quantity;
+  if (!bookInCart) {
+    if (myBook.stock < quantity) { // if new book => check stock
+      const error = new Error('Stock not enough');
+      error.name = 'InsufficientStockError';
+      return next(error); // err. handler
     }
-    await myCart.save();
-
-    res.status(200).send({status: 'success', data: myCart});
-  } catch (error) {
-    next(error);
+    myCart.items.push({book: bookId, quantity});
+  } else {
+    if (myBook.stock < bookInCart.quantity + quantity) { // if not new => check quant. of book in cart and desired quant.
+      const error = new Error('Stock not enough');
+      error.name = 'InsufficientStockError';
+      return next(error); // err. handler
+    }
+    bookInCart.quantity += quantity;
   }
-}
+  await myCart.save();
+  res.status(200).send({status: 'success', data: myCart});
+});
 
-async function display(req, res, next) { // Get /cart (logged in user)
+const display = asyncWrapper(async (req, res) => { // Get /cart (logged in user)
   const {id} = req.user;
-  try {
-    const userBooks = await Cart.findOne({user: id}).populate('items.book'); // search by user ref. & use populate to show book details for frontend
-    if (!userBooks) return res.status(200).send({status: 'success', data: {items: []}});
+  const userBooks = await Cart.findOne({user: id}).populate('items.book'); // search by user ref. & use populate to show book details for frontend
+  if (!userBooks) return res.status(200).send({status: 'success', data: {items: []}});
 
-    res.status(200).send({status: 'success', data: userBooks}); // items array contain each book details and quantity
-  } catch (error) {
-    next(error);
-  }
-}
+  userBooks.items = userBooks.items.filter((item) => item.book && !item.book.isDeleted);
+  res.status(200).send({status: 'success', data: userBooks}); // items array contain each book details and quantity
+});
 
-async function remove(req, res, next) { // Delete /cart/:bookId (logged in user)
-  console.log('in remove');
+const remove = asyncWrapper(async (req, res, next) => { // Delete /cart/:bookId (logged in user)
   const {id} = req.user;
   const {bookId} = req.params;
 
-  try {
-    const myCart = await Cart.findOne({user: id});
-    if (!myCart) {
-      return res.status(404).send({status: 'fail', message: 'Cart not found'});
-    }
-
-    const bookIndex = myCart.items.findIndex((item) => item.book.toString() === bookId); // We find the position of the book in the items array
-
-    if (bookIndex === -1) {
-      return res.status(404).send({status: 'fail', message: 'Book not found in cart'});
-    }
-
-    myCart.items.splice(bookIndex, 1); // pull book from items array
-
-    await myCart.save();
-    res.status(200).send({status: 'success', data: myCart});
-  } catch (error) {
-    next(error);
+  const myCart = await Cart.findOne({user: id});
+  if (!myCart) {
+    const error = new Error('Cart not found');
+    error.name = 'CartNotFoundError';
+    return next(error); // err. handler
   }
-}
 
-async function update(req, res, next) {
-  try {
-    const {id} = req.user;
-    const {bookId} = req.params;
-    const quantity = Number(req.body.quantity);
-
-    const myCart = await Cart.findOne({user: id}); // find user's cart
-    if (!myCart) return res.status(404).send({status: 'fail', message: 'Cart not found'});
-
-    const bookInCart = myCart.items.find((item) => bookId === item.book.toString()); // check if book already in cart
-
-    if (!bookInCart) {
-      return res.status(404).send({status: 'fail', message: 'Book not found in cart'});
-    } else {
-      const myBook = await Book.findById(bookId); // check book exists in DB
-
-      if (myBook.stock < quantity) // new quantity must not exceed stock
-        return res.status(400).send({status: 'fail', message: 'Not enough stock'});
-      bookInCart.quantity = quantity; // replace old quantity with new value
-    }
-    await myCart.save();
-
-    res.status(200).send({status: 'success', data: myCart});
-  } catch (error) {
-    next(error);
+  const bookIndex = myCart.items.findIndex((item) => item.book.toString() === bookId); // We find the position of the book in the items array
+  if (bookIndex === -1) {
+    const error = new Error('Book not found in cart');
+    error.name = 'BookNotInCartError';
+    return next(error); // err. handler
   }
+
+  myCart.items.splice(bookIndex, 1); // pull book from items array
+  await myCart.save();
+  res.status(200).send({status: 'success', data: myCart});
+});
+
+const update = asyncWrapper(async (req, res, next) => { // Patch /cart/:bookId (logged in user)
+  const {id} = req.user;
+  const {bookId} = req.params;
+  const quantity = Number(req.body.quantity);
+
+  const myCart = await Cart.findOne({user: id}); // find user's cart
+  if (!myCart) {
+    const error = new Error('Cart not found');
+    error.name = 'CartNotFoundError';
+    return next(error); // err. handler
+  }
+
+  const bookInCart = myCart.items.find((item) => bookId === item.book.toString()); // check if book already in cart
+  if (!bookInCart) {
+    const error = new Error('Book not found in cart');
+    error.name = 'BookNotInCartError';
+    return next(error); // err. handler
+  }
+
+  const myBook = await Book.findById(bookId); // check book exists in DB
+  if (!myBook || myBook.isDeleted) { // ← add isDeleted check
+    const error = new Error('Book not found');
+    error.name = 'BookNotFoundError';
+    return next(error); // err. handler
+  }
+  if (myBook.stock < quantity) { // new quantity must not exceed stock
+    const error = new Error('Stock not enough');
+    error.name = 'InsufficientStockError';
+    return next(error); // err. handler
+  }
+
+  bookInCart.quantity = quantity; // replace old quantity with new value
+  await myCart.save();
+  res.status(200).send({status: 'success', data: myCart});
+});
+
+const count = asyncWrapper(async (req, res) => { // for navbar
+  const {id} = req.user;
+  const myCart = await Cart.findOne({user: id});
+  if (!myCart) return res.status(200).send({status: 'success', data: {count: 0}});
+  res.status(200).send({status: 'success', data: {count: myCart.items.length}});
+});
+
+async function removeBookFromAllCarts(bookId) { // utility for book delete
+  await Cart.updateMany(
+    {'items.book': bookId},
+    {$pull: {items: {book: bookId}}}
+  );
 }
 
 module.exports = {
   add,
   display,
   remove,
-  update
+  update,
+  count,
+  removeBookFromAllCarts
 };
