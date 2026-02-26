@@ -93,7 +93,6 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
     {
       $project: {
         review: 0,
-        isDeleted: 0,
         authorId: 0,
         categories: 0
 
