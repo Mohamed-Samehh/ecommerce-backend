@@ -56,6 +56,24 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
     },
     {
       $lookup: {
+        from: 'categories',
+        localField: 'categories',
+        foreignField: '_id',
+        as: 'categories',
+        pipeline: [{$project: {_id: 0, name: 1}}]
+      }
+    },
+    {
+      $lookup: {
+        from: 'authors',
+        localField: 'authorId',
+        foreignField: '_id',
+        as: 'author',
+        pipeline: [{$project: {_id: 0, name: 1}}]
+      }
+    },
+    {
+      $lookup: {
         from: 'reviews',
         localField: '_id',
         foreignField: 'bookId',
@@ -65,6 +83,8 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
     {
 
       $addFields: {
+        categoryies: {$map: {input: '$categories', as: 'cat', in: '$$cat.name'}},
+        author: {$arrayElemAt: ['$author.name', 0]},
         averageRating: {$ifNull: [{$avg: '$review.rating'}, 0]},
         reviewCount: {$size: '$review'}
       }
@@ -73,7 +93,8 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
     {
       $project: {
         review: 0,
-        isDeleted: 0
+        authorId: 0,
+        categories: 0
 
       }
     },

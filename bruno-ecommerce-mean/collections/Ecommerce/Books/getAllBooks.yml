@@ -5,28 +5,31 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/books?limit=50&page=1&sort=name&categories=69998f2d7d0c770af76da95c"
+  url: "{{baseUrl}}/books?name=Elan&"
   params:
+    - name: name
+      value: Elan
+      type: query
+    - name: categories
+      value: 69999ee2503abc04dbdf6647
+      type: query
+      disabled: true
     - name: limit
       value: "50"
       type: query
+      disabled: true
     - name: page
       value: "1"
       type: query
+      disabled: true
     - name: authorId
       value: 699a47a1ceb920e8fd802c5a
-      type: query
-      disabled: true
-    - name: name
-      value: sleep
       type: query
       disabled: true
     - name: sort
       value: name
       type: query
-    - name: categories
-      value: 69998f2d7d0c770af76da95c
-      type: query
+      disabled: true
     - name: stock
       value: ""
       type: query
