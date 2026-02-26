@@ -70,40 +70,39 @@ const patchBookSchema = bookSchema.fork(
 
 const bookQuerySchema = Joi.object({
   name: Joi.string()
+    .max(100)
+    .trim()
     .optional(),
-  price: Joi.number()
+  minPrice: Joi.number()
+    .min(0)
+    .max(999999)
     .optional(),
-  stock: Joi.number()
+  maxPrice: Joi.number()
+    .min(0)
+    .max(999999)
     .optional(),
-  authorId: Joi.string()
-    .hex()
-    .length(24)
-    .optional(),
-  categories: Joi.array()
-    .items(Joi.string())
+  status: Joi.string()
+    .valid('available', 'out of stock', 'low stock')
     .optional(),
   limit: Joi.number()
     .min(1)
+    .max(100)
+    .default(10)
     .optional(),
   page: Joi.number()
     .min(1)
+    .max(10000)
+    .default(1)
     .optional(),
   sort: Joi.string()
-  // .valid('price', '-price', 'rating', '-rating', 'name', '-name')
+    .valid('price', '-price', 'rating', '-rating', 'name', '-name', 'stock', '-stock', 'newest', 'oldest')
     .optional(),
-  status: Joi.string()
-    .valid('avaliable', 'out of stock', 'low stock')
-    .optional(),
-  rating: Joi.number()
-    .min(0)
-    .max(5)
-    .optional(),
-  maxPrice: Joi.number()
-    .min(Joi.ref('minPrice'))
-    .optional(),
-  minPrice: Joi.number()
+  categories: Joi.array()
+    .items(mongoId)
+    .single()
     .optional()
 });
+
 const userRegisterSchema = Joi.object({
   email: Joi.string().email().required(),
   firstName: Joi.string().min(2).max(50).required(),

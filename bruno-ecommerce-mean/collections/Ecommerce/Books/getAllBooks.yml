@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: '{{baseUrl}}/books?limit=50&page=1&sort={"averageRating":-1}'
+  url: "{{baseUrl}}/books?limit=50&page=1&sort=name&categories=69998f2d7d0c770af76da95c"
   params:
     - name: limit
       value: "50"
@@ -22,12 +22,11 @@ http:
       type: query
       disabled: true
     - name: sort
-      value: '{"averageRating":-1}'
+      value: name
       type: query
     - name: categories
-      value: 69998f217d0c770af76da95a
+      value: 69998f2d7d0c770af76da95c
       type: query
-      disabled: true
     - name: stock
       value: ""
       type: query
