@@ -13,12 +13,21 @@ const {Book} = require('../models/index');
  * @param {NextFunction} next -next middle ware pointer
  */
 const findAllBooks = asyncHandler(async (req, res, next) => {
-  const {limit, page, sort, minPrice, maxPrice, status, name, ...query} = req.query;
+  const {limit, page, sort, minPrice, maxPrice, status, categories, name, ...query} = req.query;
 
-  let sortBy;
-  if (sort) {
-    sortBy = JSON.parse(sort);
-  }
+  const allowedSortFields = {
+    'price': {price: 1},
+    '-price': {price: -1},
+    'rating': {averageRating: 1},
+    '-rating': {averageRating: -1},
+    'name': {name: 1},
+    '-name': {name: -1},
+    'stock': {stock: 1},
+    '-stock': {stock: -1},
+    'newest': {createdAt: -1},
+    'oldest': {createdAt: 1}
+  };
+  const sortBy = allowedSortFields[sort] || {createdAt: -1};
   const filters = [];
 
   const limitQuery = Math.min(Math.max(Number(limit) || 10, 1), 100);
@@ -68,7 +77,7 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
 
       }
     },
-    {$sort: sortBy || {createdAt: -1}},
+    {$sort: sortBy},
     {$skip: (pageQuery - 1) * limitQuery},
     {$limit: limitQuery}
 

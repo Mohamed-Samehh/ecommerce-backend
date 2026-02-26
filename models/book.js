@@ -102,4 +102,3 @@ function uniqueCategory(value) {
 const Book = mongoose.model('Book', bookSchema);
 
 module.exports = Book;
-
