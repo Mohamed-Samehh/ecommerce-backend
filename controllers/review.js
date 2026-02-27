@@ -62,4 +62,17 @@ const deleteReview = asyncHandler(async (req, res, next) => {
   res.status(204).send();
 });
 
-module.exports = {addReview, getBookReviews, deleteReview, getMyReviews};
+const getAllReviews = asyncHandler(async (req, res, next) => {
+  const reviews = await Review.find()
+    .populate('userId', 'firstName lastName avatar')
+    .populate('bookId', 'name coverImage')
+    .sort({createdAt: -1});
+
+  res.status(200).json({
+    status: 'success',
+    results: reviews.length,
+    data: reviews
+  });
+});
+
+module.exports = {addReview, getBookReviews, deleteReview, getMyReviews, getAllReviews};
