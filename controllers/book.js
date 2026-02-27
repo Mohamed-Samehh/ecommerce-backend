@@ -1,6 +1,6 @@
+const mongoose = require('mongoose');
 const asyncHandler = require('../middleware/async-handler');
 const {Book} = require('../models/index');
-
 // const uploadImage = async () => {
 //   const result = await cloudinary.uploader.upload('path-to-your-image');
 //   const url = cloudinary.url(result.public_id);
@@ -13,7 +13,7 @@ const {Book} = require('../models/index');
  * @param {NextFunction} next -next middle ware pointer
  */
 const findAllBooks = asyncHandler(async (req, res, next) => {
-  const {limit, page, sort, minPrice, maxPrice, status, categories, name, ...query} = req.query;
+  const {limit, page, sort, minPrice, maxPrice, status, name, categories, authorId} = req.query;
 
   const allowedSortFields = {
     'price': {price: 1},
@@ -47,7 +47,14 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
   if (maxPrice)filters.push({price: {$lte: Number(maxPrice)}});
   if (statusQuery)filters.push(statusQuery);
   if (name) filters.push({name: {$regex: name, $options: 'i'}});
-  if (query)filters.push(query);
+  if (categories) {
+    const castedCategories = new mongoose.Types.ObjectId(categories);
+    filters.push({categories: castedCategories});
+  }
+  if (authorId) {
+    const castedAuthorId = new mongoose.Types.ObjectId(authorId);
+    filters.push({authorId: castedAuthorId});
+  }
   filters.push({isDeleted: false});
   const finalQuery = filters.length > 0 ? {$and: filters} : {};
   const books = await Book.aggregate([
@@ -86,7 +93,10 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
         categoryies: {$map: {input: '$categories', as: 'cat', in: '$$cat.name'}},
         author: {$arrayElemAt: ['$author.name', 0]},
         averageRating: {$ifNull: [{$avg: '$review.rating'}, 0]},
-        reviewCount: {$size: '$review'}
+        reviewCount: {$size: '$review'},
+        status: {
+          $cond: {if: {$gt: ['$stock', 2]}, then: 'avaliable', else: {$cond: {if: {$eq: ['$stock', 0]}, then: 'out of stock', else: 'low stock'}}}
+        }
       }
 
     },

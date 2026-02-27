@@ -5,15 +5,8 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/books?name=Elan&"
+  url: "{{baseUrl}}/books?authorId=699cd37694ea975c3527861b"
   params:
-    - name: name
-      value: Elan
-      type: query
-    - name: categories
-      value: 69999ee2503abc04dbdf6647
-      type: query
-      disabled: true
     - name: limit
       value: "50"
       type: query
@@ -22,23 +15,11 @@ http:
       value: "1"
       type: query
       disabled: true
-    - name: authorId
-      value: 699a47a1ceb920e8fd802c5a
-      type: query
-      disabled: true
     - name: sort
       value: name
       type: query
       disabled: true
-    - name: stock
-      value: ""
-      type: query
-      disabled: true
-    - name: status
-      value: out of stock
-      type: query
-      disabled: true
-    - name: rating
+    - name: minPrice
       value: ""
       type: query
       disabled: true
@@ -46,12 +27,19 @@ http:
       value: "20"
       type: query
       disabled: true
-    - name: minPrice
-      value: ""
+    - name: status
+      value: available
       type: query
       disabled: true
-    - name: price
-      value: ""
+    - name: categories
+      value: 69998f217d0c770af76da95a
+      type: query
+      disabled: true
+    - name: authorId
+      value: 699cd37694ea975c3527861b
+      type: query
+    - name: name
+      value: Elan
       type: query
       disabled: true
   auth: inherit
