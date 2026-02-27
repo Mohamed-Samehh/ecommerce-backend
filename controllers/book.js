@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const asyncHandler = require('../middleware/async-handler');
 const {Book} = require('../models/index');
 // const uploadImage = async () => {
@@ -13,113 +12,17 @@ const {Book} = require('../models/index');
  * @param {NextFunction} next -next middle ware pointer
  */
 const findAllBooks = asyncHandler(async (req, res, next) => {
-  const {limit, page, sort, minPrice, maxPrice, status, name, categories, authorId} = req.query;
+  const {data, totalBooks} = await Book.findAllBooks(req.query);
 
-  const allowedSortFields = {
-    'price': {price: 1},
-    '-price': {price: -1},
-    'rating': {averageRating: 1},
-    '-rating': {averageRating: -1},
-    'name': {name: 1},
-    '-name': {name: -1},
-    'stock': {stock: 1},
-    '-stock': {stock: -1},
-    'newest': {createdAt: -1},
-    'oldest': {createdAt: 1}
-  };
-  const sortBy = allowedSortFields[sort] || {createdAt: -1};
-  const filters = [];
-
-  const limitQuery = Math.min(Math.max(Number(limit) || 10, 1), 100);
-  const pageQuery = Math.max(Number(page) || 1, 1);
-
-  let statusQuery;
-  if (status) {
-    if (status === 'available') {
-      statusQuery = {stock: {$gt: 2}};
-    } else if (status === 'out of stock') {
-      statusQuery = {stock: {$eq: 0}};
-    } else {
-      statusQuery = {$and: [{stock: {$lt: 2}}, {stock: {$gt: 0}}]};
-    }
-  }
-  if (minPrice)filters.push({price: {$gte: Number(minPrice)}});
-  if (maxPrice)filters.push({price: {$lte: Number(maxPrice)}});
-  if (statusQuery)filters.push(statusQuery);
-  if (name) filters.push({name: {$regex: name, $options: 'i'}});
-  if (categories) {
-    const castedCategories = new mongoose.Types.ObjectId(categories);
-    filters.push({categories: castedCategories});
-  }
-  if (authorId) {
-    const castedAuthorId = new mongoose.Types.ObjectId(authorId);
-    filters.push({authorId: castedAuthorId});
-  }
-  filters.push({isDeleted: false});
-  const finalQuery = filters.length > 0 ? {$and: filters} : {};
-  const books = await Book.aggregate([
-    {
-      $match: finalQuery
-    },
-    {
-      $lookup: {
-        from: 'categories',
-        localField: 'categories',
-        foreignField: '_id',
-        as: 'categories',
-        pipeline: [{$project: {_id: 0, name: 1}}]
-      }
-    },
-    {
-      $lookup: {
-        from: 'authors',
-        localField: 'authorId',
-        foreignField: '_id',
-        as: 'author',
-        pipeline: [{$project: {_id: 0, name: 1}}]
-      }
-    },
-    {
-      $lookup: {
-        from: 'reviews',
-        localField: '_id',
-        foreignField: 'bookId',
-        as: 'review'
-      }
-    },
-    {
-
-      $addFields: {
-        categories: {$map: {input: '$categories', as: 'cat', in: '$$cat.name'}},
-        author: {$arrayElemAt: ['$author.name', 0]},
-        averageRating: {$ifNull: [{$avg: '$review.rating'}, 0]},
-        reviewCount: {$size: '$review'},
-        status: {
-          $cond: {if: {$gt: ['$stock', 2]}, then: 'avaliable', else: {$cond: {if: {$eq: ['$stock', 0]}, then: 'out of stock', else: 'low stock'}}}
-        }
-      }
-
-    },
-    {
-      $project: {
-        review: 0,
-        authorId: 0,
-        categories: 0
-
-      }
-    },
-    {$sort: sortBy},
-    {$skip: (pageQuery - 1) * limitQuery},
-    {$limit: limitQuery}
-
-  ]);
-
-  if (!books.length) {
+  if (!data.length) {
     const err = new Error('No books found');
     err.name = 'BookNotFoundError';
     return next(err);
   }
-  res.status(200).json({status: 'Success', data: books});
+
+  const currentPage = Number(req.query.page) || 1;
+  const pageSize = Number(req.query.limit) || 10;
+  res.status(200).json({status: 'Success', data, totalBooks, currentPage, pageSize});
 });
 /**
  * find  book by id

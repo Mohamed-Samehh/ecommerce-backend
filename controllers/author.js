@@ -11,8 +11,6 @@ const findAllAuthors = asyncHandler(async (req, res, next) => {
 
   // TODO: handle qureies
 
-  const name = req.query.name;
-
   const authors = await Author.find({})
     .skip((page - 1) * limit)
     .limit(limit);
