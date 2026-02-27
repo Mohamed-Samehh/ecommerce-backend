@@ -5,16 +5,14 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/books?authorId=699cd37694ea975c3527861b"
+  url: "{{baseUrl}}/books?limit=10&page=1&name=Elan"
   params:
     - name: limit
-      value: "50"
+      value: "10"
       type: query
-      disabled: true
     - name: page
       value: "1"
       type: query
-      disabled: true
     - name: sort
       value: name
       type: query
@@ -38,10 +36,10 @@ http:
     - name: authorId
       value: 699cd37694ea975c3527861b
       type: query
+      disabled: true
     - name: name
       value: Elan
       type: query
-      disabled: true
   auth: inherit
 
 settings:

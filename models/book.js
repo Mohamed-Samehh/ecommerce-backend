@@ -99,6 +99,127 @@ function uniqueCategory(value) {
   return new Set(stringIds).size === value.length;
 };
 
-const Book = mongoose.model('Book', bookSchema);
+bookSchema.statics.findAllBooks = async function (query) {
+  try {
+    const {limit, page, sort, minPrice, maxPrice, status, name, categories, authorId} = query;
 
+    const allowedSortFields = {
+      'price': {price: 1},
+      '-price': {price: -1},
+      'rating': {averageRating: 1},
+      '-rating': {averageRating: -1},
+      'name': {name: 1},
+      '-name': {name: -1},
+      'stock': {stock: 1},
+      '-stock': {stock: -1},
+      'newest': {createdAt: -1},
+      'oldest': {createdAt: 1}
+    };
+    const sortBy = allowedSortFields[sort] || {createdAt: -1};
+    const filters = [];
+
+    const limitQuery = Math.min(Math.max(Number(limit) || 10, 1), 100);
+    const pageQuery = Math.max(Number(page) || 1, 1);
+
+    let statusQuery;
+    if (status) {
+      if (status === 'available') {
+        statusQuery = {stock: {$gt: 2}};
+      } else if (status === 'out of stock') {
+        statusQuery = {stock: {$eq: 0}};
+      } else {
+        statusQuery = {$and: [{stock: {$lt: 2}}, {stock: {$gt: 0}}]};
+      }
+    }
+    if (minPrice)filters.push({price: {$gte: Number(minPrice)}});
+    if (maxPrice)filters.push({price: {$lte: Number(maxPrice)}});
+    if (statusQuery)filters.push(statusQuery);
+    if (name) filters.push({name: {$regex: name, $options: 'i'}});
+    if (categories) {
+      const castedCategories = new mongoose.Types.ObjectId(categories);
+      filters.push({categories: castedCategories});
+    }
+    if (authorId) {
+      const castedAuthorId = new mongoose.Types.ObjectId(authorId);
+      filters.push({authorId: castedAuthorId});
+    }
+    filters.push({isDeleted: false});
+    const finalQuery = filters.length > 0 ? {$and: filters} : {};
+    const books = await this.aggregate([
+      {
+        $match: finalQuery
+      },
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'categories',
+          foreignField: '_id',
+          as: 'categories',
+          pipeline: [{$project: {_id: 0, name: 1}}]
+        }
+      },
+      {
+        $lookup: {
+          from: 'authors',
+          localField: 'authorId',
+          foreignField: '_id',
+          as: 'author',
+          pipeline: [{$project: {_id: 0, name: 1}}]
+        }
+      },
+      {
+        $lookup: {
+          from: 'reviews',
+          localField: '_id',
+          foreignField: 'bookId',
+          as: 'review'
+        }
+      },
+      {
+
+        $addFields: {
+          categories: {$map: {input: '$categories', as: 'cat', in: '$$cat.name'}},
+          author: {$arrayElemAt: ['$author.name', 0]},
+          averageRating: {$ifNull: [{$avg: '$review.rating'}, 0]},
+          reviewCount: {$size: '$review'},
+          status: {
+            $cond: {if: {$gt: ['$stock', 2]}, then: 'available', else: {$cond: {if: {$eq: ['$stock', 0]}, then: 'out of stock', else: 'low stock'}}}
+          }
+        }
+
+      },
+      {
+        $project: {
+          review: 0,
+          authorId: 0,
+          categories: 0
+
+        }
+      },
+      {
+        $facet: {
+          metaData: [{$count: 'totalBooks'}],
+          data: [
+            {$sort: sortBy},
+            {$skip: (pageQuery - 1) * limitQuery},
+            {$limit: limitQuery}
+          ]
+        }
+      },
+      {
+        $project: {
+          data: 1,
+          totalBooks: {$ifNull: [{$arrayElemAt: ['$metaData.totalBooks', 0]}, 0]}
+
+        }
+      }
+
+    ]);
+
+    return books[0];
+  } catch (err) {
+    throw new Error(`Error fetching books: ${err.message}`);
+  }
+};
+const Book = mongoose.model('Book', bookSchema);
 module.exports = Book;
