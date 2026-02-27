@@ -28,7 +28,7 @@ const reviewSchema = Joi.object({
 
 const statusSchema = Joi.object({
   status: Joi.string()
-    .valid('processing', 'out for delivery', 'delivered', 'cancelled')
+    .valid('processing', 'shipped', 'delivered', 'cancelled')
     .required()
 });
 
