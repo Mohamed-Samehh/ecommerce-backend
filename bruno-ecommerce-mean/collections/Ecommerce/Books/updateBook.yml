@@ -8,7 +8,7 @@ http:
   url: "{{baseUrl}}/books/:id"
   params:
     - name: id
-      value: 699c1593071ed1f67efd6cb8
+      value: 699dd7c882aff9c8dca87543
       type: path
   body:
     type: multipart-form
@@ -16,14 +16,14 @@ http:
       - name: name
         type: text
         value: samoha
+        disabled: true
       - name: price
         type: text
         value: ""
         disabled: true
       - name: stock
         type: text
-        value: ""
-        disabled: true
+        value: "0"
       - name: authorId
         type: text
         value: ""

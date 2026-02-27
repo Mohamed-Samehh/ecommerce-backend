@@ -50,11 +50,11 @@ const bookSchema = Joi.object({
     .min(0)
     .default(0),
 
-  authorId: Joi.string()
+  authorId: mongoId
     .required(),
 
   categories: Joi.array()
-    .items(Joi.string())
+    .items(mongoId)
     .required(),
 
   description: Joi.string()
@@ -100,6 +100,8 @@ const bookQuerySchema = Joi.object({
   categories: Joi.array()
     .items(mongoId)
     .single()
+    .optional(),
+  authorId: mongoId
     .optional()
 });
 
