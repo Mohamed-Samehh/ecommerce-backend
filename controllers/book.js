@@ -90,7 +90,7 @@ const findAllBooks = asyncHandler(async (req, res, next) => {
     {
 
       $addFields: {
-        categoryies: {$map: {input: '$categories', as: 'cat', in: '$$cat.name'}},
+        categories: {$map: {input: '$categories', as: 'cat', in: '$$cat.name'}},
         author: {$arrayElemAt: ['$author.name', 0]},
         averageRating: {$ifNull: [{$avg: '$review.rating'}, 0]},
         reviewCount: {$size: '$review'},
