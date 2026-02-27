@@ -5,10 +5,10 @@ info:
 
 http:
   method: GET
-  url: http://localhost:3000/review/book/699a1235dd5f56ce69fb006c
+  url: http://localhost:3000/review/book/699cd37794ea975c35278633
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiXSwiaWF0IjoxNzcxNzg4ODYxLCJleHAiOjE3NzMwODQ4NjF9._IW9BIpwu0FszXwd7z4uC1XWnmqa0nhPJPxoA64EE-U
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWY1Y2Q2MTk0MDg0N2JmNTMwNDA3NSIsImVtYWlsIjoiYWxhYWFiZGFsbGFoMzMzNkBnbWFpbC5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTc3MjA1MjA5OCwiZXhwIjoxNzczMzQ4MDk4fQ.D5TzxxPZaRUyGp1wmTYpGfMGp031O1AdZqFeC6LdeRQ
 
 settings:
   encodeUrl: true

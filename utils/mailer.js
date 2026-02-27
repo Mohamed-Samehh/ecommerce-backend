@@ -12,6 +12,14 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.sendOtpEmail = async (to, otp) => {
+  // English comment: If no email host is configured, log the OTP to the console for development
+  if (!process.env.EMAIL_HOST) {
+    console.log('-----------------------------------------');
+    console.log(`[DEV] OTP for ${to}: ${otp}`);
+    console.log('-----------------------------------------');
+    return;
+  }
+
   await transporter.sendMail({
     from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_FROM}>`,
     to,

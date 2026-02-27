@@ -5,8 +5,11 @@ info:
 
 http:
   method: PATCH
-  url: http://localhost:3000/order/:orderId/payment
+  url: http://localhost:3000/order/:orderId/payment?payment
   params:
+    - name: payment
+      value: ""
+      type: query
     - name: orderId
       value: 699cf81ed9f0a18f8f57d3b0
       type: path
@@ -18,7 +21,7 @@ http:
       }
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE4Nzk0MTEsImV4cCI6MTc3MzE3NTQxMX0.GRJExivCbO5expsIO1OTQmXutjJKELkJrN1rx-06OYk
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWY1Y2Q2MTk0MDg0N2JmNTMwNDA3NSIsImVtYWlsIjoiYWxhYWFiZGFsbGFoMzMzNkBnbWFpbC5jb20iLCJyb2xlcyI6WyJhZG1pbiJdLCJpYXQiOjE3NzIwNTM0NjgsImV4cCI6MTc3MzM0OTQ2OH0.Zq9eAGCfo1cO3WPM-AxC4x2qncFqLJ8y9v5uHARyCfY
 
 settings:
   encodeUrl: true

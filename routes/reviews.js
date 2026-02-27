@@ -9,6 +9,7 @@ const {reviewSchema} = require('../utils/validations');
 router.get('/book/:bookId', reviewController.getBookReviews);
 
 router.post('/', auth, validateRequest(reviewSchema), reviewController.addReview);
+router.get('/my', auth, reviewController.getMyReviews);
 
 router.delete('/:id', auth, reviewController.deleteReview);
 
