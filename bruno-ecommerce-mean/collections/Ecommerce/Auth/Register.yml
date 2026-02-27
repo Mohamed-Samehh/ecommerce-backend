@@ -5,16 +5,16 @@ info:
 
 http:
   method: POST
-  url: "{{baseUrl}}/auth/register"
+  url: http://localhost:3000/auth/register
   body:
     type: json
     data: |-
       {
-        "email": "mohamed.kholy2011@gmail.com",
-        "firstName": "Mohamed",
-        "lastName": "Sameh",
-        "dob": "2002-01-01",
-        "password": "123456"
+        "email": "alaaabdallah3336@gmail.com",
+        "firstName": "alaa",
+        "lastName": "abdallah",
+        "dob": "2003-03-13",
+        "password": "123456789"
       }
   auth: inherit
 

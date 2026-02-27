@@ -5,13 +5,13 @@ info:
 
 http:
   method: POST
-  url: "{{baseUrl}}/auth/register/verify-otp"
+  url: http://localhost:3000/auth/register/verify-otp
   body:
     type: json
     data: |-
       {
-        "email": "mohamed.kholy2011@gmail.com",
-        "otp": "45C7C9"
+        "email": "alaaabdallah3336@gmail.com",
+        "otp": "925140"
       }
   auth: inherit
 
