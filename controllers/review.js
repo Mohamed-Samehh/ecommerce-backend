@@ -31,6 +31,7 @@ const deleteReview = asyncHandler(async (req, res, next) => {
   if (!review) {
     const error = new Error('Review not found');
     error.statusCode = 404;
+    error.name = 'ReviewNotFoundError';
     return next(error);
   }
 

@@ -74,7 +74,7 @@ const placeOrder = asyncHandler(async (req, res, next) => {
       paymentStatus: paymentMethod === 'Online' ? 'success' : 'pending'
     });
 
-    await newOrder.save({session});// ✅ This triggers the pre-save hook
+    await newOrder.save({session});
 
     await session.commitTransaction();
 
