@@ -22,8 +22,25 @@ const addReview = asyncHandler(async (req, res, next) => {
 });
 
 const getBookReviews = asyncHandler(async (req, res, next) => {
-  const reviews = await Review.find({bookId: req.params.bookId}).populate('userId', 'firstName lastName');
-  res.status(200).json({status: 'success', data: reviews});
+  const reviews = await Review.find({bookId: req.params.bookId})
+    .populate('userId', 'firstName lastName avatar')
+    .sort({createdAt: -1});
+
+  res.status(200).json({
+    status: 'success',
+    results: reviews.length,
+    data: reviews
+  });
+});
+const getMyReviews = asyncHandler(async (req, res, next) => {
+  const reviews = await Review.find({userId: req.user.id})
+    .populate('bookId', 'title coverImage')
+    .sort({createdAt: -1});
+  res.status(200).json({
+    status: 'success',
+    results: reviews.length,
+    data: reviews
+  });
 });
 
 const deleteReview = asyncHandler(async (req, res, next) => {
@@ -45,4 +62,4 @@ const deleteReview = asyncHandler(async (req, res, next) => {
   res.status(204).send();
 });
 
-module.exports = {addReview, getBookReviews, deleteReview};
+module.exports = {addReview, getBookReviews, deleteReview, getMyReviews};
