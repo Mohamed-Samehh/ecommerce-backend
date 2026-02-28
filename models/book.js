@@ -136,8 +136,9 @@ bookSchema.statics.findAllBooks = async function (query) {
     if (statusQuery)filters.push(statusQuery);
     if (name) filters.push({name: {$regex: name, $options: 'i'}});
     if (categories) {
-      const castedCategories = new mongoose.Types.ObjectId(categories);
-      filters.push({categories: castedCategories});
+      const categoryArray = Array.isArray(categories) ? categories : [categories];
+      const castedCategories = categoryArray.map((id) => new mongoose.Types.ObjectId(id));
+      filters.push({categories: {$all: castedCategories}});
     }
     if (authorId) {
       const castedAuthorId = new mongoose.Types.ObjectId(authorId);
@@ -192,7 +193,8 @@ bookSchema.statics.findAllBooks = async function (query) {
         $project: {
           review: 0,
           authorId: 0,
-          categories: 0
+
+          __v: 0
 
         }
       },

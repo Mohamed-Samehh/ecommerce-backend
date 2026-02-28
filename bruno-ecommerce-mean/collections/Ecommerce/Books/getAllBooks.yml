@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/books?limit=10&page=1&name=Elan"
+  url: "{{baseUrl}}/books?limit=10&page=1&categories=69998f2d7d0c770af76da95c&categories=69998f217d0c770af76da95a"
   params:
     - name: limit
       value: "10"
@@ -30,16 +30,19 @@ http:
       type: query
       disabled: true
     - name: categories
+      value: 69998f2d7d0c770af76da95c
+      type: query
+    - name: categories
       value: 69998f217d0c770af76da95a
       type: query
-      disabled: true
     - name: authorId
-      value: 699cd37694ea975c3527861b
+      value: 699cd37694ea975c3527861a
       type: query
       disabled: true
     - name: name
-      value: Elan
+      value: game
       type: query
+      disabled: true
   auth: inherit
 
 settings:
