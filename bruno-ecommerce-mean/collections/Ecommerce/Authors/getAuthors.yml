@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/authors/"
+  url: http://localhost:3000/authors/
   auth: inherit
 
 settings:

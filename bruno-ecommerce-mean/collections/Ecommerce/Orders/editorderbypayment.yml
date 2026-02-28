@@ -5,14 +5,11 @@ info:
 
 http:
   method: PATCH
-  url: http://localhost:3000/order/:orderId/payment?payment
+  url: http://localhost:3000/order/69a25777ca8a9eca55018ced/payment?payment
   params:
     - name: payment
       value: ""
       type: query
-    - name: orderId
-      value: 699cf81ed9f0a18f8f57d3b0
-      type: path
   body:
     type: json
     data: |-

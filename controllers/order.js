@@ -176,6 +176,29 @@ const updateOrderStatus = asyncHandler(async (req, res, next) => {
   });
 });
 
+const getOrderById = asyncHandler(async (req, res, next) => {
+  const order = await Order.findById(req.params.id)
+    .populate('userId', 'firstName lastName email')
+    .populate('items.bookId', 'name coverImage');
+
+  if (!order) {
+    const error = new Error('Order not found');
+    error.statusCode = 404;
+    return next(error);
+  }
+
+  if (order.userId._id.toString() !== req.user.id && !req.user.roles.includes('admin')) {
+    const error = new Error('Not authorized to view this order');
+    error.statusCode = 403;
+    return next(error);
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: order
+  });
+});
+
 const updatePaymentStatus = asyncHandler(async (req, res, next) => {
   const {paymentStatus} = req.body;
 
@@ -204,6 +227,7 @@ module.exports = {
   placeOrder,
   getMyOrders,
   getAllOrders,
+  getOrderById,
   updateOrderStatus,
   updatePaymentStatus
 };
