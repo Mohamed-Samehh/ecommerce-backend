@@ -126,16 +126,15 @@ const userUpdateSchema = Joi.object({
 });
 const authorSchema = Joi.object({
   name: Joi.string()
-    .pattern(/^[a-z ]+$/i)
-    .min(5)
+    .min(2)
     .max(200)
     .required()
     .trim(true),
   bio: Joi.string()
-    .pattern(/^[a-z0-9 .,'-]+$/i)
     .min(5)
     .max(2000)
     .trim(true)
+    .optional()
 });
 
 const adminCreateUserSchema = Joi.object({
