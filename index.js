@@ -66,7 +66,7 @@ async function connectDB() {
     logger.info('MongoDB Connected...');
   } catch (err) {
     logger.error({err}, 'Connection error');
-    process.exit(1);
+    throw err;
   }
 }
 
