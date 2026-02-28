@@ -23,7 +23,7 @@ const orderItemSchema = new mongoose.Schema({
     type: Number,
     required: true
   }
-}, {_id: false});
+}, { _id: false });
 
 const orderSchema = new mongoose.Schema({
   userId: {
@@ -58,7 +58,7 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['processing', 'out for delivery', 'delivered', 'cancelled'],
+    enum: ['processing', 'shipped', 'delivered', 'cancelled'],
     default: 'processing'
   },
   paymentStatus: {
@@ -77,7 +77,7 @@ const orderSchema = new mongoose.Schema({
     required: true,
     min: 0
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 orderSchema.pre('validate', async function () {
   if (this.isNew) {

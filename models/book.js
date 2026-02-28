@@ -11,7 +11,7 @@ const bookSchema = new mongoose.Schema({
   coverImage: {
     type: String,
     required: true,
-    validate: {validator: urlValidator, message: 'invalid image url'}
+    validate: { validator: urlValidator, message: 'invalid image url' }
   },
   coverImagePublicId: {
     type: String,
@@ -35,7 +35,7 @@ const bookSchema = new mongoose.Schema({
   categories: {
     type: [mongoose.ObjectId],
     ref: 'Category',
-    validate: {validator: uniqueCategory, message: 'categories must be unique'},
+    validate: { validator: uniqueCategory, message: 'categories must be unique' },
     required: true
   },
   description: {
@@ -49,24 +49,28 @@ const bookSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   }
-}, {toJSON: {virtuals: true, transform(doc, ret, options) {
-  ret.id = ret._id;
-  delete ret._id;
-  delete ret.__v;
-  return ret;
-}}, timestamps: true});
+}, {
+  toJSON: {
+    virtuals: true, transform(doc, ret, options) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+    }
+  }, timestamps: true
+});
 
 bookSchema.index(
-  {name: 1},
+  { name: 1 },
   {
     unique: true,
-    partialFilterExpression: {isDeleted: false}
+    partialFilterExpression: { isDeleted: false }
   }
 );
 
 bookSchema.virtual('status').get(function () {
   if (this.stock > 2) {
-    return 'avaliable';
+    return 'available';
   } else if (this.stock === 0) {
     return 'out of stock';
   } else {

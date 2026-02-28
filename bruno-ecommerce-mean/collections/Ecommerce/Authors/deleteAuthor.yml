@@ -5,7 +5,7 @@ info:
 
 http:
   method: DELETE
-  url: "{{baseUrl}}/authors/:id"
+  url: http:///authors/:id
   params:
     - name: id
       value: 699a47d7ceb920e8fd802c62

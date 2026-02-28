@@ -12,11 +12,7 @@ http:
       {
         "items": [
           {
-            "bookId": "699cd37794ea975c35278633",
-            "quantity": 10
-          },
-          {
-            "bookId": "699cd37794ea975c35278640",
+            "bookId": "699cd37794ea975c35278631",
             "quantity": 1
           }
         ],
