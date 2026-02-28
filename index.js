@@ -10,7 +10,13 @@ const {deleteFromCloudinary} = require('./utils/cloudinary-handler');
 
 const app = express();
 
-app.use(cors({origin: process.env.FRONTEND_URL || 'http://localhost:4200'}));
+app.use(cors({
+  origin: [
+    'http://localhost:4200',
+    process.env.FRONTEND_URL
+  ].filter(Boolean),
+  credentials: true
+}));
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -64,10 +70,17 @@ async function connectDB() {
   }
 }
 
-connectDB().then(() => {
-  app.listen(process.env.PORT || 3000, () => {
-    logger.info(`Server running on port ${process.env.PORT || 3000}`);
+// Local development only
+if (require.main === module) {
+  connectDB().then(() => {
+    app.listen(process.env.PORT || 3000, () => {
+      logger.info(`Server running on port ${process.env.PORT || 3000}`);
+    });
   });
-});
+}
 
-module.exports = app;
+// Vercel serverless handler
+module.exports = async (req, res) => {
+  await connectDB();
+  return app(req, res);
+};
