@@ -2,6 +2,11 @@ const Joi = require('joi');
 
 const mongoId = Joi.string().hex().length(24);
 
+const passwordSchema = Joi.string()
+  .min(8)
+  .pattern(/^(?=.*[A-Z])(?=.*\d).+$/i)
+  .message('password must be at least 8 characters and include at least one letter and one number');
+
 const orderSchema = Joi.object({
   items: Joi.array().items(
     Joi.object({
@@ -109,8 +114,8 @@ const userRegisterSchema = Joi.object({
   email: Joi.string().email().required(),
   firstName: Joi.string().min(2).max(50).required(),
   lastName: Joi.string().min(2).max(50).required(),
-  dob: Joi.date().iso().required(),
-  password: Joi.string().min(6).required()
+  dob: Joi.date().iso().max('now').required(),
+  password: passwordSchema.required()
 });
 
 const userLoginSchema = Joi.object({
@@ -121,8 +126,8 @@ const userLoginSchema = Joi.object({
 const userUpdateSchema = Joi.object({
   firstName: Joi.string().min(2).max(50),
   lastName: Joi.string().min(2).max(50),
-  dob: Joi.date().iso(),
-  password: Joi.string().min(6)
+  dob: Joi.date().iso().max('now'),
+  password: passwordSchema
 });
 const authorSchema = Joi.object({
   name: Joi.string()
@@ -141,8 +146,8 @@ const adminCreateUserSchema = Joi.object({
   email: Joi.string().email().required(),
   firstName: Joi.string().min(2).max(50).required(),
   lastName: Joi.string().min(2).max(50).required(),
-  dob: Joi.date().iso().required(),
-  password: Joi.string().min(6).required(),
+  dob: Joi.date().iso().max('now').required(),
+  password: passwordSchema.required(),
   isAdmin: Joi.boolean().default(false)
 });
 
@@ -150,8 +155,8 @@ const adminUpdateUserSchema = Joi.object({
   email: Joi.string().email(),
   firstName: Joi.string().min(2).max(50),
   lastName: Joi.string().min(2).max(50),
-  dob: Joi.date().iso(),
-  password: Joi.string().min(6),
+  dob: Joi.date().iso().max('now'),
+  password: passwordSchema,
   isAdmin: Joi.boolean()
 });
 

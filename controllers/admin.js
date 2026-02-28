@@ -8,7 +8,11 @@ const getUsers = asyncHandler(async (req, res) => {
 
   const filter = {};
   if (req.query.role) {
-    filter.roles = req.query.role;
+    if (req.query.role === 'user') {
+      filter.roles = {$size: 1, $all: ['user']};
+    } else {
+      filter.roles = req.query.role;
+    }
   }
   if (req.query.search) {
     const search = {$regex: req.query.search, $options: 'i'};
@@ -43,6 +47,11 @@ const getUserById = asyncHandler(async (req, res, next) => {
 
 const createUser = asyncHandler(async (req, res) => {
   const {firstName, lastName, dob, email, password, isAdmin} = req.body;
+
+  const existingUser = await User.exists({email});
+  if (existingUser) {
+    return res.status(409).json({message: 'This email is already taken.'});
+  }
 
   const roles = isAdmin ? ['user', 'admin'] : ['user'];
   const user = new User({firstName, lastName, dob, email, password, roles});
