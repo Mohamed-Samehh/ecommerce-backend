@@ -14,42 +14,12 @@ app.use(cors({origin: process.env.FRONTEND_URL || 'http://localhost:4200'}));
 app.use(express.static('public'));
 app.use(express.json());
 
-let connectionPromise;
-
-async function connectDB() {
-  if (mongoose.connection.readyState === 1) {
-    return;
-  }
-
-  if (!connectionPromise) {
-    connectionPromise = mongoose.connect(process.env.MONGO_URI)
-      .then(() => {
-        logger.info('MongoDB Connected...');
-      })
-      .catch((err) => {
-        connectionPromise = null;
-        throw err;
-      });
-  }
-
-  await connectionPromise;
-}
-
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   if (req.method === 'POST') {
     console.log('Body:', JSON.stringify(req.body, null, 2));
   }
   next();
-});
-
-app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (err) {
-    next(err);
-  }
 });
 
 app.use(routes);
@@ -80,17 +50,24 @@ app.use((req, res) => {
   res.sendStatus(404);
 });
 
-if (!process.env.VERCEL) {
-  connectDB()
-    .then(() => {
-      app.listen(process.env.PORT || 3000, () => {
-        logger.info(`Server running on port ${process.env.PORT || 3000}`);
-      });
-    })
-    .catch((err) => {
-      logger.error({err}, 'Connection error');
-      process.exit(1);
-    });
+let isConnected = false;
+
+async function connectDB() {
+  if (isConnected) return;
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    isConnected = true;
+    logger.info('MongoDB Connected...');
+  } catch (err) {
+    logger.error({err}, 'Connection error');
+    process.exit(1);
+  }
 }
+
+connectDB().then(() => {
+  app.listen(process.env.PORT || 3000, () => {
+    logger.info(`Server running on port ${process.env.PORT || 3000}`);
+  });
+});
 
 module.exports = app;
