@@ -8,7 +8,11 @@ const getUsers = asyncHandler(async (req, res) => {
 
   const filter = {};
   if (req.query.role) {
-    filter.roles = req.query.role;
+    if (req.query.role === 'user') {
+      filter.roles = {$size: 1, $all: ['user']};
+    } else {
+      filter.roles = req.query.role;
+    }
   }
   if (req.query.search) {
     const search = {$regex: req.query.search, $options: 'i'};

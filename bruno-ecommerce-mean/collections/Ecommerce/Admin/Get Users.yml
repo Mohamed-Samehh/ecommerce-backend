@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/admin?page=2&limit=2&search=moh"
+  url: "{{baseUrl}}/admin?page=2&limit=2&search=moh&role=admin"
   params:
     - name: page
       value: "2"
@@ -15,6 +15,9 @@ http:
       type: query
     - name: search
       value: moh
+      type: query
+    - name: role
+      value: admin
       type: query
   auth:
     type: bearer
