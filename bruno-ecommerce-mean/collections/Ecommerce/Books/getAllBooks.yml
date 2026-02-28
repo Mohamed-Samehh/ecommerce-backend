@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/books?limit=10&page=1&name=Elan"
+  url: http://localhost:3000/books?limit=10&page=1
   params:
     - name: limit
       value: "10"
@@ -40,7 +40,13 @@ http:
     - name: name
       value: Elan
       type: query
+      disabled: true
   auth: inherit
+
+runtime:
+  variables:
+    - name: baseUrl
+      value: http://localhost:3000/
 
 settings:
   encodeUrl: true

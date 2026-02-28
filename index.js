@@ -36,6 +36,13 @@ app.use((err, req, res, next) => {
     return res.status(statusCode).json(body);
   }
 
+  if (err.statusCode) {
+    return res.status(err.statusCode).json({
+      status: err.statusCode >= 500 ? 'error' : 'fail',
+      message: err.message
+    });
+  }
+
   logger.error(err);
   res.status(500).json({ status: 'error', message: 'Something went wrong' });
 });

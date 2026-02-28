@@ -5,7 +5,7 @@ info:
 
 http:
   method: PATCH
-  url: http://localhost:3000/order/699f5eb203ffa80f2f32d54b/status
+  url: http://localhost:3000/order/69a23a00aa3b26bf35432597/status
   body:
     type: json
     data: |-
