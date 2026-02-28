@@ -1,0 +1,11 @@
+info:
+  name: category
+  type: folder
+<<<<<<< HEAD
+  seq: 3
+=======
+  seq: 5
+>>>>>>> e2a2a7f43e5feed12112493d144a1f5daef06794
+
+request:
+  auth: inherit

@@ -1,0 +1,17 @@
+info:
+  name: deleteCategory
+  type: http
+  seq: 4
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/categories/699aef720635449e4b2f29b7"
+  auth:
+    type: bearer
+    token: "{{motoken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,17 @@
+info:
+  name: getallorder
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: http://localhost:3000/order/
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3OTk3MDYsImV4cCI6MTc3MzA5NTcwNn0.JpiM4Spx4X99HKPcbKUq1MZft_jbEx4kk2uBvvxnk2g
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

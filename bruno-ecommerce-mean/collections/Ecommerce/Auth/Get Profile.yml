@@ -1,0 +1,17 @@
+info:
+  name: Get Profile
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: http://localhost:3000/auth/me
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWY1Y2Q2MTk0MDg0N2JmNTMwNDA3NSIsImVtYWlsIjoiYWxhYWFiZGFsbGFoMzMzNkBnbWFpbC5jb20iLCJyb2xlcyI6WyJhZG1pbiJdLCJpYXQiOjE3NzIwNTM0NjgsImV4cCI6MTc3MzM0OTQ2OH0.Zq9eAGCfo1cO3WPM-AxC4x2qncFqLJ8y9v5uHARyCfY
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

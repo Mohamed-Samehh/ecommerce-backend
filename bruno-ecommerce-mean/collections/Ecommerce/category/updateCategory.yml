@@ -1,0 +1,23 @@
+info:
+  name: updateCategory
+  type: http
+  seq: 3
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/categories/64f8a2b3c9e77b001f3d8a12"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Horror"
+      }
+  auth:
+    type: bearer
+    token: "{{motoken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

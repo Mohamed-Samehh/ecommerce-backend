@@ -1,0 +1,59 @@
+info:
+  name: updateBook
+  type: http
+  seq: 6
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/books/:id"
+  params:
+    - name: id
+      value: 699dd7c882aff9c8dca87543
+      type: path
+  body:
+    type: multipart-form
+    data:
+      - name: name
+        type: text
+        value: samoha
+        disabled: true
+      - name: price
+        type: text
+        value: ""
+        disabled: true
+      - name: stock
+        type: text
+        value: "0"
+      - name: authorId
+        type: text
+        value: ""
+        disabled: true
+      - name: categories
+        type: text
+        value: ""
+        disabled: true
+      - name: categories
+        type: text
+        value: ""
+        disabled: true
+      - name: categories
+        type: text
+        value: ""
+        disabled: true
+      - name: description
+        type: text
+        value: ""
+        disabled: true
+      - name: image
+        type: text
+        value: ""
+        disabled: true
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3ODczNDIsImV4cCI6MTc3MzA4MzM0Mn0.61lBFQq8Yudtjs7Y8JFJxTrJeiqoXU0g9sIsA36zTuY
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

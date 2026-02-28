@@ -1,0 +1,59 @@
+info:
+  name: getAllBooks
+  type: http
+  seq: 3
+
+http:
+  method: GET
+
+  url: "{{baseUrl}}/books?limit=10&page=1&categories=69998f2d7d0c770af76da95c&categories=69998f217d0c770af76da95a"
+
+  params:
+    - name: limit
+      value: "10"
+      type: query
+    - name: page
+      value: "1"
+      type: query
+    - name: sort
+      value: name
+      type: query
+      disabled: true
+    - name: minPrice
+      value: ""
+      type: query
+      disabled: true
+    - name: maxPrice
+      value: "20"
+      type: query
+      disabled: true
+    - name: status
+      value: available
+      type: query
+      disabled: true
+    - name: categories
+      value: 69998f2d7d0c770af76da95c
+      type: query
+    - name: categories
+      value: 69998f217d0c770af76da95a
+      type: query
+    - name: authorId
+      value: 699cd37694ea975c3527861a
+      type: query
+      disabled: true
+    - name: name
+      value: game
+      type: query
+      disabled: true
+  auth: inherit
+
+runtime:
+  variables:
+    - name: baseUrl
+      value: http://localhost:3000/
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

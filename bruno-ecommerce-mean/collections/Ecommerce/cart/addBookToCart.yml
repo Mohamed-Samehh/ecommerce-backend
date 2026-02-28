@@ -1,0 +1,24 @@
+info:
+  name: addBookToCart
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/cart"
+  body:
+    type: json
+    data: |-
+      {
+        "bookId": "699a5d23f4dd02a483efa178",
+        "quantity": 6
+      }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWFlZTUxMDYzNTQ0OWU0YjJmMjlhNSIsImVtYWlsIjoibmV3dXNlckBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiXSwiaWF0IjoxNzcxNzYxMjMzLCJleHAiOjE3NzMwNTcyMzN9.V8x3PvR91bDAdbP5D9ZvmcQHzPrESVV0QcOWfTc37zs
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

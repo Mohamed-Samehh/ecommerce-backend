@@ -1,0 +1,22 @@
+info:
+  name: Register OTP
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:3000/auth/register/verify-otp
+  body:
+    type: json
+    data: |-
+      {
+        "email": "alaaabdallah3336@gmail.com",
+        "otp": "925140"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,28 @@
+info:
+  name: Update User
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/admin/:id"
+  params:
+    - name: id
+      value: 699b5a3d34b7a4096b1718a0
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        
+        "isAdmin": true
+      }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3OTY1MTgsImV4cCI6MTc3MzA5MjUxOH0.LOlhH1RtfhGoVJkzFr8FcCbL-4NBAfrpGxNenAf2nwc
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

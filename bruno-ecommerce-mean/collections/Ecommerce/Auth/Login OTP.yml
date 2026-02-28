@@ -1,0 +1,22 @@
+info:
+  name: Login OTP
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: http://localhost:3000/auth/login/verify-otp
+  body:
+    type: json
+    data: |-
+      {
+        "email": "mohamed.kholy2011@gmail.com",
+        "otp": "CF35D1"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
