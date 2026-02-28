@@ -5,3 +5,5 @@ logs/
 .bruno/
 *.yml
 bruno-ecommerce-mean/
+.vercel
+.env*.local
