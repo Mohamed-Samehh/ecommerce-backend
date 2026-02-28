@@ -12,11 +12,7 @@ http:
       {
         "items": [
           {
-            "bookId": "699cd37794ea975c35278633",
-            "quantity": 10
-          },
-          {
-            "bookId": "699cd37794ea975c35278640",
+            "bookId": "699cd37794ea975c35278631",
             "quantity": 1
           }
         ],
@@ -30,7 +26,7 @@ http:
       }
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWEwMjcwNDg1NjEwZTIxY2VlNDQ3OCIsImVtYWlsIjoibW9oYW1lZEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE4Nzk0MTEsImV4cCI6MTc3MzE3NTQxMX0.GRJExivCbO5expsIO1OTQmXutjJKELkJrN1rx-06OYk
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWY1Y2Q2MTk0MDg0N2JmNTMwNDA3NSIsImVtYWlsIjoiYWxhYWFiZGFsbGFoMzMzNkBnbWFpbC5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTc3MjA1MjA5OCwiZXhwIjoxNzczMzQ4MDk4fQ.D5TzxxPZaRUyGp1wmTYpGfMGp031O1AdZqFeC6LdeRQ
 
 settings:
   encodeUrl: true

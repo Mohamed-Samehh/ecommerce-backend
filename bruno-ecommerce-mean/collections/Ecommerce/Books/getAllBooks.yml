@@ -5,7 +5,9 @@ info:
 
 http:
   method: GET
+
   url: "{{baseUrl}}/books?limit=10&page=1&categories=69998f2d7d0c770af76da95c&categories=69998f217d0c770af76da95a"
+
   params:
     - name: limit
       value: "10"
@@ -44,6 +46,11 @@ http:
       type: query
       disabled: true
   auth: inherit
+
+runtime:
+  variables:
+    - name: baseUrl
+      value: http://localhost:3000/
 
 settings:
   encodeUrl: true

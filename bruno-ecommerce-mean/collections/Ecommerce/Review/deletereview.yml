@@ -5,10 +5,10 @@ info:
 
 http:
   method: DELETE
-  url: http://localhost:3000/review/699b921bbc36fba9d7584cd6
+  url: http://localhost:3000/review/699f64d0a6a1bc9e9c184fe2
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWI1YTNkMzRiN2E0MDk2YjE3MThhMCIsImVtYWlsIjoiYWxhYTM3OEBleGFtcGxlLmNvbSIsInJvbGVzIjpbInVzZXIiLCJhZG1pbiJdLCJpYXQiOjE3NzE3OTk3MDYsImV4cCI6MTc3MzA5NTcwNn0.JpiM4Spx4X99HKPcbKUq1MZft_jbEx4kk2uBvvxnk2g
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWY1Y2Q2MTk0MDg0N2JmNTMwNDA3NSIsImVtYWlsIjoiYWxhYWFiZGFsbGFoMzMzNkBnbWFpbC5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTc3MjA1MjA5OCwiZXhwIjoxNzczMzQ4MDk4fQ.D5TzxxPZaRUyGp1wmTYpGfMGp031O1AdZqFeC6LdeRQ
 
 settings:
   encodeUrl: true
