@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const asyncHandler = require('../middleware/async-handler');
-const {Book, Order} = require('../models');
+const {Book, Order, Cart} = require('../models');
 
 const placeOrder = asyncHandler(async (req, res, next) => {
   const session = await mongoose.startSession();
@@ -75,6 +75,9 @@ const placeOrder = asyncHandler(async (req, res, next) => {
     });
 
     await newOrder.save({session});
+
+    // Clear user's cart
+    await Cart.findOneAndDelete({user: userId}).session(session);
 
     await session.commitTransaction();
 
