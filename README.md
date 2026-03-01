@@ -6,9 +6,9 @@
   <img src="https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
 </p>
 
-# 📚 WyrnHole — E-Commerce Bookstore (Backend)
+# 📚 WyrmHole — E-Commerce Bookstore (Backend)
 
-The **backend** REST API for WyrnHole, a full-stack e-commerce bookstore platform built with the **MEAN** stack. This Express 5 server provides a secure, scalable API with JWT + OTP authentication, Cloudinary image hosting, Stripe payment integration, and MongoDB transactions.
+The **backend** REST API for WyrmHole, a full-stack e-commerce bookstore platform built with the **MEAN** stack. This Express 5 server provides a secure, scalable API with JWT + OTP authentication, Cloudinary image hosting, Stripe payment integration, and MongoDB transactions.
 
 > 🔗 **Frontend Repository:** [ecommerce-frontend](https://github.com/Mohamed-Samehh/ecommerce-frontend)
 
@@ -23,8 +23,7 @@ The **backend** REST API for WyrnHole, a full-stack e-commerce bookstore platfor
 | **JWT + Bcrypt.js** | Authentication & password hashing |
 | **Nodemailer** | OTP email delivery (SMTP) |
 | **Cloudinary** | Image storage CDN |
-| **Multer + Sharp** | File upload & image processing |
-| **Stripe** | Online payment processing |
+| **Multer** | File upload & image processing |
 | **Joi** | Request/query validation |
 | **Pino** | Structured logging |
 | **ESLint** | Code quality (@antfu/eslint-config) |
@@ -244,7 +243,6 @@ erDiagram
 - **MongoDB Atlas** account (or local MongoDB instance)
 - **Cloudinary** account (for image uploads)
 - **SMTP Email** service (for OTP emails)
-- **Stripe** account (for online payments — optional)
 
 ### Installation
 
@@ -272,8 +270,8 @@ EMAIL_HOST=smtp.example.com
 EMAIL_PORT=587
 EMAIL_USER=your-email@example.com
 EMAIL_PASS=your-email-password
-EMAIL_FROM_NAME=WyrnHole
-EMAIL_FROM=noreply@wyrnhole.com
+EMAIL_FROM_NAME=WyrmHole
+EMAIL_FROM=noreply@Wyrmhole.com
 ```
 
 ### Run
@@ -302,8 +300,8 @@ Deployed on **Vercel** as a serverless function.
 
 - **Alaa Abdallah**
 - **Andrew**
-- **Mohammed Abdelhaq**
-- **Mohammed Sameh**
+- **Mohamed Abdelhaq**
+- **Mohamed Sameh**
 
 ---
 
@@ -314,5 +312,5 @@ This project is licensed under the **ISC License**.
 ---
 
 <p align="center">
-  Made with ❤️ by the WyrnHole Team
+  Made with ❤️ by the WyrmHole Team
 </p>
